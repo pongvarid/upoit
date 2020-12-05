@@ -8,7 +8,7 @@
                 </h3>
                 <!--            <hr class="border-gray-600 border-1 mt-2">-->
             </div>
-
+           
             <div class="w-full ">
                 <div class="flex flex-wrap justify-center">
                     <button @click="getDataIssue(assign.id)" v-for="assign,index in assessment" :key="index" :class="`bg-green-600 p-2 rounded shadow-lg m-1 text-white`">{{assign.name}}</button>
@@ -25,13 +25,21 @@
                             </h2>
                         </v-card-title>
                         <v-card-text>
-                            <div class="flex p-2 " v-for="val,val_index in issue.value" :index="val_index">
-                                {{val.issueDetail.sub_name}}
-                                <v-spacer></v-spacer> {{val.value}}
+                      
+                               <div class="flex  p-2 " v-for="val,val_index in getValue(issue.value)" :index="val_index">
+                                  
+                                {{val.name}}
+
+                                <v-spacer></v-spacer> {{val.notting}} / {{val.low}} / {{val.many}} /{{val.very}} /  {{val.have}} / {{val.nohave}}
                             </div>
+                            <!-- <div class="  p-2 " v-for="val,val_index in issue.value" :index="val_index">
+                                {{val.issueDetail.sub_name}}
+
+                                <v-spacer></v-spacer> {{val.value}} / {{val.value_type}} / {{val.value_by}}
+                            </div> -->
                         </v-card-text>
                     </v-card>
-                </div> 
+                </div>
                 <v-card v-else class="m-2">
                     <v-card-title primary-title>
                         <h2 class="text-sm font-bold ">ข้อเสนอแนะ</h2>
@@ -84,6 +92,38 @@ export default class Home extends Vue {
     private years: any = null
     private response: boolean = false
 
+    public getValue(arr: any) {
+        let ans: any = _(arr)
+            .groupBy('issueDetail_pk')
+            .map((platform, id) => ({
+                type: id,
+                val: platform,
+            }))
+            .value()
+        let answer: any = []
+        for (let index = 0; index < ans.length; index++) { 
+         console.log(index,'----------------------------')
+            answer.push({
+                "name": ans[index].val[0].issueDetail.sub_name,
+                "notting":this.sumChoice(ans[index].val,'น้อยที่สุดหรือไม่มีเลย'),
+                "low":this.sumChoice(ans[index].val,'น้อย'),
+                "very":this.sumChoice(ans[index].val,'มาก'),
+                "many":this.sumChoice(ans[index].val,'มากที่สุด'),
+                "have":this.sumChoice(ans[index].val,'มี'),
+                "nohave":this.sumChoice(ans[index].val,'ไม่มี'),
+                
+            })
+        }
+        //console.log(answer)
+        return answer
+    }
+
+    public sumChoice(arr: any,group_by:any){
+        let result:any = _.filter(arr, {value_by: group_by});
+        console.log(result,arr.length,group_by);
+      return result.length
+    }
+
     public async created() {
         this.user = await User.getUser();
         this.years = await Core.getHttp(`/api/iit/v2/year/${this.$route.query.year}/`)
@@ -99,7 +139,7 @@ export default class Home extends Vue {
     }
 
     private async getDataIssue(assignId: number) {
-        this.raw = await Core.getHttp(`/api/iit/v2/answerissue/?agency=${this.user.ext_link.agency}&assessmentIssues=${assignId}`)
+        this.raw = await Core.getHttp(`/api/iit/v2/answerissue-report/?agency=${this.user.ext_link.agency}&assessmentIssues=${assignId}`)
         if (this.raw.length > 0) {
             await this.convertData()
             this.suggestion = null
