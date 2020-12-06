@@ -75,6 +75,7 @@ export default class Home extends Vue {
         //$router.push(`detail?year=${year.id}`)
         if (!status) {
             let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`) 
+            console.log(userInAnswer);
             if (userInAnswer.length > 0) {
                 alert('ss')
             } else {
@@ -82,8 +83,7 @@ export default class Home extends Vue {
             }
         } else {
           alert('ปิดการให้ประเมินแล้ว')
-        }
-
+        } 
     }
 
 }

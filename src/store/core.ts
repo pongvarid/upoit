@@ -1,5 +1,7 @@
 import {VuexModule, Module, Mutation, Action} from "vuex-class-modules";
 import axios from '@/plugins/axios'
+import _ from "lodash"
+
 @Module({generateMutationSetters: true})
 class CoreModule extends VuexModule {
     //state
@@ -38,6 +40,22 @@ class CoreModule extends VuexModule {
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
         });
+    }
+
+    public async groupBy(raw:any,by:string){
+        let group: any = raw
+        group =  await _.chain(group)
+            .groupBy(by)
+            .map((value: any, key: any) => ({ 
+                key: key,
+                value: value
+            }))
+            .value();
+        return group
+    }
+
+    public async sumBy(raw:any,by:string){
+       return await  _.sumBy(raw, 'n');  
     }
 
 }

@@ -123,6 +123,7 @@ export default class Home extends Vue {
     private ansIndex: number = 0;
     private resultAll: any = [];
     private tmp: any = 0
+    
 
     private tmpChoice :any =[];
 

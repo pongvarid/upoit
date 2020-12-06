@@ -9,8 +9,53 @@
                 <!--            <hr class="border-gray-600 border-1 mt-2">-->
             </div>
             <div>
-                {{assessmentTab}}
-                <v-tabs v-model="assessmentTab" color="#C594C5" slider-color="#C594C5">
+                <section class="py-8 px-4">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
+                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
+                                <div class="flex items-center justify-between py-3 px-4 border-b">
+                                    <h3 class="text-lg font-semibold font-heading">หน่วยงาน</h3>
+                                </div>
+                                <div class="flex flex-col p-4">
+                                    <h3 class="text-2xl mb-3 font-semibold font-heading font-semibold">{{agency.name}}</h3>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
+                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
+                                <div class="flex items-center justify-between px-4 py-3 border-b">
+                                    <h3 class="text-lg font-semibold font-heading">บุคคลากรภายใน</h3>
+                                </div>
+                                <div class="flex flex-col p-4">
+                                    <span class="text-2xl font-semibold text-green-500">{{agency.count}} คน</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
+                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
+                                <div class="flex items-center justify-between px-4 py-3 border-b">
+                                    <h3 class="text-lg font-semibold font-heading">บุคคลากรที่ประเมิน</h3>
+                                </div>
+                                <div class="flex flex-col p-4">
+                                    <h3 class="text-3xl mb-3 font-semibold font-heading font-semibold">{{userDone}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
+                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
+                                <div class="flex items-center justify-between px-4 py-3 border-b">
+                                    <h3 class="text-lg font-semibold font-heading">ผลคะแนนรวม</h3>
+                                </div>
+                                <div class="flex flex-col p-4">
+                                    <h3 class="text-3xl mb-3 font-semibold font-heading font-semibold"> {{score30}} </h3>
+                                    <span class="text-sm">คิด 30%</span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <v-tabs v-model="assessmentTab" color="#5E2C73" slider-color="#5E2C73">
                     <v-tab v-for="assessment,index in assessmentData" :key="index">
                         {{assessment.name}}
                     </v-tab>
@@ -21,18 +66,80 @@
 
                             <div v-for="issue,i_index in issueData" :key="i_index" class="p-2">
 
-                                <v-card >
-                                    <v-card-title    class="bg-purple-x text-white shadow-xl" >
-                                        <h2 class="text-sm">{{issue.group}} {{issue.name}}</h2>
+                                <v-card>
+                                    <v-card-title class="bg-purple-x text-white shadow-xl">
+                                        <h2 class="text-sm">{{issue.name}}</h2>
                                     </v-card-title>
                                     <v-card-text>
-                                         
+
+                                        <div class="flex flex-wrap overflow-hidden mt-6" v-for="data,issueIndex in issue.value" :key="issueIndex">
+
+                                            <div class="w-full overflow-hidden  p-2" :class="(data.issue_type != 'ระดับ')?'lg:w-6/12 xl:w-6/12':'lg:w-2/12 xl:w-2/12'">
+                                                {{data.name}}
+                                            </div>
+
+                                            <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2" v-if="data.issue_type == 'ระดับ'">
+                                                <div v-if="data.notting">
+                                                    น้อยที่สุด&nbsp;{{data.notting.percent}}%
+                                                    <v-progress-linear striped height="5" color="#AF7AC5" :value="data.notting.percent" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+
+                                            <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2" v-if="data.issue_type == 'ระดับ'">
+                                                <div v-if="data.low">
+                                                    น้อย&nbsp;{{data.low.percent}}%
+                                                    <v-progress-linear striped height="5" color="#8E44AD" :value="data.low.percent" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+
+                                            <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2" v-if="data.issue_type == 'ระดับ'">
+                                                <div v-if="data.very">
+                                                    มาก&nbsp;{{data.very.percent}}%
+                                                    <v-progress-linear striped height="5" color="#7D3C98" :value="data.very.percent" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+
+                                            <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2" v-if="data.issue_type == 'ระดับ'">
+                                                <div v-if="data.many">
+                                                    มากที่สุด {{data.many.percent}}%
+                                                    <v-progress-linear striped height="5" color="#5B2C6F" :value="data.many.percent" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+
+                                            
+                                              <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2" v-if="data.issue_type != 'ระดับ'">
+                                                <div v-if="data.have">
+                                                    ไม่มี&nbsp;{{data.nohave.percent}}%
+                                                    <v-progress-linear striped height="5" color="#A763C3" :value="data.nohave.percent" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+                                            <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2" v-if="data.issue_type != 'ระดับ'">
+                                                <div v-if="data.have">
+                                                    มี&nbsp;{{data.have.percent}}%
+                                                    <v-progress-linear striped height="5" color="#7D3C98" :value="data.have.percent" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+                                          
+
+                                            <div class="w-full overflow-hidden lg:w-2/12 xl:w-2/12 p-2">
+                                                <div v-if="data.avg">
+
+                                                    <h2>คะแนน&nbsp;{{toFixed2(data.avg)}}</h2>
+                                                    <v-progress-linear striped height="5" color="#1E8449" :value="data.avg" :buffer-value="100"></v-progress-linear>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                     </v-card-text>
-                                    <v-card-actions> 
+                                    <v-card-actions class="bg-gray-x">
+                                        <v-layout flex justify-end  style="background:transparent; height:28px;" color="transparent" flat>
+                                            <h2 class="text-green-600  text-xl font-bold">รวม {{sumScore(issue.value)}} <span class="text-sm">คะแนน</span></h2>
+                                        </v-layout>
                                     </v-card-actions>
                                 </v-card>
-                                <pre>{{issue}}</pre>
-                                <h2>-------------------------------------------------------------------------------------------------------</h2>
+                                <!-- <pre>{{issue}}</pre>
+                                <h2>-------------------------------------------------------------------------------------------------------</h2> -->
                             </div>
 
                         </div>
@@ -68,6 +175,9 @@ import {
 import {
     User
 } from '@/store/user'
+import {
+    Iit
+} from '@/store/iit'
 import _ from "lodash"
 
 @Component({
@@ -79,6 +189,7 @@ export default class Home extends Vue {
 
     private user!: any;
     private yearData!: any;
+    private agency: any = null
 
     private assessmentTab: number = 0
     private assessmentData!: any;
@@ -87,120 +198,88 @@ export default class Home extends Vue {
     private issueData: any = null;
     private response: boolean = false;
 
+    private userDone: number = 0
+    private scoreAll : any = []
+    private score100 :number = 0
+    private score30 :number = 0
+
     public async created() {
         await this.run();
         await this.getAssessment();
+        await this.getUserAnswer()
+        await this.generateScore();
+        await this.getAverage();
         this.response = true
     }
 
     private async run() {
         this.user = await User.getUser();
+        this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.user.ext_link.agency}/`)
         this.yearData = await Core.getHttp(`/api/iit/v2/year/${this.$route.query.year}/`)
+        
     }
 
     private async getAssessment() {
         this.assessmentData = await Core.getHttp(`/api/iit/v2/assessmentissues/?&year=${this.yearData.id}`)
-        this.assessmentTab = 0 
+        this.assessmentTab = 0
         await this.getRawIssue(this.assessmentData[0].id)
     }
 
+    private async getUserAnswer() {
+        let user = await Core.groupBy(this.issueRaw, 'user')
+        this.userDone = user.length
+    }
+
     @Watch('assessmentTab')
-    private async switchTab(newIndex: number,oldIndex: number) {
+    private async switchTab(newIndex: number, oldIndex: number) {
         let assessmentData = this.assessmentData[newIndex]
-        console.log(newIndex,assessmentData.id)
+        //console.log(newIndex, assessmentData.id)
         await this.getRawIssue(assessmentData.id)
     }
 
     private async getRawIssue(assignId: number) {
         this.issueRaw = await Core.getHttp(`/api/iit/v2/answerissue-report/?agency=${this.user.ext_link.agency}&assessmentIssues=${assignId}`)
-        let issueGroup = await this.groupIssueRaw();
+    }
+
+    private async generateScore() {
+        let issueGroup = await Iit.groupIssueRaw(this.issueRaw, this.userDone, this.agency.count);
         this.issueData = issueGroup
+    }
+    toFixed2(num:number){
+        return num.toFixed(2);
+    }
+    sumScore(arr:any){
+        //console.log(arr);
+        let numberArr = arr.length;
+        let sumAvg =  _.sumBy(arr, 'avg');  
+        let score = (sumAvg / arr.length); 
+        return score.toFixed(2);
+    }
+
+
+
+
+    async getAverage(){
+        let count = 0;
+        let sumOutAvg = 0;
+        let choice = 0;
+        for (let i=0; i < this.assessmentData.length ; i++){
+            let raw = await Core.getHttp(`/api/iit/v2/answerissue-report/?agency=${this.user.ext_link.agency}&assessmentIssues=${this.assessmentData[i].id}`)
+            let issueGroup = await Iit.groupIssueRaw(raw, this.userDone, this.agency.count);
+            for(let j=0; j < issueGroup.length; j++){
+               let sumAvg =  this.sumScore(issueGroup[j].value)  
+               sumOutAvg += Number(sumAvg)
+               choice++;
+              
+            }
+           
+        }
+        this.score100 = Number((sumOutAvg/choice).toFixed(2))
+        this.score30 =  Number(((sumOutAvg/choice)*0.3).toFixed(2))
      
     }
-
-    private async groupIssueRaw() {
-        let issueGroup: any = this.issueRaw
-        issueGroup = await _.chain(issueGroup)
-            .groupBy('issue')
-            .map( (value: any, key: any) => ({
-                name:value[0].issue_name,
-                group: key,
-                value: this.getDataIssue(value) 
-            }))
-            .value();  
-            return issueGroup 
-    }
-  
-
-    
-
-    private    getDataIssue(arr: []) {
-        let ans: any = _(arr)
-            .groupBy('issueDetail')
-            .map((platform, id) => ({
-                id: id,
-                val: platform
-            }))
-            .value()
-        let answer: any = []
-        console.log('[DATA]',ans)
-        for (let index = 0; index < ans.length; index++) {
-             let data = {
-                 "name": ans[index].val[0].issueDetail_name,
-                'issue_type': ans[index].val[0].issue_type,
-                'choiceTypeData':ans[index].val[0].choiceTypeData,
-                'length':ans[index].val.length,
-                'default_val': ans[index].val[0].value,
-                "notting": this.sumChoice(ans[index].val, 'น้อยที่สุดหรือไม่มีเลย',ans[index].val.length) ,
-                "low": this.sumChoice(ans[index].val, 'น้อย',ans[index].val.length),
-                "very": this.sumChoice(ans[index].val, 'มาก',ans[index].val.length),
-                "many": this.sumChoice(ans[index].val, 'มากที่สุด',ans[index].val.length),
-                "have": this.sumChoice(ans[index].val, 'มี',ans[index].val.length),
-                "nohave": this.sumChoice(ans[index].val, 'ไม่มี',ans[index].val.length),
-                'avg':0.00
-             }
-             if(ans[index].val[0].issue_type == 'ระดับ'){
-                if(data.choiceTypeData == 'เชิงบวก'){
-                    data.avg = (((data.notting * 1)+(data.low * 2)+(data.very * 3)+(data.many * 4) / 3)/4)*100
-                }else{
-                    data.avg = (((data.notting * 4)+(data.low * 3)+(data.very * 2)+(data.many * 1) / 3)/4)*100
-                }
-                 data.avg = (data.low * 1)
-             }else{
-               if(data.choiceTypeData == 'เชิงบวก'){
-
-                }else{
-                    
-                }
-             }
-            answer.push(data)
-        } 
-        return answer
-    }
-
-    public sumChoice(arr: any, group_by: any,lengthNumber:number) {
-        let result: any = _.filter(arr, { value_by: group_by }); 
-        return (result.length / lengthNumber)*100
-    }
-
-    
 
 }
 </script>
 
-<style>
-table {
-
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td,
-th {
-    border: 1px solid #dddddd;
-    text-align: left;
-
-}
-
-tr:nth-child(even) {}
-</style>
+ 
