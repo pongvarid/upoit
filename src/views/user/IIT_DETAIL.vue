@@ -1,5 +1,7 @@
 <template>
 <div class="relative md:pt-32 pb-32 pt-12  ">
+  
+
     <div class="relative  flex flex-col min-w-0 break-words w-full mb-6   " v-if="response">
         <div class="rounded-t mb-0 px-4 py-3 border-0 ">
             <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
@@ -17,23 +19,27 @@
                         </v-stepper-step>
 
                     </v-stepper-header>
-
+                    <v-progress-linear v-if="data.length > 0" style="width:100%;" striped height="10" color="#32a852" :value="(tmp*100)/data[e1-1].issueCount" :buffer-value="100"></v-progress-linear>
                     <v-stepper-items>
+
                         <v-stepper-content :step="tab.order" v-for="tab,i in data" :key="i">
+
                             <v-card class="mb-12 " flat>
                                 <div class="flex w-full">
-                                    <h2 class="w-2/12">{{ tmp}} / {{tab.issueCount}}</h2>  
-                                </div> 
-  
+                                    <h2 class="w-2/12 text-white">{{ tmp}} / {{getDataLoad(tab.issueCount)}}</h2>
+
+                                </div>
+
                                 <div v-for="issue,index in tab.issue">
                                     <h2>
                                         <v-avatar color="teal" size="36">
                                             <span class="white--text headline">i{{issue.order}} </span>
                                         </v-avatar> &nbsp;{{issue.name}}
+
                                     </h2>
 
                                     <div v-for="ans,j in issue.issueDetail"> <br>
-                                        <h3 class="font-bold"> {{ans.sub_name}}</h3>
+                                        <h3 class="font-bold" v-if="tab.name != 'ข้อเสนอเเนะ'"> {{ans.sub_name}}</h3>
                                         <div v-if="ans.choice">
                                             <div v-if="ans.choice.resourcetype === 'Ascend'">
                                                 <!-- <v-alert>{{index}},{{j}}</v-alert> -->
@@ -54,7 +60,7 @@
 
                                             </div>
                                             <div v-else>
-                                                <v-textarea v-model="suggestion" placeholder="ระบุข้อความ" error-count="255" label="ข้อเสนอแนะ"></v-textarea>
+                                                <v-textarea v-model="suggestion" placeholder="ระบุข้อความ" error-count="255" label=""></v-textarea>
                                             </div>
                                         </div>
 
@@ -64,13 +70,14 @@
                                     <hr class="divide-pink-900"><br>
                                 </div>
                                 <v-card-actions>
-                                    <v-btn v-if=" tmp >= tab.issueCount && i < data.length" color="primary" @click="toTop() && (e1 = (tab.order+1)) && (tmp =0)  ">
+                                    <v-progress-linear v-if="data.length > 0"  style="width:100%;" striped height="10" color="#32a852" :value="(tmp*100)/data[e1-1].issueCount" :buffer-value="100"></v-progress-linear>
+
+                                    <v-btn x-large style="width:100%;" v-if=" tmp >= tab.issueCount && i < data.length" color="primary" @click="toTop() && (e1 = (tab.order+1)) && (tmp =0)  ">
                                         ดำเนินการต่อ
                                     </v-btn>
-                                    <v-btn v-if="tab.name == 'ข้อเสนอเเนะ'" color="success" x-large @click="saveAnswer()">
+                                    <v-btn x-large style="width:100%;" v-if="tab.name == 'ข้อเสนอเเนะ'" color="success" @click="saveAnswer()">
                                         บันทึกข้อมูลการประเมิน
                                     </v-btn>
- 
                                 </v-card-actions>
                             </v-card>
 
@@ -84,13 +91,38 @@
 
     </div>
 
+    <vs-dialog blur v-model="nullData" not-close prevent-close>
+        <template #header>
+            <h4 class="not-margin text-red-600 font-bold text-xl">
+                ไม่มีข้อมูลในระบบ
+            </h4>
+        </template>
+        <div>
+            <center> <i class="em em-writing_hand text-4xl" aria-role="presentation" aria-label=""></i> <i class="em em-x" aria-role="presentation" aria-label="CROSS MARK"></i>
+            </center>
+            <center>
+                <span>ยังไม่มีข้อมูลแบบประเมินสำหรับปีงบประมาณนี้ <br>กรุณาติดต่อผู้ดูแลระบบ หรือ<br>กลับไปประเมิน ปีงบประมาณอื่น</span>
+            </center>
+        </div>
+
+        <template #footer>
+            <div class="footer-dialog">
+                <vs-button block @click="$router.go(-1)">
+                    กลับไปก่อนหน้า
+                </vs-button>
+
+            </div>
+        </template>
+    </vs-dialog>
+
 </div>
 </template>
 
 <script lang="ts">
 import {
     Component,
-    Vue, Watch
+    Vue,
+    Watch
 } from 'vue-property-decorator';
 import CardStats from "@/components/Cards/CardStatWithBtn.vue";
 
@@ -115,6 +147,8 @@ export default class Home extends Vue {
     private user: any = {}
     private years: any = 0
     private data: any = null
+    private nullData: boolean = false
+    private loadNum: number = 1
 
     private e1: number = 1
     private response: boolean = false
@@ -123,42 +157,52 @@ export default class Home extends Vue {
     private ansIndex: number = 0;
     private resultAll: any = [];
     private tmp: any = 0
-    
 
-    private tmpChoice :any =[];
-
-    private async addValue(val: any,indexIssue: number,index:number) {
-        let checkNotNull = await this.tmpStore(indexIssue,index)
-        console.log(checkNotNull);
+    private tmpChoice: any = [];
+    $vs: any
+    private async addValue(val: any, indexIssue: number, index: number) {
         let e: any = document.getElementById(val);
-        let value: any = e.options[e.selectedIndex].value;
-        let text: any = e.options[e.selectedIndex].text;
-        this.answer.push(JSON.parse(value))
-        this.answer = _.uniqBy(_.reverse(this.answer), function (e: any) {
-            return e.id;
-        }); 
-        if(checkNotNull){
-            this.tmp++
+        if (e.options[e.selectedIndex].value) {
+            let checkNotNull = await this.tmpStore(indexIssue, index)
+            console.log(checkNotNull);
+
+            let value: any = e.options[e.selectedIndex].value;
+            let text: any = e.options[e.selectedIndex].text;
+            this.answer.push(JSON.parse(value))
+            this.answer = _.uniqBy(_.reverse(this.answer), function (e: any) {
+                return e.id;
+            });
+            if (checkNotNull) {
+                this.tmp++
+            }
+
+            await this.show()
         }
-         
-        await this.show() 
-    }
-    
-    private async tmpStore(indexIssue:number, index: number){ 
-        if(!_.find(this.tmpChoice,{"index":index,"indexIssue":indexIssue})) {
-            this.tmpChoice.push({"indexIssue":indexIssue,"index":index});
-            return true
-        }else{
-            return false
-        } 
     }
 
+    private async tmpStore(indexIssue: number, index: number) {
+        if (!_.find(this.tmpChoice, {
+                "index": index,
+                "indexIssue": indexIssue
+            })) {
+            this.tmpChoice.push({
+                "indexIssue": indexIssue,
+                "index": index
+            });
+            return true
+        } else {
+            return false
+        }
+    }
 
     private async show() {
         let xx: any = this.answer;
         xx = await _.chain(xx)
             .groupBy('group')
-            .map((value: any, key: any) => ({ group: key, value: value }))
+            .map((value: any, key: any) => ({
+                group: key,
+                value: value
+            }))
             .value();
         this.resultAll = xx
         console.log(xx)
@@ -186,13 +230,16 @@ export default class Home extends Vue {
             "year": this.years,
         })
         await this.storeUserInAnswer();
+        await this.openNotification('top-right', 'success', `<i class="em em-smiley" aria-role="presentation" aria-label="SMILING FACE WITH OPEN MOUTH"></i>`, 'ประเมินสำเร็จแล้ว', '')
+        await this.$router.go(-1)
+
     }
 
     @Watch('e1')
     changeTab(value: any, oldValue: any) {
-        while(this.tmpChoice .length > 0) {
-                 this.tmpChoice .pop();
-        } 
+        while (this.tmpChoice.length > 0) {
+            this.tmpChoice.pop();
+        }
     }
 
     public async created() {
@@ -200,6 +247,9 @@ export default class Home extends Vue {
         this.user = await User.getUser();
         this.years = this.$route.query.year
         this.data = await Core.getHttp(`/api/iit/v1/issue?year=${this.years}`)
+        if (this.data.length == 0) {
+            this.nullData = true
+        }
         this.response = true
     }
 
@@ -214,14 +264,27 @@ export default class Home extends Vue {
         });
     }
 
-    async storeUserInAnswer(){
+    async storeUserInAnswer() {
         let form = {
-                "user": this.user.pk,
-                "agency": this.user.ext_link.agency,
-                "year": this.years
-            }
-        await Core.postHttp(`/api/iit/v2/ansewer/user/`,form)
+            "user": this.user.pk,
+            "agency": this.user.ext_link.agency,
+            "year": this.years
+        }
+        await Core.postHttp(`/api/iit/v2/ansewer/user/`, form)
     }
+    getDataLoad(num: number) {
+        // this.loadNum = num 
+        return num;
+    }
+    async openNotification(position: any = null, color: any, icon: any, title: string, text: string) {
 
+        const noti = this.$vs.notification({
+            icon,
+            color,
+            position,
+            title: title,
+            text: text
+        })
+    }
 }
 </script>

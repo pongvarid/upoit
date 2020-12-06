@@ -12,50 +12,50 @@
                 <section class="py-8 px-4">
                     <div class="flex flex-wrap -mx-4">
                         <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
-                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
-                                <div class="flex items-center justify-between py-3 px-4 border-b">
-                                    <h3 class="text-lg font-semibold font-heading">หน่วยงาน</h3>
+                            <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-blue-600 ">
+                                <div class="flex items-center justify-between py-3 px-4 border-b bg-blue-600 rounded-t-xl ">
+                                    <h3 class="text-lg   font-heading text-white">หน่วยงาน</h3>
                                 </div>
                                 <div class="flex flex-col p-4">
-                                    <h3 class="text-2xl mb-3 font-semibold font-heading font-semibold">{{agency.name}}</h3>
+                                    <h3 class="text-xl mb-3 font-semibold font-heading font-semibold">{{agency.name}}</h3>
 
                                 </div>
                             </div>
                         </div>
                         <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
-                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
-                                <div class="flex items-center justify-between px-4 py-3 border-b">
-                                    <h3 class="text-lg font-semibold font-heading">บุคคลากรภายใน</h3>
+                            <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-yellow-600">
+                                <div class="flex items-center justify-between px-4 py-3 border-b bg-yellow-600 rounded-t-xl">
+                                    <h3 class="text-lg font-semibold font-heading text-white">บุคคลากรภายใน</h3>
                                 </div>
                                 <div class="flex flex-col p-4">
-                                    <span class="text-2xl font-semibold text-green-500">{{agency.count}} คน</span>
+                                    <h3 class="text-xl mb-3 font-semibold font-heading font-semibold">{{agency.count}} คน</h3> 
                                 </div>
                             </div>
                         </div>
                         <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
-                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
-                                <div class="flex items-center justify-between px-4 py-3 border-b">
-                                    <h3 class="text-lg font-semibold font-heading">บุคคลากรที่ประเมิน</h3>
+                            <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-purple-600">
+                                <div class="flex items-center justify-between px-4 py-3 border-b bg-purple-600 rounded-t-xl">
+                                    <h3 class="text-lg font-semibold font-heading text-white">บุคคลากรที่ประเมิน</h3>
                                 </div>
                                 <div class="flex flex-col p-4">
-                                    <h3 class="text-3xl mb-3 font-semibold font-heading font-semibold">{{userDone}}</h3>
+                                    <h3 class="text-xl mb-3 font-semibold font-heading font-semibold">{{userDone}} คน</h3>
                                 </div>
                             </div>
                         </div>
                         <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
-                            <div class="h-40 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
-                                <div class="flex items-center justify-between px-4 py-3 border-b">
-                                    <h3 class="text-lg font-semibold font-heading">ผลคะแนนรวม</h3>
+                            <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-green-600">
+                                <div class="flex items-center justify-between px-4 py-3 border-b bg-green-600 rounded-t-xl">
+                                    <h3 class="text-lg font-semibold font-heading text-white">ผลคะแนนรวม</h3>
                                 </div>
                                 <div class="flex flex-col p-4">
-                                    <h3 class="text-3xl mb-3 font-semibold font-heading font-semibold"> {{score30}} </h3>
-                                    <span class="text-sm">คิด 30%</span> 
+                                    <h3 class="text-xl mb-3 font-semibold font-heading font-semibold"> {{score30}} <span class="text-sm">(คิด 30%)</span></h3>
+                                     
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                <v-tabs v-model="assessmentTab" color="#5E2C73" slider-color="#5E2C73">
+                <v-tabs v-model="assessmentTab" color="#5E2C73" slider-color="#5E2C73" class="shadow-lg border-4 rounded-xl">
                     <v-tab v-for="assessment,index in assessmentData" :key="index">
                         {{assessment.name}}
                     </v-tab>

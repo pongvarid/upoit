@@ -63,7 +63,7 @@ export default class Home extends Vue {
     private user: any = {}
     private years: any = []
     private response: boolean = false
-
+$vs:any
     public async created() {
         this.user = await User.getUser();
         this.dashboard = await Core.getHttp(`/api/ita/v2/dashboard/${this.user.ext_link.id}/`)
@@ -77,13 +77,25 @@ export default class Home extends Vue {
             let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`) 
             console.log(userInAnswer);
             if (userInAnswer.length > 0) {
-                alert('ss')
+                await this.openNotification('top-right', 'primary', `<i class="em em-female-teacher" aria-role="presentation" aria-label=""></i>`,'คุณได้ทำการประเมินแล้ว','ระบบอนุญาตให้ประเมินได้ครั้งเดียว')
             } else {
                 await this.$router.push(`detail?year=${yearId}`)
             }
+          //   await this.$router.push(`detail?year=${yearId}`)
         } else {
-          alert('ปิดการให้ประเมินแล้ว')
+          await this.openNotification('top-right', '#D65B6D', `<i class="em em-lock" aria-role="presentation" aria-label="LOCK"></i>`,'ปิดการให้ประเมิน','ไม่สามารถประเมินได้ เนื่องจากระบบปิดการให้ประเมินแล้ว กรุณาติดต่อผู้ดูแลระบบ')
         } 
+    }
+
+    async openNotification(position:any = null, color:any, icon:any,title:string,text:string) {
+     
+          const noti = this.$vs.notification({
+            icon,
+            color,
+            position,
+            title: title,
+            text: text
+          })
     }
 
 }
