@@ -9,7 +9,11 @@
         <router-link class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase   p-4 px-0" to="/">
            
         </router-link>
-          <img class="w-8 md:w-auto" src="https://sv1.picz.in.th/images/2020/11/25/jd6Hif.png" alt="">
+        
+         <center> <div class="bg-white shadow-xl rounded-full w-32 h-32 p-2 border-8 border-yellow-600 flex justify-center items-center">
+            <img class="w-auto h-24" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+          </div>
+          <h2 class="text-2xl text-white cv-font">UP-ITA</h2></center>
         <!-- Collapse -->
         <div class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded" v-bind:class="collapseShow">
             <!-- Collapse header -->
@@ -28,16 +32,43 @@
                 </div>
             </div>
 
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
+                  <!-- Divider -->
+            <hr class="my-4 md:min-w-full" v-if="!user.ext_link.oit"  />
             <!-- Heading -->
-            <h6 class="md:min-w-full text-gray-600 md:text-white text-xs uppercase   block pt-1 pb-4 no-underline">
-                ระบบ OIT 
+          
+            <h6 class="md:min-w-full text-gray-600 md:text-white text-xs uppercase   block pt-1 pb-4 no-underline"   v-if="!user.ext_link.oit"  >
+                ทั่วไป
             </h6>
             <!-- Navigation -->
 
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none" v-if="!user.ext_link.oit"  >
+                <li class="items-center">
+                    <router-link to="/user/home" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-bag-checked mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            หน้าแรก
+                        </a>
+                    </router-link>
+                </li>
+  
+            </ul>
+            
+
+
+            <!-- Divider -->
+            <hr class="my-4 md:min-w-full" v-if="user.ext_link.oit"   />
+            <!-- Heading -->
+            <h6 class="md:min-w-full text-gray-600 md:text-white text-xs uppercase   block pt-1 pb-4 no-underline" v-if="user.ext_link.oit"  >
+                ระบบ OIT 
+            </h6>
+            
+            <!-- Navigation -->
+
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none" v-if="user.ext_link.oit" >
                 <li class="items-center">
                     <router-link to="/user/home" v-slot="{ href, route, navigate, isActive }">
                         <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
@@ -51,7 +82,7 @@
                     </router-link>
                 </li>
 
-                  <li class="items-center">
+                  <li class="items-center" v-if="user.ext_link.oit"   >
                     <router-link to="/user/all" v-slot="{ href, route, navigate, isActive }">
                         <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
                   isActive
@@ -66,14 +97,14 @@
             </ul>
 
             <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
+            <hr class="my-4 md:min-w-full" v-if="type == 'microsoft.com'" />
             <!-- Heading -->
-            <h6 class="md:min-w-full text-gray-600 md:text-white text-xs uppercase   block pt-1 pb-4 no-underline">
+            <h6 class="md:min-w-full text-gray-600 md:text-white text-xs uppercase   block pt-1 pb-4 no-underline" v-if="type == 'microsoft.com'" >
                 ระบบ IIT
             </h6>
             <!-- Navigation -->
 
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4" v-if="type == 'microsoft.com'" >
                 <li class="items-center">
                     <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/year">
                         <i class="fas fa-fingerprint text-gray-400 mr-2 text-base"></i>
@@ -82,7 +113,7 @@
                 </li>
 
                 <li class="items-center">
-                    <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/report">
+                    <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/all">
                         <i class="fas fa-clipboard-list text-gray-400 mr-2 text-base"></i>
                       ผลการประเมิน
                     </router-link>
@@ -103,8 +134,14 @@
               </router-link>
             </li>
 
-            <li class="items-center">
+            <!-- <li class="items-center">
               <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/eit/report">
+                <i class="fas fa-clipboard-list text-gray-400 mr-2 text-base"></i>
+                ผลการประเมิน
+              </router-link>
+            </li> --> 
+            <li class="items-center">
+              <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/eit/all">
                 <i class="fas fa-clipboard-list text-gray-400 mr-2 text-base"></i>
                 ผลการประเมิน
               </router-link>
@@ -147,6 +184,8 @@ export default {
     data() {
         return {
             collapseShow: "hidden",
+            user:{},
+            type:'',
         };
     },
     watch: {
@@ -158,6 +197,10 @@ export default {
         path() {
             return this.$route.path
         }
+    },
+    async mounted(){
+      this.user =  await User.getUser();
+      this.type = this.user.register_type
     },
     methods: {
 
@@ -180,9 +223,7 @@ export default {
             window.open('https://login.microsoftonline.com/logout.srf', '_blank');
 
           }
-           await location.reload()
-          //
-          // await location.reload()
+           await location.reload() 
         }
     },
     components: {

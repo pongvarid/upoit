@@ -42,7 +42,7 @@ export default class Admin extends Vue {
 
     if(User.routeUser == '/' || User.routeUser == '/admin/'){
       await this.$router.replace(User.routeUser )
-    }
+    } 
   }
  
 }

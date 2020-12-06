@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-wrap mt-6 relative">
+            <!-- <div class="flex flex-wrap mt-6 relative">
                 <div class="w-1/2">
                     <a href="javascript:void(0)" class="text-gray-300">
                         <small>ลืมรหัสผ่าน</small>
@@ -59,7 +59,7 @@
                         <small>สมัครสมาชิก</small>
                     </router-link>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

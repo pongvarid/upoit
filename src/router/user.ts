@@ -42,7 +42,13 @@ const userRouter:any  = [
         path: 'iit/year',
         name: 'iit-year',
         component: getView('IIT_YEAR')
-    },{
+    },
+    {
+        path: 'iit/all',
+        name: 'iit-all',
+        component: getView('IIT_AGENCY')
+    },
+    {
         path: 'iit/detail',
         name: 'iit-detail',
         component: getView('IIT_DETAIL')
@@ -61,7 +67,13 @@ const userRouter:any  = [
         path: 'eit/year',
         name: 'eit-year',
         component: getView('EIT_YEAR')
-    },{
+    },
+    {
+        path: 'eit/all',
+        name: 'eit-all',
+        component: getView('EIT_AGENCY')
+    },
+    {
         path: 'eit/detail',
         name: 'eit-detail',
         component: getView('EIT_DETAIL')

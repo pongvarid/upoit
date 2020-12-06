@@ -57,7 +57,7 @@
                     <v-stepper-items>
                         <v-stepper-content :step="tab.order" v-for="tab,i in data" :key="i">
                             <v-card class="mb-12" flat>
-                                <h3 class="text-xl font-bold  text-white">{{ tmp}} / {{tab.issueCount}}</h3>
+                                <h3 class="text-xl font-bold bg-green">{{ tmp}} / {{tab.issueCount}}</h3>
                                 <div v-for="issue,index in tab.issue">
                                     <h2>
                                         <v-avatar color="teal" size="36">
@@ -66,7 +66,7 @@
                                     </h2>
 
                                     <div v-for="ans,j in issue.issueDetail"> <br>
-                                        <h3 class="font-bold"  v-if="tab.name != 'ข้อเสนอแนะ'" > {{ans.sub_name}}</h3>
+                                        <h3 class="font-bold"> {{ans.sub_name}}</h3>
                                         <div v-if="ans.choice">
                                             <div v-if="ans.choice.resourcetype === 'Ascend'">
                                                 <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`)" :class="$input">
@@ -95,13 +95,13 @@
                                     <br><br>
                                     <hr class="divide-pink-900"><br>
                                 </div>
-                                <v-card-actions>  
+                                <v-card-actions>
                                     <v-progress-linear v-if="data.length > 0" style="width:100%;" striped height="10" color="#32a852" :value="(tmp*100)/data[e1-1].issueCount" :buffer-value="100"></v-progress-linear>
 
                                     <v-btn x-large style="width:100%;" v-if=" tmp >= tab.issueCount && i < data.length" color="primary" @click="toTop() && (e1 = (tab.order+1)) && (tmp =0)  ">
                                         ดำเนินการต่อ
                                     </v-btn>
-                                    <v-btn x-large style="width:100%;" v-if="tab.name == 'ข้อเสนอแนะ'" color="success" @click="saveAnswer()">
+                                    <v-btn x-large style="width:100%;" v-if="tab.name == 'ข้อเสนอเเนะ'" color="success" @click="saveAnswer()">
                                         บันทึกข้อมูลการประเมิน
                                     </v-btn>
                                 </v-card-actions>
@@ -194,8 +194,7 @@ export default class Home extends Vue {
     @Watch('chooseAgency')
     private async chnageChooseAgency(val: number) {
         let check = await Core.getHttp(`/api/eit/v2/answerissueeit-report/?agency=${this.chooseAgency}&year=${this.years}&user=${this.user.pk}`)
-      //  alert(check.length )
-        if (check.length > 0) {
+        if (check.lemgth > 0) {
             this.lockUser = true;
         } else {
             this.lockUser = false;

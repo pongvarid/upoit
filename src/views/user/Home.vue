@@ -60,13 +60,13 @@
 
         </div>
         <br>
-        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
+        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="user.ext_link.oit" >
           <h3 class=" text-2xl text-gray-800">
             <i class="em em-lower_left_ballpoint_pen" aria-role="presentation" aria-label=""></i> การให้ข้อมูล OIT
           </h3>
           <!--              <hr class="border-gray-600 border-1 mt-2">-->
         </div>
-        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
+        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response && user.ext_link.oit">
           <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
             <div class="w-full   " v-for="year,i in years" :key="i">
               <card-stats

@@ -7,7 +7,7 @@
       </button>
       <!-- Brand -->
       <router-link class="md:block text-left md:pb-2   mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0" to="/">
-        UP ITA
+        UP ITA (Admin)
       </router-link>
    
       <!-- Collapse -->
@@ -17,7 +17,7 @@
           <div class="flex flex-wrap">
             <div class="w-6/12">
               <router-link class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0" to="/">
-                พันธุ์ประวัติ
+                UP ITA (Admin)
               </router-link>
             </div>
             <div class="w-6/12 flex justify-end">
@@ -70,20 +70,20 @@
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
         <h6 class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-          ระบบ EIT
+          ระบบ IIT
         </h6>
         <!-- Navigation -->
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
-            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/user/profile">
+            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/iit/all">
               <i class="fas fa-fingerprint text-gray-400 mr-2 text-sm"></i>
               ข้อมูลของหน่วยงาน
             </router-link>
           </li>
 
           <li class="items-center">
-            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/user/buffalo">
+            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/iit/map">
               <i class="fas fa-clipboard-list text-gray-400 mr-2 text-sm"></i>
               รายงานผล
             </router-link>
@@ -99,14 +99,14 @@
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
-            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/user/profile">
+            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/eit/all">
               <i class="fas fa-fingerprint text-gray-400 mr-2 text-sm"></i>
               ข้อมูลของหน่วยงาน
             </router-link>
           </li>
 
           <li class="items-center">
-            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/user/buffalo">
+            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/eit/map">
               <i class="fas fa-clipboard-list text-gray-400 mr-2 text-sm"></i>
               รายงานผล
             </router-link>
