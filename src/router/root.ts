@@ -13,10 +13,12 @@ const rootRouter:any  = [
         component: getView('Home')
     },
  
-    //     path: '/test/',
-    //     name: 'test',
-    //     component: getView('Test')
-    // },{
+    {    path: '/report/',
+        name: 'report',
+        component: getView('Report')
+    },
+    
+    //{
     //     path: '/register/',
     //     name: 'register',
     //     component: getView('Register')

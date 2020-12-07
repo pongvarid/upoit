@@ -68,9 +68,9 @@
             
             <!-- Navigation -->
 
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none" v-if="user.ext_link.oit" >
-                <li class="items-center">
-                    <router-link to="/user/home" v-slot="{ href, route, navigate, isActive }">
+            <ul class="md:flex-col md:min-w-full flex flex-col list-none"  >
+                <li class="items-center" v-if="user.ext_link.oit">
+                    <router-link to="/user/home" v-slot="{ href, route, navigate, isActive }"  >
                         <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
                   isActive
                     ? 'text-green-500 hover:text-green-600'
@@ -82,7 +82,7 @@
                     </router-link>
                 </li>
 
-                  <li class="items-center" v-if="user.ext_link.oit"   >
+                  <li class="items-center"   >
                     <router-link to="/user/all" v-slot="{ href, route, navigate, isActive }">
                         <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
                   isActive
@@ -90,7 +90,7 @@
                     : 'text-gray-800 md:text-white hover:text-gray-600',
                 ]">
                             <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
-                            ข้อมูลของหน่วยงานอื่นๆ
+                            ข้อมูลของหน่วยงานอื่นๆ (OIT)
                         </a>
                     </router-link>
                 </li>
@@ -106,17 +106,40 @@
 
             <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4" v-if="type == 'microsoft.com'" >
                 <li class="items-center">
-                    <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/year">
+                    <!-- <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/year">
                         <i class="fas fa-fingerprint text-gray-400 mr-2 text-base"></i>
                       แบบประเมิน
+                    </router-link> -->
+                      <router-link to="/user/iit/year" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            แบบประเมิน
+                        </a>
                     </router-link>
+
                 </li>
+                
 
                 <li class="items-center">
-                    <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/all">
+                    <!-- <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/iit/all">
                         <i class="fas fa-clipboard-list text-gray-400 mr-2 text-base"></i>
                       ผลการประเมิน
+                    </router-link> -->
+                     <router-link to="/user/iit/all" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            ผลการประเมิน
+                        </a>
                     </router-link>
+
                 </li>
             </ul>
           <hr class="my-4 md:min-w-full" />
@@ -128,23 +151,39 @@
 
           <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
             <li class="items-center">
-              <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block"  to="/user/eit/year">
+              <!-- <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block"  to="/user/eit/year">
                 <i class="fas fa-fingerprint text-gray-400 mr-2 text-base"></i>
                 แบบประเมิน
-              </router-link>
-            </li>
+              </router-link> -->
 
-            <!-- <li class="items-center">
-              <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/eit/report">
-                <i class="fas fa-clipboard-list text-gray-400 mr-2 text-base"></i>
-                ผลการประเมิน
-              </router-link>
-            </li> --> 
+                   <router-link to="/user/eit/year" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            แบบประเมิน
+                        </a>
+                    </router-link>
+              
+            </li>
+ 
             <li class="items-center">
-              <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/eit/all">
+              <!-- <router-link class="text-gray-800 md:text-white hover:text-gray-600 text-xs uppercase py-3   block" to="/user/eit/all">
                 <i class="fas fa-clipboard-list text-gray-400 mr-2 text-base"></i>
                 ผลการประเมิน
-              </router-link>
+              </router-link> -->
+                  <router-link to="/user/eit/all" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            ผลการประเมิน
+                        </a>
+                    </router-link>
             </li>
           </ul>
 

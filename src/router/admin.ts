@@ -10,11 +10,16 @@ const adminRouter:any = [
     {
         path: '',
         name: 'home',
-        component: getView('Home')
+        component: getView('Xhome')
     },
     {
         path: 'home',
         name: 'home-home',
+        component: getView('Xhome')
+    },
+    {
+        path: 'oit/all',
+        name: 'oit-all',
         component: getView('Home')
     },
     {

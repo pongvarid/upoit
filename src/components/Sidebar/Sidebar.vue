@@ -1,12 +1,12 @@
 <template>
-  <nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+  <nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-600 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
     <div class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
       <!-- Toggler -->
       <button class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" type="button" v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')">
         <i class="fas fa-bars"></i>
       </button>
       <!-- Brand -->
-      <router-link class="md:block text-left md:pb-2   mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0" to="/">
+      <router-link class="md:block text-left md:pb-2   mr-0 inline-block whitespace-no-wrap text-xl cv-font uppercase font-bold p-4 px-0 text-white" to="/">
         UP ITA (Admin)
       </router-link>
    
@@ -28,94 +28,123 @@
           </div>
         </div>
 
+          <hr class="my-4 md:min-w-full" />
+        <!-- Heading -->
+        <h6 class="md:min-w-full text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+          ภาพรวม
+        </h6>
+        <!-- Navigation -->
 
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none"> 
+          <li class="items-center">
+            <router-link to="/admin/home" v-slot="{ href, route, navigate, isActive }">
+              <a :href="href" @click="navigate" class="text-xs uppercase py-3  block" :class="[
+                  isActive
+                    ? 'text-green-300 hover:text-green-300'
+                    : 'text-white hover:text-gray-600',
+                ]">
+                <i class="mdi mdi-book  mr-2 text-sm" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                ผลการประเมิน
+              </a>
+            </router-link>
+          </li> 
+        </ul>
+
+ 
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
-        <h6 class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+        <h6 class="md:min-w-full text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           ระบบ OIT
         </h6>
         <!-- Navigation -->
 
-        <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+        <ul class="md:flex-col md:min-w-full flex flex-col list-none"> 
           <li class="items-center">
-            <router-link to="home" v-slot="{ href, route, navigate, isActive }">
-              <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[
+            <router-link to="/admin/oit/all" v-slot="{ href, route, navigate, isActive }">
+              <a :href="href" @click="navigate" class="text-xs uppercase py-3  block" :class="[
                   isActive
-                    ? 'text-green-500 hover:text-green-600'
-                    : 'text-gray-800 hover:text-gray-600',
-                ]">
-                <i class="mdi mdi-bag-checked mr-2 text-sm" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
-                ข้อมูลของหน่วยงาน
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link to="/admin/" v-slot="{ href, route, navigate, isActive }">
-              <a :href="href" @click="navigate" class="text-xs uppercase py-3 font-bold block" :class="[
-                  isActive
-                    ? 'text-green-500 hover:text-green-600'
-                    : 'text-gray-800 hover:text-gray-600',
+                    ? 'text-green-300 hover:text-green-300'
+                    : 'text-white hover:text-gray-600',
                 ]">
                 <i class="mdi mdi-book  mr-2 text-sm" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
-                รายงานผล
+                การตรวจและรายงานผล
               </a>
             </router-link>
-          </li>
-
-
+          </li> 
         </ul>
 
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
-        <h6 class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+        <h6 class="md:min-w-full text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           ระบบ IIT
         </h6>
         <!-- Navigation -->
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
-            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/iit/all">
+            <!-- <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/iit/all">
               <i class="fas fa-fingerprint text-gray-400 mr-2 text-sm"></i>
-              ข้อมูลของหน่วยงาน
-            </router-link>
+              รายงานผลของหน่วยงาน
+            </router-link> -->
+
+              <router-link to="/admin/iit/all" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-300 hover:text-green-300'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            รายงานผลของหน่วยงาน
+                        </a>
+                    </router-link>
           </li>
 
-          <li class="items-center">
+          <!-- <li class="items-center">
             <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/iit/map">
               <i class="fas fa-clipboard-list text-gray-400 mr-2 text-sm"></i>
               รายงานผล
             </router-link>
-          </li>
+          </li> -->
         </ul>
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
-        <h6 class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+        <h6 class="md:min-w-full text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           ระบบ EIT
         </h6>
         <!-- Navigation -->
 
         <ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
           <li class="items-center">
-            <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/eit/all">
+            <!-- <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/eit/all">
               <i class="fas fa-fingerprint text-gray-400 mr-2 text-sm"></i>
-              ข้อมูลของหน่วยงาน
-            </router-link>
+             รายงานผลของหน่วยงาน
+            </router-link> -->
+              <router-link to="/admin/eit/all" v-slot="{ href, route, navigate, isActive }">
+                        <a :href="href" @click="navigate" class="text-xs uppercase py-3   block" :class="[
+                  isActive
+                    ? 'text-green-300 hover:text-green-300'
+                    : 'text-gray-800 md:text-white hover:text-gray-600',
+                ]">
+                            <i class="mdi mdi-notebook mr-2 text-base" :class="[isActive ? 'opacity-75' : 'text-gray-400']"></i>
+                            รายงานผลของหน่วยงาน
+                        </a>
+                    </router-link>
           </li>
 
-          <li class="items-center">
+          <!-- <li class="items-center">
             <router-link class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block" to="/admin/eit/map">
               <i class="fas fa-clipboard-list text-gray-400 mr-2 text-sm"></i>
               รายงานผล
-            </router-link>
-          </li>
+            </router-link>  
+          </li> -->
         </ul>
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
         <!-- Heading -->
-        <h6 class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+        <h6 class="md:min-w-full text-white text-xs uppercase font-bold block pt-1 pb-4 no-underline">
           ผู้ใช้
         </h6>
         <!-- Navigation -->

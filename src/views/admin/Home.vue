@@ -1,5 +1,5 @@
 <template>
-  <div class="relative md:pt-32 pb-32 pt-12">
+  <div class="relative md:pt-32 pb-32 pt-12"  style="z-index:1;"  >
     <div class="relative  flex flex-col min-w-0 break-words w-full mb-6  bg-white rounded shadow-lg ">
       <div class="rounded-t mb-0 px-4 py-3 border-0 ">
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">

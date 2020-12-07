@@ -1,11 +1,11 @@
 <template>
   <div>
-    <navbar />
+    <!-- <navbar /> -->
     <main>
-      <section class="relative w-full h-full py-40 hero-image  min-h-screen">
+      <section class="">
   
         <router-view />
-        <footer-small absolute  />
+        <!-- <footer-small absolute  /> -->
       </section>
     </main>
   </div>
