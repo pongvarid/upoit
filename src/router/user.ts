@@ -24,6 +24,11 @@ const userRouter:any  = [
         component: getView('Paper')
     },
     {
+        path: 'ita',
+        name: 'ita',
+        component: getView('ITA_REPORT')
+    },
+    {
         path: 'list',
         name: 'list',
         component: getView('List')

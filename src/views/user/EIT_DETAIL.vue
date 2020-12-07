@@ -28,10 +28,44 @@
                             </v-main>
                         </v-card-text>
                         <v-card-actions v-if="chooseAgency">
-                            <v-btn v-if="!lockUser" dark color="#1E8449" style="width:100%;" large @click="dialog = false">
+                            <v-btn v-if="!lockUser" dark color="#1E8449" style="width:100%;" large @click="getStart">
                                 ยืนยัน
                             </v-btn>
 
+                        </v-card-actions>
+                    </v-card>
+
+                    <template #footer>
+                        <div class="footer-dialog">
+                            <div class="new">
+                                <v-btn @click="$router.go(-1)" color="primary" text>กลับ</v-btn>
+                            </div>
+                        </div>
+                    </template>
+                </vs-dialog>
+
+                    <vs-dialog prevent-close not-close blur v-model="dialogUser">
+                    <template #header>
+                        <h4 class="not-margin">
+                            ผู้มีส่วนได้ส่วนเสียภายนอก
+                        </h4>
+                    </template>
+      
+
+                    <v-card flat>
+                        <v-card-text>
+                            <v-btn @click="useUserData()" color="success" text>ใช้ข้อมูลระบบ</v-btn>
+                            <input type="text" v-model="formUser.agency" :class="`${$xinput} mb-2`" placeholder="ชื่อหน่วยงาน *">
+                            <input type="text" v-model="formUser.name" :class="`${$xinput} mb-2`" placeholder="ชื่อองค์กร/ชื่อ - นามสกุล *">
+                            <input type="text" v-model="formUser.tel"  :class="`${$xinput} mb-2`" placeholder="เบอร์โทรศัพท์">
+                            <input type="text" v-model="formUser.email"  :class="`${$xinput} mb-2`" placeholder="อีเมล์ ">
+                            <input type="text" v-model="formUser.other"  :class="`${$xinput} mb-2`" placeholder="ช่องทางการติดต่ออื่นๆ">
+                             <input type="text" v-model="formUser.contact"  :class="`${$xinput} mb-2`" placeholder="ประเภทการติดต่อ *">
+                        </v-card-text>
+                        <v-card-actions >
+                            <v-btn dark color="#1E8449" style="width:100%;" large @click="dialogUser = false">
+                                ยืนยัน
+                            </v-btn> 
                         </v-card-actions>
                     </v-card>
 
@@ -186,6 +220,23 @@ export default class Home extends Vue {
     private chooseAgencyType: number | null = null
     private chooseAgency: number | null = null
     private dialog: boolean = true
+    private dialogUser:boolean = false;
+    private formUser:any = {};
+
+    private async getStart(){
+        this.dialog = false;
+        this.dialogUser = true;
+    }
+    private async useUserData(){
+        this.dialogUser = false;
+        let data = await Core.getHttp(`/api/ita/v2/dashboard/${this.user.ext_link.id}/`)
+        this.formUser.agency = data.agency
+        this.formUser.name = this.user.first_name +" "+this.user.last_name 
+        this.formUser.email= this.user.email
+        console.log(data.agency);
+        this.dialogUser = true;
+    }
+
     @Watch('chooseAgencyType')
     private async chnageChooseAgencyType(val: number) {
         this.agencies = await Core.getHttp(`/api/ita/v2/agencys/?agency_type=${val}`)
@@ -258,6 +309,8 @@ export default class Home extends Vue {
         await this.$router.go(-1)
     }
 
+    
+
     public async created() {
         //  await this.show();
         this.agencyType = await Core.getHttp(`/api/ita/v1/agencytype/`)
@@ -265,6 +318,7 @@ export default class Home extends Vue {
         this.user = await User.getUser();
         this.years = this.$route.query.year
         this.data = await Core.getHttp(`/api/eit/v1/issue?year=${this.years}`)
+         
         this.response = true
     }
 

@@ -2,7 +2,7 @@
 <nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-nav bgh flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
     <div class="md:flex-col md:items-stretch md:min-h-full md:flex-no-wrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
         <!-- Toggler -->
-        <button class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" type="button" v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')">
+        <button style="color:white;" class="cursor-pointer text-white opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" type="button" v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')">
             <i class="fas fa-bars"></i>
         </button>
         <!-- Brand -->
@@ -10,10 +10,10 @@
            
         </router-link>
         
-         <center> <div class="bg-white shadow-xl rounded-full w-32 h-32 p-2 border-8 border-yellow-600 flex justify-center items-center">
-            <img class="w-auto h-24" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+         <center> <div class="bg-white shadow-xl rounded-full w-4 h-4 md:w-32 md:h-32 p-2 border-8 border-yellow-600 flex justify-center items-center">
+            <img class="w-auto  h-24 " src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
           </div>
-          <h2 class="text-2xl text-white cv-font">UP-ITA</h2></center>
+          <h2 class="text-sm md:text-2xl text-white cv-font">UP-ITA</h2></center>
         <!-- Collapse -->
         <div class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded" v-bind:class="collapseShow">
             <!-- Collapse header -->
