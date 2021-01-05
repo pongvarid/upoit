@@ -100,8 +100,11 @@
                   </td>
                   <td   class="p-2">
 
-                         <div v-if="rate.result" class="p-2 flex justify-center " >
-                                        <a class="rounded-full bg-blue-600 " :href="rate.result.urls" target="_blank" ><v-icon style="color:white;" >mdi-play</v-icon></a>
+                         <div v-if="rate.result" class="p-2   " >
+                            <div v-for="data,iindex in rate.result.urls" :key="iindex" class="p-2">  
+                              <v-btn class="w-full" @click="openLink(data.urls)" dark small color="#1188ff"><v-icon style="color:white;" >mdi-play</v-icon>{{data.name}}</v-btn> 
+                            </div>
+                                        
                        </div>  
 
                   </td>
