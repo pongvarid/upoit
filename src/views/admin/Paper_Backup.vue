@@ -135,7 +135,7 @@
     </div>
 
     <v-app v-if="dialog">
-      <v-dialog v-model="dialog" persistent max-width="900px">
+      <v-dialog v-model="dialog" persistent max-width="500px">
         <v-card>
           <v-card-title>
             <b>{{ rate.number }}. {{ rate.name }}</b>
@@ -147,96 +147,63 @@
           <v-card-text>
             <p v-html="rate.detail"></p>
             <div class="block w-full overflow-x-auto">
-<!--              <v-alert v-if="form.passing" type="success">-->
-<!--                ได้รับการยืนยันจากหัวหน้าหน่วยงานแล้ว-->
-<!--              </v-alert>-->
-<!--              <v-alert v-if="!form.passing && form.id" type="info">-->
-<!--                เนื้อหานี้จะยังไม่สามารถให้ผู้ตรวจ ตรวจได้เนื่องจากยังไม่ได้รับการยืนยัน จากหัวหน้าหน่วยงาน-->
-<!--              </v-alert>-->
+              <v-alert v-if="form.passing" type="success">
+                ได้รับการยืนยันจากหัวหน้าหน่วยงานแล้ว
+              </v-alert>
+              <v-alert v-if="!form.passing && form.id" type="info">
+                เนื้อหานี้จะยังไม่สามารถให้ผู้ตรวจ ตรวจได้เนื่องจากยังไม่ได้รับการยืนยัน จากหัวหน้าหน่วยงาน
+              </v-alert>
+              <v-tabs>
+                <v-tab>การส่งข้อมูล</v-tab>
+                <v-tab>การตรวจสอบ</v-tab>
+                <v-tab-item><br>
+                  <form @submit.prevent="(!form.id)?saveData():updateData(form)">
 
-              <v-expansion-panels>
-                <v-expansion-panel  v-for="data_rate,index in rateDatas" :key="index" >
-                  <v-expansion-panel-header>
-                    <v-toolbar flat color="transparent">
-                      <h2>{{data_rate.name}}</h2>
-                      <v-spacer></v-spacer>
-                      <span v-if="!data_rate.passing" class="bg-orange-400 p-2 rounded">
-                                            <v-icon>mdi-information</v-icon>ยังไม่ได้ยืนยันจากหัวหน้าหน่วยงาน
-                                        </span>
-                      <span v-if="data_rate.passing" class="bg-green-400 p-2 rounded ">
-                                            <v-icon>mdi-check</v-icon>ยืนยันจากหัวหน้าหน่วยงานแล้ว
-                                        </span>
-                      <span v-if="data_rate.tester" class="m-2 bg-blue-200 p-2 rounded">
-                                            <v-icon>mdi-account-check</v-icon> มีการตรวจแล้ว
-                                        </span>
-                      <span v-if="data_rate.rate_status == 4" class="m-2 bg-green-600 text-white p-2 rounded">
-                                            <v-icon>mdi-check</v-icon> ข้อมูลครบถ้วนแล้ว ( {{data_rate.score}} คะแนน )
-                                        </span>
-                    </v-toolbar>
+                    <v-text-field readonly v-model="form.name" placeholder="ข้อความ" label="หัวข้อ"
+                                  filled></v-text-field>
+                    <v-select readonly required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']"
+                              v-model="form.register_type"
+                              filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
+                    <v-text-field readonly v-model="form.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ"
+                                  filled></v-text-field>
+                    <v-text-field readonly required v-model="form.urls" placeholder="้https://test//" label="URL"
+                                  filled></v-text-field>
+                    <center>
+                      <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
+                        <v-icon>mdi-play</v-icon>
+                        เปิดลิ้ง
+                      </v-btn> &nbsp;
+                    </center>
+                  </form>
+                </v-tab-item>
+                <v-tab-item><br>
+                  <form @submit.prevent="updateData(form)" v-if="form.passing">
+                    <v-select required v-model="form.rate_status" label="สถานะการตรวจสอบ" placeholder="ระบุสถานะ"
+                              :items="rateStatus" item-text="name" item-value="id" filled></v-select>
+                    <v-text-field required v-model="form.score" label="คะแนน" placeholder="ระบุตัวเลข" filled
+                                  type="number"></v-text-field>
+                    <v-textarea   v-model="form.comment" placeholder="ข้อความ" label="ความคิดเห็น"
+                                filled></v-textarea>
+                    <center>
+                      <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
+                        <v-icon>mdi-play</v-icon>
+                        เปิดลิ้ง
+                      </v-btn> &nbsp;
+                      <v-btn type="submit" color="#3eb83e" dark>
+                        <v-icon>mdi-clipboard-check</v-icon>
+                        ยืนยันการจรวจสอบ
+                      </v-btn> &nbsp;
 
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-tabs>
-                      <v-tab>การส่งข้อมูล</v-tab>
-                      <v-tab>การตรวจสอบ</v-tab>
-                      <v-tab-item><br>
+                    </center>
 
-                        <form @submit.prevent="(!data_rate.id)?saveData():updateData(data_rate)">
-
-                          <v-text-field readonly v-model="data_rate.name" placeholder="ข้อความ" label="หัวข้อ"
-                                        filled></v-text-field>
-                          <v-select readonly required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']"
-                                    v-model="data_rate.register_type"
-                                    filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-                          <v-text-field readonly v-model="data_rate.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ"
-                                        filled></v-text-field>
-                          <v-text-field readonly required v-model="data_rate.urls" placeholder="้https://test//" label="URL"
-                                        filled></v-text-field>
-
-                          <center>
-                            <v-btn v-if="data_rate.urls" color="#49bcff" @click="openLink(data_rate.urls)" dark>
-                              <v-icon>mdi-play</v-icon>
-                              เปิดลิ้ง
-                            </v-btn> &nbsp;
-                          </center>
-                        </form>
-                      </v-tab-item>
-                      <v-tab-item><br>
-
-                        <form @submit.prevent="updateData(data_rate)" v-if="data_rate.passing">
-                          <v-select required v-model="data_rate.rate_status" label="สถานะการตรวจสอบ" placeholder="ระบุสถานะ"
-                                    :items="rateStatus" item-text="name" item-value="id" filled></v-select>
-                          <v-text-field required v-model="data_rate.score" label="คะแนน" placeholder="ระบุตัวเลข" filled
-                                        type="number"></v-text-field>
-                          <v-textarea   v-model="data_rate.comment" placeholder="ข้อความ" label="ความคิดเห็น"
-                                        filled></v-textarea>
-                          <center>
-                            <v-btn v-if="data_rate.urls" color="#49bcff" @click="openLink(data_rate.urls)" dark>
-                              <v-icon>mdi-play</v-icon>
-                              เปิดลิ้ง
-                            </v-btn> &nbsp;
-                            <v-btn type="submit" color="#3eb83e" dark>
-                              <v-icon>mdi-clipboard-check</v-icon>
-                              ยืนยันการจรวจสอบ
-                            </v-btn> &nbsp;
-
-                          </center>
-
-                        </form>
-                        <div v-else class="p-4">
-                          <v-alert type="info">
-                            ยังไม่สามารถตรวจสอบได้เนื่องจาก ยังไม่มีข้อมูลการส่งหรือ หัวหน้าหน่วยงานยังไม่อนุมัติการส่ง
-                          </v-alert>
-                        </div>
-                      </v-tab-item>
-                    </v-tabs>
-
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-
-
-
+                  </form>
+                  <div v-else class="p-4">
+                    <v-alert type="info">
+                      ยังไม่สามารถตรวจสอบได้เนื่องจาก ยังไม่มีข้อมูลการส่งหรือ หัวหน้าหน่วยงานยังไม่อนุมัติการส่ง
+                    </v-alert>
+                  </div>
+                </v-tab-item>
+              </v-tabs>
 
 
             </div>
@@ -329,7 +296,7 @@ export default class Home extends Vue {
     this.rate = rate
     this.form.rate = rate.id
     this.form.name = rate.name
-    await this.loadRateData(rate);
+    await this.loadRateData();
     this.dialog = true;
   }
 
@@ -338,14 +305,15 @@ export default class Home extends Vue {
     this.form = {}
     this.dialog = false;
   }
-  resultResponse:boolean = false
-  private async loadRateData(rate:any) {
-    this.rate = await Core.getHttp(`/api/ita/v1/rate/${rate.id}/`)
-    this.form.rate = rate.id
-    this.form.name = rate.name
-    this.rateDatas = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}&rate=${this.rate.id}`)
-    console.log(this.rate)
-    this.resultResponse = true;
+
+  private async loadRateData() {
+    this.rateDatas = await Core.putHttp(`/api/ita/v2/rateresult/`, {
+      "agency": this.currentId,
+      "rate": this.rate.id
+    })
+    if (this.rateDatas.id) {
+      this.form = this.rateDatas
+    }
   }
 
   private async getResultByUser(i: number) {
@@ -363,7 +331,7 @@ export default class Home extends Vue {
     if (update.id) {
       this.form = {}
       await this.run()
-      await this.loadRateData(this.rate)
+      await this.loadRateData()
 
     }
   }
@@ -373,12 +341,12 @@ export default class Home extends Vue {
   private openLink(url: string) {
     window.open(url, '_blank');
   }
-  getTest(result:any){
+  getPassingTest(result:any){
     let res = _.filter(result,{'rate':4})
     return res.length;
   }
 
-  getPassingTest(result:any){
+  getTest(result:any){
     let res = _.filter(result,function(o) { return o.tester != null; })
     return res.length;
   }

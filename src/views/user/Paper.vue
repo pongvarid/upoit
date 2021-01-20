@@ -72,17 +72,10 @@
 
                                     </td>
                                     <td style="width:500px;" class="p-2">
-                                        <div v-if="rate.result">
-                                            <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result.tester">
-                                                <v-card-text>
-                                                    <h2 class="text-base text-green-600 font-bold">
-                                                        <v-icon style="color:green;">mdi-book-check</v-icon>ผลการตรวจสอบ
-                                                    </h2>
-                                                    <hr> <br>
-                                                    <h2>คะแนน : {{rate.result.score}}</h2>
-                                                    <h2 v-if="rate.result">สถานะ : {{rate.result.rate_status.name}}</h2>
-                                                    <p>ความเห็น : {{rate.result.comment}}</p>
-                                                </v-card-text>
+                                           <h2 class="p-2 text-xl text-green-600">ส่งแล้ว {{rate.result.length}}</h2><br>
+                                            <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">
+                                              <h2>ตรวจแล้ว {{getPassingTest(rate.result,)}} / {{rate.result.length}}</h2><br>
+                                              <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>
                                             </div>
                                             <div v-else>
                                                 <div class="p-2 flex justify-center ">
@@ -92,13 +85,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div v-else class="p-2 flex justify-center ">
-                                            <div class="p-2 flex flex-col justify-center items-center ">
-                                                <v-icon style="font-size:36px; color:#c16c3d;">mdi-folder-information</v-icon>
-                                                <h2 class="text-tiny" style="color:#c16c3d;">ยังไม่มีข้อมูลการตรวจ</h2>
-                                            </div>
-                                        </div>
+
                                     </td>
 
                                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
@@ -108,11 +95,7 @@
                                             </v-btn>
                                             <v-btn @click="openDialog(rate)" color="#2e9837" dark v-else>
                                                 <v-icon>mdi-eye</v-icon>ดูข้อมูล
-                                            </v-btn>
-                                            <!--                      <button @click="openDialog(rate)" :class="`bg-purple-600 f-white ${$xbtn}`" type="button">-->
-                                            <!--                        <span class="mdi mdi-grease-pencil"></span>-->
-                                            <!--                        ดูข้อมูล-->
-                                            <!--                      </button>-->
+                                            </v-btn> 
 
                                         </div>
                                     </td>
@@ -128,8 +111,8 @@
 
     </div>
 
-    <v-app v-if="dialog">
-        <v-dialog v-model="dialog" persistent max-width="800px">
+    <v-app v-if="dialog" style="z-index:9999;">
+        <v-dialog v-model="dialog" persistent max-width="1000px">
             <v-card>
                 <v-card-title>
                     <b>{{ rate.number }}. {{ rate.name }}</b>
@@ -141,78 +124,123 @@
                 <v-card-text>
                     <p v-html="rate.detail"></p>
                     <div class="block w-full overflow-x-auto">
-                        <v-alert v-if="form.passing" type="success">
-                            ได้รับการยืนยันจากหัวหน้าหน่วยงานแล้ว
-                        </v-alert>
-                        <v-alert v-if="!form.passing && form.id" type="info">
-                            เนื้อหานี้จะยังไม่สามารถให้ผู้ตรวจ ตรวจได้เนื่องจากยังไม่ได้รับการยืนยัน จากหัวหน้าหน่วยงาน
-                        </v-alert>
 
-                        <form @submit.prevent="(!form.id)?saveData():updateData(form)">
 
-                            <v-text-field required v-model="form.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
-                            <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="form.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-                            <v-text-field v-model="form.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ" filled></v-text-field> 
-                             <form v-if="!form.passing" @submit.prevent="storeUrlInRate()" class="flex flex-row flex-wrap bg-blue-200 p-4"> 
-                                 <v-text-field dense v-model="urlForm.name"   class="w-1/4" required  placeholder="ชื่ออ้างอิง" label="ชื่อ url"  ></v-text-field>
-                                <v-text-field dense  v-model="urlForm.urls" class="w-2/4"  required  placeholder="้https://test//" label="URL"  ></v-text-field>
-                                  <v-btn class="w-1/4" small  type="submit" color="success"><v-icon>mdi-plus</v-icon>บันทึกลิ้งลงรายการ</v-btn>
-                             </form>
-                             <h2 class="text-blue-600 text-xl mt-2"><v-icon>mdi-open-in-browser</v-icon>รายการลิ้ง</h2> <br>
-                              <div v-for="url,index in urlList" :key="index" class="flex flex-row ">
-                                 <v-text-field v-model="url.name"   class="w-1/3" required  placeholder="ชื่ออ้างอิง" label="ชื่อ url" filled></v-text-field>
-                                <v-text-field  v-model="url.urls" class="w-2/3"  required  placeholder="้https://test//" label="URL" filled></v-text-field>
-                                 <v-btn class="m-2" @click=" openLink(url.urls)" x-small dark fab color="#1494d1"><v-icon>mdi-play</v-icon></v-btn>
-                                <v-btn v-if="!form.passing" class="m-2"  @click="editUrlInRate(url)" x-small dark fab color="orange"><v-icon>mdi-floppy</v-icon></v-btn>
-                                <v-btn v-if="!form.passing" class="m-2"  @click="removeUrlInRate(form.id,url.id)" x-small dark fab color="red"><v-icon>mdi-close</v-icon></v-btn>
-                              </div>
-                           
-                             
+                        <v-expansion-panels>
+                            <v-expansion-panel>
+                                <v-expansion-panel-header>
+                                    <h2>
+                                        <v-icon>mdi-plus-box</v-icon> เพิ่มข้อมูล
+                                    </h2>
 
-                            <!-- <v-text-field required v-model="form.urls" placeholder="้https://test//" label="URL" filled></v-text-field> -->
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                    <form @submit.prevent="saveData()">
+                                        <v-text-field required v-model="form.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
+                                        <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="form.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
+                                        <v-text-field v-model="form.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ" filled></v-text-field>
+                                        <v-text-field v-model="form.urls" placeholder="Url" label="Url" filled></v-text-field>
+                                        <center v-if="!form.passing">
 
-                            <center v-if="!form.passing">
+                                            <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
+                                                <v-icon>mdi-play</v-icon> เปิดลิ้ง
+                                            </v-btn> &nbsp;
+                                            <v-btn v-if="!form.id" type="submit" color="#2cb830" dark click="saveData()">
+                                                <v-icon>mdi-content-save</v-icon>
+                                                บันทึก
+                                            </v-btn>&nbsp;
+                                            <v-btn v-else type="submit" color="#ff9f32" dark>
+                                                <v-icon>mdi-pen</v-icon> แก้ไข
+                                            </v-btn>&nbsp;
+                                            <v-btn v-if="form.id" color="red" dark @click="removeData(form)">
+                                                <v-icon>mdi-delete</v-icon> ลบ
+                                            </v-btn>
 
-                                <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
-                                    <v-icon>mdi-play</v-icon> เปิดลิ้ง
-                                </v-btn> &nbsp;
-                                <v-btn v-if="!form.id" type="submit" color="#2cb830" dark click="saveData()">
-                                    <v-icon>mdi-content-save</v-icon>
-                                    บันทึก
-                                </v-btn>&nbsp;
-                                <v-btn v-else type="submit" color="#ff9f32" dark>
-                                    <v-icon>mdi-pen</v-icon> แก้ไข
-                                </v-btn>&nbsp;
-                                <v-btn v-if="form.id" color="red" dark @click="removeData(form)">
-                                    <v-icon>mdi-delete</v-icon> ลบ
-                                </v-btn>
+                                        </center>
+                                    </form>
 
-                            </center>
-                            <!-- <center v-else>
-                                <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
-                                    <v-icon>mdi-play</v-icon> เปิดลิ้ง
-                                </v-btn> &nbsp;
-                            </center> -->
-                        </form>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel><br>
+                            <v-divider></v-divider><br>
+                            <v-expansion-panel v-if="resultResponse" v-for="result,index in rateDatas" :key="index">
+
+                                <v-expansion-panel-header>
+                                    <v-toolbar flat color="transparent">
+                                        <h2>{{result.name}}</h2>
+                                        <v-spacer></v-spacer>
+                                        <span v-if="!result.passing" class="bg-orange-400 p-2 rounded">
+                                            <v-icon>mdi-information</v-icon>ยังไม่ได้ยืนยันจากหัวหน้าหน่วยงาน
+                                        </span>
+                                        <span v-if="result.passing" class="bg-green-400 p-2 rounded ">
+                                            <v-icon>mdi-check</v-icon>ยืนยันจากหัวหน้าหน่วยงานแล้ว
+                                        </span>
+                                        <span v-if="result.tester" class="m-2 bg-blue-200 p-2 rounded">
+                                            <v-icon>mdi-account-check</v-icon> มีการตรวจแล้ว
+                                        </span>
+                                        <span v-if="result.rate_status == 4" class="m-2 bg-green-600 text-white p-2 rounded">
+                                            <v-icon>mdi-check</v-icon> ข้อมูลครบถ้วนแล้ว ( {{result.score}} คะแนน )
+                                        </span>
+                                    </v-toolbar>
+
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content>
+                                  <v-alert v-if="result.passing" type="success">
+                                    ได้รับการยืนยันจากหัวหน้าหน่วยงานแล้ว
+                                  </v-alert>
+                                  <v-alert v-if="!result.passing && form.id" type="info">
+                                    เนื้อหานี้จะยังไม่สามารถให้ผู้ตรวจ ตรวจได้เนื่องจากยังไม่ได้รับการยืนยัน จากหัวหน้าหน่วยงาน
+                                  </v-alert>
+                                    <form @submit.prevent="updateData(result)">
+                                        <v-text-field required v-model="result.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
+                                        <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="result.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
+                                        <v-text-field v-model="result.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ" filled></v-text-field>
+                                        <v-text-field v-model="result.urls" placeholder="Url" label="Url" filled></v-text-field>
+                                        <center>
+                                            <v-btn v-if="result.urls" color="#49bcff" @click="openLink(result.urls)" dark>
+                                                <v-icon>mdi-play</v-icon> เปิดลิ้ง
+                                            </v-btn> &nbsp;
+                                            <v-btn v-if="!result.id && !result.passing" type="submit" color="#2cb830" dark click="saveData()">
+                                                <v-icon>mdi-content-save</v-icon>
+                                                บันทึก
+                                            </v-btn>&nbsp;
+                                            <v-btn v-if="result.id && !result.passing" type="submit" color="#ff9f32" dark>
+                                                <v-icon>mdi-pen</v-icon> แก้ไข
+                                            </v-btn>&nbsp;
+                                            <v-btn v-if="result.id && !result.passing" color="red" dark @click="removeData(result)">
+                                                <v-icon>mdi-delete</v-icon> ลบ
+                                            </v-btn>
+                                        </center>
+                                    </form>
+
+                                    <div v-if="result.tester" class="mt-4">
+                                        <h2 class="text-xl">สถานะการตรวจสอบ</h2>
+                                        <br>
+                                        <v-alert v-if="result.rate_status == 4" type="success"  outlined>
+                                            ข้อมูลครบถ้วนแล้ว 
+                                        </v-alert>
+                                         <v-alert v-else type="warning"  outlined>
+                                            ยังไม่สมบูรณ์
+                                        </v-alert>
+                                        
+                                        <v-select  readonly v-model="result.rate_status" label="สถานะการตรวจสอบ" placeholder="ระบุสถานะ" :items="rateStatus" item-text="name" item-value="id" filled></v-select>
+                                        <v-text-field  readonly v-model="result.score" label="คะแนน" placeholder="ระบุตัวเลข" filled type="number"></v-text-field>
+                                        <v-textarea  readonly v-model="result.comment" placeholder="ข้อความ" label="ความคิดเห็น" filled></v-textarea>
+                                    </div>
+
+                                    <div v-if="user.passing && !result.tester" class="pt-4">
+                                        <v-btn class="w-full" v-if="!result.passing && result.id" x-large outlined color="deep-purple accent-4" dark @click="passingStore(result)">
+                                            <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
+                                        </v-btn>
+                                        <v-btn class="w-full" v-else x-large outlined color="red" dark @click="removePassingStore(result)">
+                                            <v-icon>mdi-bookmark-remove</v-icon><b> ยกเลิกการส่ง</b>
+                                        </v-btn>
+                                    </div>
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
 
                     </div>
                 </v-card-text>
-                <v-card-actions v-if="user.passing">
-
-                    <div class="flex flex-col justify-center" v-if="!form.passing && form.id">
-                        <v-btn x-large outlined color="deep-purple accent-4" dark @click="passingStore(form)">
-                            <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
-                        </v-btn>
-
-                    </div>
-                    <div class="flex flex-col justify-center" v-else>
-                        <v-btn x-large outlined color="red" dark @click="removePassingStore(form)">
-                            <v-icon>mdi-bookmark-remove</v-icon><b> ยกเลิกการส่ง</b>
-                        </v-btn>
-
-                    </div>
-
-                </v-card-actions>
             </v-card>
         </v-dialog>
     </v-app>
@@ -226,7 +254,7 @@ import {
     Vue
 } from 'vue-property-decorator';
 import CardStats from "@/components/Cards/CardStatWithBtn.vue";
-
+import _ from 'lodash'
 import {
     Auth
 } from '@/store/auth'
@@ -258,53 +286,68 @@ export default class Home extends Vue {
     private rates: any = []
     private dialog: boolean = false
     private rate: any = {}
+    private result: any = null
     private form: any = {}
     private formUpdate: any = null
 
-    private urlList:any = null
-    private urlResponse:boolean = true
-    private url:any = []
-    private urlForm:any = {}
-    
-
+    private urlList: any = null
+    private urlResponse: boolean = true
+    private url: any = []
+    private urlForm: any = {}
 
     private rateDatas: any = []
     private response: boolean = false
-
-   
+    private resultResponse: boolean = false
 
     public async created() {
 
         await this.run()
 
     }
-
+    rateStatus: any = []
     private async run() {
         let loader = await this.$loading.show()
         this.response = false;
         this.user = await User.getUser();
         this.year = await Core.getHttp(`/api/ita/v2/year/${this.$route.query.year}/`)
         this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.$route.query.year}/`)
-        for (let i = 0; i < this.rates.length; i++) {
-            let result = await this.getResultByUser(i)
-            this.rates[i].result = (result.id) ? result : null
-        }
+        this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}`)
+        this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
+        await this.generateTable();
         this.response = true;
         await loader.hide()
     }
 
+    private async generateTable() {
+        for (let i = 0; i < this.rates.length; i++) {
+            console.log(this.rates[i].id);
+            let result: any = _.filter(this.result, {
+                'rate': this.rates[i].id
+            })
+            this.rates[i].result = result
+        }
+    }
+
     public async openDialog(rate: any) {
-        this.rate = rate
+
+        await this.loadRateData(rate);
+        this.dialog = true;
+
+    }
+    private async loadRateData(rate: any) {
+        this.rate = await Core.getHttp(`/api/ita/v1/rate/${rate.id}/`)
         this.form.rate = rate.id
         this.form.name = rate.name
-        await this.loadRateData();
-        this.dialog = true;
+        this.rateDatas = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}&rate=${this.rate.id}`)
+        console.log(this.rate)
+        this.resultResponse = true;
     }
 
     public async closeDialog() {
         this.rate = null
         this.form = {}
         this.dialog = false;
+        this.resultResponse = false;
     }
 
     private async saveData() {
@@ -312,23 +355,11 @@ export default class Home extends Vue {
         this.form.agency = this.user.ext_link.agency
         let data = await Core.postHttp(`/api/ita/v1/rateresult/`, this.form)
         if (data.id) {
-            await this.loadRateData()
-            // this.form.rate = rate.id
-            // this.form.name = rate.name
-            // this.form = {}
+          alert('บันทึกข้อมูลสำเร็จแล้ว')
+          this.form = {}
+            await this.loadRateData(this.rate)
         }
         await this.run()
-    }
-
-    private async loadRateData() {
-        this.rateDatas = await Core.putHttp(`/api/ita/v2/rateresult/`, {
-            "agency": this.user.ext_link.agency,
-            "rate": this.rate.id
-        })
-        await this.loadUrlInRate(this.rateDatas.id)
-        if (this.rateDatas.id) {
-            this.form = this.rateDatas
-        }
     }
 
     private async getResultByUser(i: number) {
@@ -341,7 +372,8 @@ export default class Home extends Vue {
     private async updateData(data: any) {
         let update = await Core.putHttp(`/api/ita/v1/rateresult/${data.id}/`, data)
         if (update.id) {
-            await this.loadRateData()
+          alert('แก้ไขข้อมูลสำเร็จแล้ว')
+            await this.loadRateData(this.rate)
         }
     }
 
@@ -349,9 +381,10 @@ export default class Home extends Vue {
         let check = confirm("คุณแน่ใจใช่ไหมที่จะลบรายการนี้")
         if (check) {
             let remove = await Core.deleteHttp(`/api/ita/v1/rateresult/${data.id}/`)
-
         }
-        await this.loadRateData()
+        this.resultResponse = false;
+        await this.loadRateData(this.rate)
+        this.resultResponse = true;
 
     }
 
@@ -364,7 +397,7 @@ export default class Home extends Vue {
             }
             let store = await Core.putHttp(`/api/ita/v2/passing/${data.id}/`, form)
             if (store.id) {
-                await this.loadRateData()
+                await this.loadRateData(this.rate)
             }
         }
 
@@ -379,36 +412,24 @@ export default class Home extends Vue {
             }
             let store = await Core.putHttp(`/api/ita/v2/passing/${data.id}/`, form)
             if (store.id) {
-                await this.loadRateData()
+                await this.loadRateData(this.rate)
             }
         }
 
     }
 
-    private async loadUrlInRate(rateId:number){
-        this.urlList =  await Core.getHttp(`/api/ita/v1/urlrate/?rateresult=${rateId}`)
-    }
-    private async storeUrlInRate( ){  
-        if(!this.rateDatas.id){
-         await this.saveData();
-        }
-        this.urlForm.rateresult = this.rateDatas.id
-        await Core.postHttp(`/api/ita/v1/urlrate/`,this.urlForm)  
-        this.urlForm = {};
-        await this.loadUrlInRate(this.rateDatas.id)
-    }
-    private async editUrlInRate(url:any){
-      await Core.putHttp(`/api/ita/v1/urlrate/${url.id}/`,url)
-      await this.loadUrlInRate(this.rateDatas.id)
-      alert('แก้ไขลิ้งสำเร็จแล้ว')
-    }
-    private async removeUrlInRate(rateId:number,id:number){
-      await Core.deleteHttp(`/api/ita/v1/urlrate/${id}/`)
-      await this.loadUrlInRate(rateId)
-    }
-
     private openLink(url: string) {
         window.open(url, '_blank');
+    }
+
+    getPassingTest(result:any){
+        let res = _.filter(result,{'rate':4})
+        return res.length;
+    }
+
+    getTest(result:any){
+        let res = _.filter(result,function(o) { return o.tester != null; })
+        return res.length;
     }
 
 }

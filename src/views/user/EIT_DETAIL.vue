@@ -225,7 +225,11 @@ export default class Home extends Vue {
 
     private async getStart(){
         this.dialog = false;
+        let check = confirm('คุณต้องการให้ข้อมูลส่วนตัวเพิ่มเติมหรือไม่')
+      if(check){
         this.dialogUser = true;
+      }
+
     }
     private async useUserData(){
         this.dialogUser = false;
