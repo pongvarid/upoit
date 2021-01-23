@@ -10,12 +10,11 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'Home',
     component: () => import('@/views/root/Base.vue'),
     children: rootRouter
   },
   {
-    path: "/user/", 
+    path: "/user/",
     component: () => import('@/views/user/Base.vue'),
     children: userRouter
   },

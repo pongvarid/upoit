@@ -9,7 +9,7 @@ const getView = function(page:any){
 const rootRouter:any  = [
     {
         path: '',
-        name: 'admin-home',
+        name: 'admin-homes',
         component: getView('Home')
     },
  

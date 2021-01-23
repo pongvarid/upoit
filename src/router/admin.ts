@@ -9,66 +9,66 @@ const getView = function(page:any){
 const adminRouter:any = [
     {
         path: '',
-        name: 'home',
+        name: 'admin-home',
         component: getView('Xhome')
     },
     {
         path: 'home',
-        name: 'home-home',
+        name: 'admin-homex',
         component: getView('Xhome')
     },
     {
         path: 'oit/all',
-        name: 'oit-all',
+        name: 'admin-oit-all',
         component: getView('Home')
     },
     {
         path: 'iit/all',
-        name: 'iit-all',
+        name: 'admin-iit-all',
         component: getView('IIT_AGENCY')
     },
     {
         path: 'iit/report',
-        name: 'iit-report',
+        name: 'admin-iit-report',
         component: getView('IIT_REPORT')
     },
     {
         path: 'iit/detail',
-        name: 'iit-detail',
+        name: 'admin-iit-detail',
         component: getView('IIT_DETAIL')
         
     },{
         path: 'iit/map',
-        name: 'iit-map',
+        name: 'admin-iit-map',
         component: getView('IIT_MAP')
     },
     {
         path: 'list',
-        name: 'list',
+        name: 'admin-list',
         component: getView('List')
     },
     {
         path: 'paper',
-        name: 'paper',
+        name: 'admin-paper',
         component: getView('Paper')
     },{
         path: 'eit/all',
-        name: 'eit-all',
+        name: 'admin-eit-all',
         component: getView('EIT_AGENCY')
     },
     {
         path: 'eit/report',
-        name: 'eit-report',
+        name: 'admin-eit-report',
         component: getView('EIT_REPORT')
     },
     {
         path: 'eit/detail',
-        name: 'eit-detail',
+        name: 'admin-eit-detail',
         component: getView('EIT_DETAIL')
     },
     {
         path: 'eit/map',
-        name: 'eit-map',
+        name: 'admin-eit-map',
         component: getView('EIT_MAP')
     },
  
