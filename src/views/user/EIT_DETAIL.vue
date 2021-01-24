@@ -22,10 +22,10 @@
 
                     <v-card flat>
                         <v-card-text>
-                            <v-main>
+
                                 <v-autocomplete v-model="chooseAgencyType" :items="agencyType" item-text="name" item-value="id" filled label="ประเภทหน่วยงาน"></v-autocomplete>
                                 <v-autocomplete v-model="chooseAgency" :items="agencies" item-text="name" item-value="id" filled label="หน่วยงาน"></v-autocomplete>
-                            </v-main>
+
                         </v-card-text>
                         <v-card-actions v-if="chooseAgency">
                             <v-btn v-if="!lockUser" dark color="#1E8449" style="width:100%;" large @click="getStart">
@@ -225,10 +225,11 @@ export default class Home extends Vue {
 
     private async getStart(){
         this.dialog = false;
-        let check = confirm('คุณต้องการให้ข้อมูลส่วนตัวเพิ่มเติมหรือไม่')
-      if(check){
-        this.dialogUser = true;
-      }
+        //let check = confirm('คุณต้องการให้ข้อมูลส่วนตัวเพิ่มเติมหรือไม่')
+      // if(check){
+      //   this.dialogUser = true;
+      // }
+
 
     }
     private async useUserData(){

@@ -14,17 +14,20 @@ const userRouter:any  = [
         component: getView('Home')
     },
     {
-        path: 'home',
+        path: '/home',
         name: 'homes',
-        text:'การประเมิน',
+        text:'หน้าแรก',
         icon:'em em-lower_left_ballpoint_pen',
         enabled:true,
         component: getView('Home'),
         group : 'home'
     },
     {
-        path: 'ita',
+        path: '/ita',
         name: 'ita',
+        text:'ผลการประเมิน',
+        icon:'em em-stadium',
+        enabled:true,
         component: getView('ITA_REPORT'),
         group : 'home'
     },
@@ -54,8 +57,11 @@ const userRouter:any  = [
         group : 'oit'
     },
     {
-        path: 'all',
+        path: '/all',
         name: 'user-all',
+        text:'ดูข้อมูลหน่วยงานอื่นๆ',
+        icon:'em em-school',
+        enabled:true,
         component: getView('AllAngency'),
         group : 'oit'
     },{
@@ -69,19 +75,25 @@ const userRouter:any  = [
 
     //IIT
     {
-        path: 'iit/year',
+        path: '/iit/year',
         name: 'iit-year',
+        text:'ทำแบบประเมิน',
+        icon:'em em-writing_hand',
+        enabled:true,
         component: getView('IIT_YEAR'),
         group : 'iit'
     },
     {
-        path: 'iit/all',
+        path: '/iit/all',
         name: 'iit-all',
+        text:'ผลการประเมิน',
+        icon:'em em-checkered_flag',
+        enabled:true,
         component: getView('IIT_AGENCY'),
         group : 'iit'
     },
     {
-        path: 'iit/detail',
+        path: '/iit/detail',
         name: 'iit-detail',
         component: getView('IIT_DETAIL'),
         group : 'iit'
@@ -97,21 +109,28 @@ const userRouter:any  = [
         component: getView('IIT_REPORT_DETAIL'),
         group : 'iit'
     },
+
     //EIT
     {
-        path: 'eit/year',
-        name: 'eit-year',
+        path: '/eit/year',
+        name: '/eit-year',
+        text:'ทำแบบประเมิน',
+        icon:'em em-writing_hand',
+        enabled:true,
         component: getView('EIT_YEAR'),
         group : 'eit'
     },
     {
-        path: 'eit/all',
+        path: '/eit/all',
         name: 'eit-all',
+        text:'ผลการประเมิน',
+        icon:'em em-checkered_flag',
+        enabled:true,
         component: getView('EIT_AGENCY'),
         group : 'eit'
     },
     {
-        path: 'eit/detail',
+        path: '/eit/detail',
         name: 'eit-detail',
         component: getView('EIT_DETAIL'),
         group : 'eit'
@@ -126,7 +145,12 @@ const userRouter:any  = [
         component: getView('EIT_REPORT_DETAIL'),
         group : 'eit'
     },
-
+    {
+        path: '/alert',
+        name: 'all-alert',
+        component: getView('ALERT'),
+       
+    },
 ]
 
 export  {

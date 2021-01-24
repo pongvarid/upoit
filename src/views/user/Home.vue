@@ -1,7 +1,6 @@
 <template>
 <div class="relative md:pt-32 pb-32 pt-12 ">
-    <div class="relative  flex flex-col min-w-0 break-words w-full mb-6  " v-if="response">
-        <div class="rounded-t mb-0 px-4 py-3 border-0 ">
+     <div class="rounded-t mb-0 px-4 py-3 border-0 ">
             <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
                 <h3 class="  text-2xl text-gray-800">
                     <span class="em em-briefcase text-2xl" aria-role="presentation" aria-label=""></span> ข้อมูลของหน่วยงาน
@@ -157,6 +156,8 @@
           </div>
           <br>
 
+       <AgencyEitUser v-if="user.passing"  />
+
 
 
           <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
@@ -203,7 +204,7 @@
 
     </div>
 
-</div>
+
 </template>
 
 <script lang="ts">
@@ -212,7 +213,7 @@ import {
     Vue
 } from 'vue-property-decorator';
 import CardStats from "@/components/Cards/CardStatWithBtn.vue";
-
+import AgencyEitUser from "@/components/Core/AgencyEitUser.vue";
 import {
     Auth
 } from '@/store/auth'
@@ -225,7 +226,7 @@ import {
 
 @Component({
     components: {
-        CardStats
+        CardStats,AgencyEitUser
     },
 })
 export default class Home extends Vue {

@@ -109,7 +109,7 @@ const containerR = document.querySelector(".containerR");
 export default class Test extends Vue {
   tab: number = 0;
   switchc: string = "";
-
+  page :any = ''
   private form: any = {}
   async created() {
     let loader = await this.$loading.show()
@@ -147,6 +147,8 @@ export default class Test extends Vue {
   }
 
   async callback() {
+    this.page = this.$route.query.web
+
     let logined: any = await Auth.callback();
     let form: any | null = null
     if (logined.type) {
@@ -175,10 +177,17 @@ export default class Test extends Vue {
   }
 
   async keyCall(Key: string) {
+
+    //
     await Auth.storeToken(Key)
     await Auth.storeTokenToStorage(Key)
     await User.loadUser()
-    await this.$router.replace(User.routeUser)
+    if(this.page){
+      alert("ยินดีต้อนรับสู่การประเมิน")
+      await this.$router.replace(this.page)
+    }else{
+      await this.$router.replace(User.routeUser)
+    }
   }
 }
 </script>

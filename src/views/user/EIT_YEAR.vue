@@ -13,7 +13,7 @@
         <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
 
           <div class="flex items-center p-4  bg-white rounded-lg shadow-xl dark:bg-gray-800 border-b-4  "
-               style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="$router.push(`detail?year=${year.id}`)" >
+               style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="openEit(year.id)" >
             <v-btn style="margin-right: 10px" color="#7837B1" large fab dark>
               <v-icon>mdi mdi-calendar-cursor</v-icon>
             </v-btn>
@@ -71,6 +71,22 @@ export default class Home extends Vue {
     this.user = await User.getUser(); 
     this.years = await Core.getHttp(`/api/eit/v1/year`) 
     this.response = true
+  }
+
+  public async openEit(yearId:any){
+    if(this.user.ext_link.in_up){
+      let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`)
+    if(userInAnswer.length > 0){
+      await this.$router.push(`detail?year=${yearId}`)
+    }else{
+      alert('กรุณาประเมิน IIT ก่อน')
+    }
+    }else{
+      await this.$router.push(`detail?year=${yearId}`)
+    }
+
+    console.log(this.user.ext_link.in_up);
+    //
   }
 
 }
