@@ -138,8 +138,9 @@
                                     <form @submit.prevent="saveData()">
                                         <v-text-field required v-model="form.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
                                         <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="form.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-                                        <v-text-field v-model="form.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ" filled></v-text-field>
+
                                         <v-text-field v-model="form.urls" placeholder="Url" label="Url" filled></v-text-field>
+                                      <v-textarea v-model="result.ref" placeholder="ระบุคำอธิบาย" label="คำอธิบายเพิ่มเติม" filled></v-textarea>
                                         <center v-if="!form.passing">
 
                                             <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
@@ -193,8 +194,9 @@
                                     <form @submit.prevent="updateData(result)">
                                         <v-text-field required v-model="result.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
                                         <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="result.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-                                        <v-text-field v-model="result.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ" filled></v-text-field>
+
                                         <v-text-field v-model="result.urls" placeholder="Url" label="Url" filled></v-text-field>
+                                       <v-textarea v-model="result.ref" placeholder="ระบุคำอธิบาย" label="คำอธิบายเพิ่มเติม" filled></v-textarea>
                                         <center>
                                             <v-btn v-if="result.urls" color="#49bcff" @click="openLink(result.urls)" dark>
                                                 <v-icon>mdi-play</v-icon> เปิดลิ้ง
