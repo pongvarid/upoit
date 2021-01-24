@@ -68,7 +68,7 @@
             </p>
             <v-btn @click="ChangeTo('sign-up-mode')" outlined dark>เข้าสู่ระบบแบบบัญชีผู้ใช้ภายใน</v-btn>
           </div>
-          <img src="/assets/images/login-icon.svg" class="image" alt="" />
+          <img src="@/assets/ss.png" class="image p-24" alt="" />
         </div>
         <div class="panel right-panel">
           <div class="content">
@@ -80,7 +80,7 @@
 
             <v-btn @click="ChangeTo('')" outlined dark>เข้าสู่ระบบด้วย Microsoft 365</v-btn>
           </div>
-          <img src="/assets/images/login-icon1.svg" class="image" alt="" />
+          <img src="@/assets/ss.png" class="image p-24" alt="" />
         </div>
       </div>
     </div>
