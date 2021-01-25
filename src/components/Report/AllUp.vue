@@ -200,6 +200,23 @@
           </div>
 
         </div>
+        <br><br>
+        <h2 class="text-2xl" >รายระเอียดการประเมิน</h2>
+        <v-tabs>
+          <v-tab>IIT</v-tab>
+          <v-tab-item>
+              <UpIIT />
+          </v-tab-item>
+          <v-tab>EIT</v-tab>
+          <v-tab-item>
+            <UpEIT></UpEIT>
+          </v-tab-item>
+          <v-tab>OIT</v-tab>
+          <v-tab-item>
+              <UpOIT></UpOIT>
+          </v-tab-item>
+        </v-tabs>
+
       </div>
     </div>
 
@@ -221,9 +238,12 @@ import {
   User
 } from '@/store/user'
 import _ from 'lodash'
+import UpIIT from './UpIIT.vue'
+import UpEIT from './UpEIT.vue'
+import UpOIT from './UpOIT.vue'
 @Component({
   components: {
-
+    UpIIT,UpEIT,UpOIT
   },
 })
 export default class Home extends Vue {

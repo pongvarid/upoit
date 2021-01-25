@@ -165,7 +165,22 @@
             </div>
           </div>
         </div>
-
+        <br><br>
+        <h2 class="text-2xl" >รายระเอียดการประเมิน</h2>
+        <v-tabs>
+          <v-tab>IIT</v-tab>
+          <v-tab-item>
+            <AgencyIIT />
+          </v-tab-item>
+          <v-tab>EIT</v-tab>
+          <v-tab-item>
+            <AgencyEIT></AgencyEIT>
+          </v-tab-item>
+          <v-tab>OIT</v-tab>
+          <v-tab-item>
+            <AgencyOIT></AgencyOIT>
+          </v-tab-item>
+        </v-tabs>
        
       </div>
     </div>
@@ -188,10 +203,12 @@ import {
   User
 } from '@/store/user'
 import _ from 'lodash'
-import UpIIT from './UpIIT.vue'
+import AgencyIIT from './AgencyIIT.vue'
+import AgencyOIT from './AgencyOIT.vue'
+import AgencyEIT from './AgencyEIT.vue'
 @Component({
   components: {
-UpIIT,
+    AgencyIIT,AgencyOIT,AgencyEIT
   },
 })
 export default class Home extends Vue {
