@@ -3,7 +3,7 @@
     <!-- <navbar /> -->
     <main>
         <section class="">
-                    <router-view v-if="response" />
+                    <router-view   />
             <!-- <footer-small absolute  /> -->
         </section>
     </main>
@@ -38,16 +38,17 @@ import {
         await Auth.checkToken();
         await User.loadUser();
         let user: any = User.user
-        if(user.pk) {
+        console.log('[DATA]',this.$route.name)
+        if(user.pk && this.$route.name != 'iit-homes'&& this.$route.name != 'eit-homes') {
             if (this.page) {
                 await this.$router.replace(this.page) 
-                this.response = true;
+                
             } else {
                 await this.$router.replace(User.routeUser) 
-                this.response = true;
+                
             }
         } else {
-            this.response = true;
+           
         }
     }
 }
