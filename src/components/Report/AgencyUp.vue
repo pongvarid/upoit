@@ -166,7 +166,7 @@
           </div>
         </div>
 
-
+       
       </div>
     </div>
 
@@ -188,9 +188,10 @@ import {
   User
 } from '@/store/user'
 import _ from 'lodash'
+import UpIIT from './UpIIT.vue'
 @Component({
   components: {
-
+UpIIT,
   },
 })
 export default class Home extends Vue {
