@@ -12,19 +12,13 @@
 
             <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
 
-                <div class="flex items-center p-4  bg-white rounded-lg shadow-xl dark:bg-gray-800 border-b-4  " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="getIssue(year.id,year.status)">
-                    <v-btn style="margin-right: 10px" color="#7837B1" large fab dark>
-                        <v-icon>mdi mdi-calendar-cursor</v-icon>
-                    </v-btn>
-                    <div>
-                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                            ปีงบประมาณ
-                        </p>
-                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                            {{ year.year }}
-                        </p> <span v-if="year.status" class="text-red-600" style="font-size:12px;">(ปิดการประเมินแล้ว)</span>
-                        <span v-else class="text-green-600" style="font-size:12px;">(เปิดให้ประเมิน)</span>
-                    </div>
+                <div class="flex items-center  " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="getIssue(year.id,year.status)" v-if="!year.status">
+                   
+                    <bin-card c="#800080" i='mdi-calendar' t="ปีงบประมาณ" :h="year.year"></bin-card>
+            
+                  
+                   
+                   
                 </div>
 
             </div>
@@ -41,7 +35,7 @@ import {
     Component,
     Vue
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtn.vue";
+ 
 
 import {
     Auth
@@ -55,7 +49,7 @@ import {
 
 @Component({
     components: {
-        CardStats
+         
     },
 })
 export default class Home extends Vue {
@@ -72,7 +66,7 @@ $vs:any
     }
 
     public async getIssue(yearId: number, status: boolean) {
-        //$router.push(`detail?year=${year.id}`)
+        //this.$router.push(`detail?year=${yearId}`)
         if (!status) {
             let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`) 
             console.log(userInAnswer);

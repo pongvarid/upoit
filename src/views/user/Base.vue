@@ -48,9 +48,9 @@
 </template>
 
 <script lang="ts">
-import HeaderStats from "@/components/Headers/HeaderStats.vue";
-import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
-import Navbar from "@/components/Core/UserNavbar.vue";
+ 
+ 
+import Navbar from "@/components/Core/Navbar.vue";
 import Loading from "@/components/Web/Loading.vue";
 import {User} from "@/store/user";
 import {Auth} from "@/store/auth";
@@ -61,9 +61,7 @@ import {Component, Vue, Watch} from "vue-property-decorator";
 @Component({
   components: {
     Navbar,
-    Loading,
-    HeaderStats,
-    FooterAdmin,
+    Loading,  
   },
   computed: {}
 })
@@ -85,9 +83,9 @@ export default class UserClass extends Vue {
     await Auth.checkToken();
     await User.loadUser();
 
-    if(User.routeUser == '/' || User.routeUser == '/admin/'){
-      await this.$router.replace(User.routeUser )
-    }
+    // if(User.routeUser == '/' || User.routeUser == '/admin/'){
+    //   await this.$router.replace('/user' )
+    // }
     let user = await User.getUser();
 
     if(!user.register_type){

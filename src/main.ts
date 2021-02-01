@@ -25,7 +25,16 @@ Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
 
-
+import Card from '@/components/Bin/Card.vue'
+Vue.component('bin-card', Card)
+import {
+  Core
+} from '@/store/core'
+import {
+  User
+} from '@/store/user'  
+Vue.prototype.$core = Core
+Vue.prototype.$user = User
 new Vue({
   router,
   store,

@@ -11,17 +11,16 @@
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
           <div class="flex flex-wrap">
             <div class="w-full md:w-3/12 p-2" v-for="year,i in years" :key="i">
-              <card-stats
-                  :statRoute="`/user/all/result?year=${year.id}&id=${$route.query.id}`"
-                  :statSubtitle="`การให้ข้อมูล ( ${year.result} / ${year.rate} )`"
-                  :statTitle="year.year"
-                  statArrow="up"
-                  statPercent="12"
-                  statPercentColor="text-green-500"
-                  statDescripiron="Since last month"
-                  statIconName="mdi mdi-file-document-multiple"
-                  statIconColor="bg-green-500"
-              />
+                <v-card flat class="bgh shadow-xl" @click="$router.push(`/user/all/result?year=${year.id}&id=${$route.query.id}`)">
+                                                <div class="flex h-20 items-center elevation-6">
+                                                    <v-icon class="p-4 ml-4">em em-classical_building</v-icon> 
+                                                    <div class="p-4">
+                                                      <h2 class="text-xl">{{year.year}}</h2>
+                                                        <h2 class="text-base">{{`การให้ข้อมูล ( ${year.result} / ${year.rate} )`}}</h2>
+                                                    </div> 
+                                                </div>
+                                            </v-card>
+           
             </div>
 
           </div>
@@ -43,7 +42,7 @@ import {
   Component,
   Vue
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtn.vue";
+ 
 
 import {
   Auth
@@ -56,7 +55,7 @@ import {
 } from '@/store/user'
 @Component({
   components: {
-    CardStats
+     
   },
 })
 export default class Home extends Vue {

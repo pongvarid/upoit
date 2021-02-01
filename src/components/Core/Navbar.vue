@@ -26,28 +26,44 @@
       <v-list nav  dense >
         <h2 class="text-sm font-bold text-purple-800" >ทั่วไป</h2>
         <hr>
-        <v-list-item-group v-for="item,index in homeList" :key="index"  class="mt-2" >
+        <v-list-item-group v-for="item,windex in homeList" :key="windex"  class="mt-2" >
           <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600 ':''">
             <v-list-item-title ><v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="pl-4 text-base" :class="(item.name == $route.name)?'text-white':''" >{{item.text}} </span></v-list-item-title>
           </v-list-item>
         </v-list-item-group><br>
+         <h2 class="text-sm font-bold text-purple-800" >ผู้ดูแลระบบ</h2> <hr>
+        <v-list-item-group   class="mt-2"  >
+          <v-list-item @click="$router.push('/admin/oit/all')"  > 
+            <v-list-item-title><v-icon style="font-size:28px; color:#8080ff;">mdi-book-edit</v-icon> <span class="pl-4  text-base" >ตรวจ OIT </span></v-list-item-title>
+          </v-list-item>
+            <v-list-item @click="$router.push('/admin/eit/user')"  > 
+            <v-list-item-title><v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base" >ข้อมูลหน่วยงาน </span></v-list-item-title>
+          </v-list-item> 
+             <v-list-item @click="$router.push('/admin/oit/all')"  > 
+            <v-list-item-title><v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base" >ข้อมูลผลการประเมิน </span></v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+    <br>
 
-        <h2 class="text-sm font-bold text-purple-800" >การประเมิน OIT</h2> <hr>
-        <v-list-item-group v-for="item,index in oitList" :key="index"  class="mt-2"  >
+        <h2 class="text-sm font-bold text-purple-800" >การประเมิน OIT</h2> <hr>  
+         <v-list-item @click="$router.push('/user/oit-home')" class="mt-2" > 
+            <v-list-item-title><v-icon style="font-size:18px; color:#8080ff;">em em-clipboard</v-icon> <span class="pl-4  text-base" >บันทึกข้อมูล OIT </span></v-list-item-title>
+          </v-list-item>
+        <v-list-item-group v-for="item,uindex in oitList" :key="uindex"  class="mt-2"  >
           <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600':''">
             <v-list-item-title><v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="pl-4  text-base" :class="(item.name == $route.name)?'text-white':''">{{item.text}}</span></v-list-item-title>
           </v-list-item>
         </v-list-item-group><br>
 
         <h2 class="text-sm font-bold text-purple-800">การประเมิน IIT</h2> <hr>
-        <v-list-item-group v-for="item,index in iitList" :key="index"  class="mt-2"  >
+        <v-list-item-group v-for="item,xindex in iitList" :key="xindex"  class="mt-2"  >
           <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600':''" >
             <v-list-item-title><v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="text-base " :class="(item.name == $route.name)?'text-white':''">{{item.text}} </span></v-list-item-title>
           </v-list-item>
         </v-list-item-group><br>
 
         <h2 class="text-sm font-bold text-purple-800">การประเมิน EIT</h2> <hr>
-        <v-list-item-group v-for="item,index in eitList" :key="index" class="mt-2"   >
+        <v-list-item-group v-for="item,iindex in eitList" :key="iindex" class="mt-2"   >
           <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600':''">
             <v-list-item-title><v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="text-base" :class="(item.name == $route.name)?'text-white':''" >{{item.text}}</span></v-list-item-title>
           </v-list-item>

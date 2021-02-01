@@ -255,7 +255,7 @@ import {
     Component,
     Vue
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtn.vue";
+ 
 import _ from 'lodash'
 import {
     Auth
@@ -269,7 +269,7 @@ import {
 
 @Component({
     components: {
-        CardStats
+         
     },
     props: {
         color: {

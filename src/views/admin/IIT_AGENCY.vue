@@ -4,7 +4,7 @@
       <div class="rounded-t mb-0 px-4 py-3 border-0 ">
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
           <h3 class="font-semibold text-xl text-gray-800">
-            <i class="em em-blue_book" aria-role="presentation" aria-label="BLUE BOOK"></i>&nbsp;ผลการประเมิน IIT ของหน่วยงานต่างๆ
+            <i class="em em-blue_book" aria-role="presentation" aria-label="BLUE BOOK"></i>&nbsp;ผลการประเมิน IIT ของหน่วยงานต่างๆ sss
 
           </h3>
           <hr class="border-gray-600 border-2 mt-2">
@@ -22,17 +22,7 @@
                     </form>
                     <div class="flex flex-wrap">
                       <div class="w-full md:w-4/12 p-2" v-for="agency,i in agencyies" :key="i">
-                        <card-stats
-                            :statRoute="`/admin/iit/report?id=${agency.id}`"
-                            :statSubtitle="tab.name"
-                            :statTitle="agency.name"
-                            statArrow="up"
-                            statPercent="12"
-                            statPercentColor="text-purple-800"
-                            statDescripiron="Since last month"
-                            :statIconName="seticon()"
-                            statIconColor="bg-purple-800"
-                        />
+                       
                       </div>
 
                     </div>
@@ -60,7 +50,7 @@ import {
   Component,
   Vue,Watch
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtnUser.vue";
+ 
 
 import {
   Auth
@@ -74,7 +64,7 @@ import {
 
 @Component({
   components: {
-    CardStats
+     
   },
   props: {
     color: {

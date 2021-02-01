@@ -70,6 +70,11 @@ const adminRouter:any = [
         path: 'eit/map',
         name: 'admin-eit-map',
         component: getView('EIT_MAP')
+    }, 
+    {
+        path: 'eit/user',
+        name: 'admin-eit-user',
+        component: getView('EIT_USER')
     },
  
 ]

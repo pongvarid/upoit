@@ -32,6 +32,12 @@ const userRouter:any  = [
         group : 'home'
     },
     {
+        path: 'oit-home',
+        name: 'oit-home',
+        component: getView('OIT_MAIN'),
+        group : 'oit'
+    },
+    {
         path: 'paper',
         name: 'paper',
         component: getView('Paper'),

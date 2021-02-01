@@ -158,7 +158,7 @@ import {
   Vue,
   Watch
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtn.vue";
+
 
 import {
   Auth
@@ -176,7 +176,7 @@ import _ from "lodash"
 
 @Component({
   components: {
-    CardStats
+    
   },
 })
 export default class Home extends Vue {

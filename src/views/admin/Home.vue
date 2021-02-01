@@ -22,17 +22,15 @@
                     </form>
                     <div class="flex flex-wrap">
                       <div class="w-full md:w-4/12 p-2" v-for="agency,i in agencyies" :key="i">
-                        <card-stats
-                            :statRoute="`/admin/list/?id=${agency.id}`"
-                            :statSubtitle="tab.name"
-                            :statTitle="agency.name"
-                            statArrow="up"
-                            statPercent="12"
-                            statPercentColor="text-purple-800"
-                            statDescripiron="Since last month"
-                            :statIconName="seticon()"
-                            statIconColor="bg-purple-800"
-                        />
+                        <v-card flat class="bgh shadow-xl" @click="$router.push(`/admin/list/?id=${agency.id}`)">
+                                                <div class="flex h-20 items-center elevation-6">
+                                                    <v-icon class="p-4 ml-4">em em-classical_building</v-icon> 
+                                                    <div class="p-4">
+                                                        <h2 class="text-base">{{agency.name}}</h2>
+                                                    </div> 
+                                                </div>
+                                            </v-card>
+                     
                       </div>
 
                     </div>
@@ -60,7 +58,7 @@ import {
   Component,
   Vue,Watch
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtn2.vue";
+ 
 
 import {
   Auth
@@ -74,7 +72,7 @@ import {
 
 @Component({
   components: {
-    CardStats
+     
   },
   props: {
     color: {

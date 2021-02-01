@@ -7,7 +7,7 @@
         <br>
         <v-toolbar flat style="background:transparent;">
 
-          <v-select filled label="เลือกปีงบประมาณ" v-model="chooseYear" :items="years" item-text="year" item-value="id"></v-select>
+          <v-select @change="search()" filled label="เลือกปีงบประมาณ" v-model="chooseYear" :items="years" item-text="year" item-value="id"></v-select>
           <v-spacer></v-spacer>
           <v-btn color="success" @click="search()"><i class="em em-mag" aria-role="presentation" aria-label="LEFT-POINTING MAGNIFYING GLASS"></i> ค้นหา</v-btn>
         </v-toolbar>

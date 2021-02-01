@@ -198,7 +198,7 @@ import {
     Component,
     Vue
 } from 'vue-property-decorator';
-import CardStats from "@/components/Cards/CardStatWithBtn.vue";
+ 
 
 import {
     Auth
@@ -212,7 +212,7 @@ import {
 
 @Component({
     components: {
-        CardStats
+     
     },
     props: {
         color: {
