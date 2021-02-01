@@ -39,7 +39,7 @@
             <v-list-item @click="$router.push('/admin/eit/user')"  > 
             <v-list-item-title><v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base" >ข้อมูลหน่วยงาน </span></v-list-item-title>
           </v-list-item> 
-             <v-list-item @click="$router.push('/admin/oit/all')"  > 
+             <v-list-item @click="$router.push('/report/home')"  > 
             <v-list-item-title><v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base" >ข้อมูลผลการประเมิน </span></v-list-item-title>
           </v-list-item>
         </v-list-item-group>

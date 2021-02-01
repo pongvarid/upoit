@@ -5,7 +5,9 @@
 const getView = function(page:any){
     return () => import(`@/views/user/${page}.vue`)
 }
-
+const getViewReport = function(page:any){
+    return () => import(`@/views/report/${page}.vue`)
+}
 
 const userRouter:any  = [
     {
@@ -152,9 +154,16 @@ const userRouter:any  = [
         group : 'eit'
     },
     {
+        path: '/report/home',
+        name: 'report-home',
+        component: getView('List'),
+       
+    },
+
+    {
         path: '/alert',
         name: 'all-alert',
-        component: getView('ALERT'),
+        component: getViewReport('ALERT'),
        
     },
 ]

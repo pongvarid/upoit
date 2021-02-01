@@ -137,6 +137,9 @@ import {
 } from '@/store/user'
 import _ from "lodash"
 import test from '@/assets/test.json'
+import {
+    Web
+} from '@/store/web'
 @Component({
     components: {
          
@@ -209,6 +212,7 @@ export default class Home extends Vue {
     }
 
     private async saveAnswer() {
+        await Web.switchLoad(true);
         for (let index = 0; index < this.answer.length; index++) {
             let form = {
                 "value": this.answer[index].value,
@@ -230,8 +234,15 @@ export default class Home extends Vue {
             "year": this.years,
         })
         await this.storeUserInAnswer();
+        await Web.switchLoad(false);
         await this.openNotification('top-right', 'success', `<i class="em em-smiley" aria-role="presentation" aria-label="SMILING FACE WITH OPEN MOUTH"></i>`, 'ประเมินสำเร็จแล้ว', '')
-        await this.$router.go(-1)
+       let check = confirm('การประเมิน IIT สำเร็จแล้ว คุณต้องการทำแบบประเมิน EIT ต่อหรือไม่')
+       if(check){
+           await this.$router.push('/eit/year')
+       }else{
+await this.$router.go(-1)
+       }
+       // 
 
     }
 
@@ -244,12 +255,14 @@ export default class Home extends Vue {
 
     public async created() {
         //  await this.show();
+        await Web.switchLoad(true);
         this.user = await User.getUser();
         this.years = this.$route.query.year
         this.data = await Core.getHttp(`/api/iit/v1/issue?year=${this.years}`)
         if (this.data.length == 0) {
             this.nullData = true
         }
+        await Web.switchLoad(false);
         this.response = true
     }
 

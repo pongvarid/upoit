@@ -23,8 +23,8 @@
                     <v-card flat>
                         <v-card-text>
 
-                                <v-autocomplete v-model="chooseAgencyType" :items="agencyType" item-text="name" item-value="id" filled label="ประเภทหน่วยงาน"></v-autocomplete>
-                                <v-autocomplete v-model="chooseAgency" :items="agencies" item-text="name" item-value="id" filled label="หน่วยงาน"></v-autocomplete>
+                            <v-autocomplete v-model="chooseAgencyType" :items="agencyType" item-text="name" item-value="id" filled label="ประเภทหน่วยงาน"></v-autocomplete>
+                            <v-autocomplete v-model="chooseAgency" :items="agencies" item-text="name" item-value="id" filled label="หน่วยงาน"></v-autocomplete>
 
                         </v-card-text>
                         <v-card-actions v-if="chooseAgency">
@@ -44,28 +44,27 @@
                     </template>
                 </vs-dialog>
 
-                    <vs-dialog prevent-close not-close blur v-model="dialogUser">
+                <vs-dialog prevent-close not-close blur v-model="dialogUser">
                     <template #header>
                         <h4 class="not-margin">
                             ผู้มีส่วนได้ส่วนเสียภายนอก
                         </h4>
                     </template>
-      
 
                     <v-card flat>
                         <v-card-text>
                             <v-btn @click="useUserData()" color="success" text>ใช้ข้อมูลระบบ</v-btn>
                             <input type="text" v-model="formUser.agency" :class="`${$xinput} mb-2`" placeholder="ชื่อหน่วยงาน *">
                             <input type="text" v-model="formUser.name" :class="`${$xinput} mb-2`" placeholder="ชื่อองค์กร/ชื่อ - นามสกุล *">
-                            <input type="text" v-model="formUser.tel"  :class="`${$xinput} mb-2`" placeholder="เบอร์โทรศัพท์">
-                            <input type="text" v-model="formUser.email"  :class="`${$xinput} mb-2`" placeholder="อีเมล์ ">
-                            <input type="text" v-model="formUser.other"  :class="`${$xinput} mb-2`" placeholder="ช่องทางการติดต่ออื่นๆ">
-                             <input type="text" v-model="formUser.contact"  :class="`${$xinput} mb-2`" placeholder="ประเภทการติดต่อ *">
+                            <input type="text" v-model="formUser.tel" :class="`${$xinput} mb-2`" placeholder="เบอร์โทรศัพท์">
+                            <input type="text" v-model="formUser.email" :class="`${$xinput} mb-2`" placeholder="อีเมล์ ">
+                            <input type="text" v-model="formUser.other" :class="`${$xinput} mb-2`" placeholder="ช่องทางการติดต่ออื่นๆ">
+                            <input type="text" v-model="formUser.contact" :class="`${$xinput} mb-2`" placeholder="ประเภทการติดต่อ *">
                         </v-card-text>
-                        <v-card-actions >
+                        <v-card-actions>
                             <v-btn dark color="#1E8449" style="width:100%;" large @click="dialogUser = false">
                                 ยืนยัน
-                            </v-btn> 
+                            </v-btn>
                         </v-card-actions>
                     </v-card>
 
@@ -100,7 +99,7 @@
                                     </h2>
 
                                     <div v-for="ans,j in issue.issueDetail"> <br>
-                                        <h3 class="font-bold"  v-if="tab.name != 'ข้อเสนอแนะ'" > {{ans.sub_name}}</h3>
+                                        <h3 class="font-bold" v-if="tab.name != 'ข้อเสนอแนะ'"> {{ans.sub_name}}</h3>
                                         <div v-if="ans.choice">
                                             <div v-if="ans.choice.resourcetype === 'Ascend'">
                                                 <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`)" :class="$input">
@@ -129,7 +128,7 @@
                                     <br><br>
                                     <hr class="divide-pink-900"><br>
                                 </div>
-                                <v-card-actions>  
+                                <v-card-actions>
                                     <v-progress-linear v-if="data.length > 0" style="width:100%;" striped height="10" color="#32a852" :value="(tmp*100)/data[e1-1].issueCount" :buffer-value="100"></v-progress-linear>
 
                                     <v-btn x-large style="width:100%;" v-if=" tmp >= tab.issueCount && i < data.length" color="primary" @click="toTop() && (e1 = (tab.order+1)) && (tmp =0)  ">
@@ -183,7 +182,6 @@ import {
     Vue,
     Watch
 } from 'vue-property-decorator';
- 
 
 import {
     Auth
@@ -196,9 +194,12 @@ import {
 } from '@/store/user'
 import _ from "lodash"
 import test from '@/assets/test.json'
+import {
+    Web
+} from '@/store/web'
 @Component({
     components: {
-         
+
     },
 })
 export default class Home extends Vue {
@@ -220,24 +221,23 @@ export default class Home extends Vue {
     private chooseAgencyType: number | null = null
     private chooseAgency: number | null = null
     private dialog: boolean = true
-    private dialogUser:boolean = false;
-    private formUser:any = {};
+    private dialogUser: boolean = false;
+    private formUser: any = {};
 
-    private async getStart(){
+    private async getStart() {
         this.dialog = false;
         //let check = confirm('คุณต้องการให้ข้อมูลส่วนตัวเพิ่มเติมหรือไม่')
-      // if(check){
-      //   this.dialogUser = true;
-      // }
-
+        // if(check){
+        //   this.dialogUser = true;
+        // }
 
     }
-    private async useUserData(){
+    private async useUserData() {
         this.dialogUser = false;
         let data = await Core.getHttp(`/api/ita/v2/dashboard/${this.user.ext_link.id}/`)
         this.formUser.agency = data.agency
-        this.formUser.name = this.user.first_name +" "+this.user.last_name 
-        this.formUser.email= this.user.email
+        this.formUser.name = this.user.first_name + " " + this.user.last_name
+        this.formUser.email = this.user.email
         console.log(data.agency);
         this.dialogUser = true;
     }
@@ -250,7 +250,7 @@ export default class Home extends Vue {
     @Watch('chooseAgency')
     private async chnageChooseAgency(val: number) {
         let check = await Core.getHttp(`/api/eit/v2/answerissueeit-report/?agency=${this.chooseAgency}&year=${this.years}&user=${this.user.pk}`)
-      //  alert(check.length )
+        //  alert(check.length )
         if (check.length > 0) {
             this.lockUser = true;
         } else {
@@ -289,6 +289,7 @@ export default class Home extends Vue {
     }
 
     private async saveAnswer() {
+        await Web.switchLoad(true);
         for (let index = 0; index < this.answer.length; index++) {
             let form = {
                 "value": this.answer[index].value,
@@ -309,21 +310,20 @@ export default class Home extends Vue {
             "agency": this.chooseAgency,
             "year": this.years,
         })
-
+        await Web.switchLoad(false);
         await this.openNotification('top-right', 'success', `<i class="em em-smiley" aria-role="presentation" aria-label="SMILING FACE WITH OPEN MOUTH"></i>`, 'ประเมินสำเร็จแล้ว', '')
-        await this.$router.go(-1)
+        alert('ประเมิน EIT สำเร็จแล้ว')
+         await this.$router.go(-1)
     }
 
-    
-
     public async created() {
-        //  await this.show();
+        await Web.switchLoad(true);
         this.agencyType = await Core.getHttp(`/api/ita/v1/agencytype/`)
 
         this.user = await User.getUser();
         this.years = this.$route.query.year
         this.data = await Core.getHttp(`/api/eit/v1/issue?year=${this.years}`)
-         
+        await Web.switchLoad(false);
         this.response = true
     }
 

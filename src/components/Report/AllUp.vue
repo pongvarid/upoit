@@ -20,16 +20,7 @@
 
         <section class="py-8 px-4">
           <div class="flex flex-wrap -mx-4">
-            <div class="w-full lg:w-1/3 px-4 mb-4 lg:mb-0">
-              <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-blue-600 ">
-
-                <div class="flex flex-col p-4">
-                  <h2>OIT</h2>
-                  <h3 class="text-xl mb-3 font-semibold font-heading font-semibold text-blue-600">26.75</h3>
-
-                </div>
-              </div>
-            </div>
+            
             <div class="w-full lg:w-1/3 px-4 mb-4 lg:mb-0">
               <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-yellow-600">
 
@@ -45,6 +36,16 @@
                 <div class="flex flex-col p-4">
                   <h2>EIT</h2>
                   <h3 class="text-xl mb-3 font-semibold font-heading font-semibold text-purple-600">23.85</h3>
+                </div>
+              </div>
+            </div>
+            <div class="w-full lg:w-1/3 px-4 mb-4 lg:mb-0">
+              <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-blue-600 ">
+
+                <div class="flex flex-col p-4">
+                  <h2>OIT</h2>
+                  <h3 class="text-xl mb-3 font-semibold font-heading font-semibold text-blue-600">26.75</h3>
+
                 </div>
               </div>
             </div>
