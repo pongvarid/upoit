@@ -234,6 +234,7 @@ export default class Home extends Vue {
         let assessmentData = this.assessmentData[newIndex]
         //console.log(newIndex, assessmentData.id)
         await this.getRawIssue(assessmentData.id)
+      await this.generateScore()
     }
 
     private async getRawIssue(assignId: number) {

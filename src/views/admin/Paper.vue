@@ -5,7 +5,7 @@
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
           <h3 class="font-semibold text-xl text-gray-800">
             <i class="em em-blue_book" aria-role="presentation" aria-label="BLUE BOOK"></i>&nbsp;ข้อมูลประจำปี
-            {{ year.year }}
+            {{ year.year }} {{scoreAll}}
           </h3>
           <hr class="border-gray-600 border-2 mt-2">
         </div>
@@ -24,7 +24,7 @@
               ]">
                     ลำดับ
                   </th>
-                  <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
+                  <th  class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
                       :class="[
                 color === 'light'
                   ? 'bg-gray-100 text-gray-600 border-gray-200'
@@ -54,7 +54,7 @@
                   ? 'bg-gray-100 text-gray-600 border-gray-200'
                   : 'bg-green-800 text-green-300 border-green-700',
               ]">
-                    Url
+                    ข้อมูล
                   </th>
 
 
@@ -67,12 +67,12 @@
                     {{ rate.number }}
 
                   </th>
-                  <td class="font-bold text-gray-700" style="width:350px;">
+                  <td class="font-bold text-gray-700" >
 
                     {{ rate.name }}
 
                   </td>
-                  <td style="width:650px;" class="p-2">
+                  <td   class="p-2">
 
                     <p v-html="rate.detail"></p>
 
@@ -87,23 +87,18 @@
                         ยังไม่มีข้อมูล
                       </v-btn>
                       <v-btn @click="openDialog(rate)" :color="(rate.result.tester)?'#2e9837':'#ff751a'" dark v-else>
-
                         <span v-if="!rate.result.tester"><v-icon>mdi-eye</v-icon>ตรวจสอบข้อมูล</span>
                         <span v-else><v-icon>mdi-book-check</v-icon>ตรวจสอบแล้ว</span>
                       </v-btn>
-                      <!--                      <button @click="openDialog(rate)" :class="`bg-purple-600 f-white ${$xbtn}`" type="button">-->
-                      <!--                        <span class="mdi mdi-grease-pencil"></span>-->
-                      <!--                        ดูข้อมูล-->
-                      <!--                      </button>-->
-
-
                     </div>
                   </td>
-                  <td   class="p-2">
+                  <td  style="width:300px;" class="p-2">
                     <h2 class="p-2 text-xl text-green-600">ส่งแล้ว {{rate.result.length}}</h2><br>
                     <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">
-                      <h2>ตรวจแล้ว {{getPassingTest(rate.result,)}} / {{rate.result.length}}</h2><br>
-                      <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>
+                      <h2>ตรวจแล้ว {{getPassingTest(rate.result)}} / {{rate.result.length}}</h2><br>
+
+                      <h2>คะแนน {{getScoreAll(rate.result)}}</h2>
+<!--                      <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>-->
                     </div>
                     <div v-else>
                       <div class="p-2 flex justify-center ">
@@ -295,6 +290,8 @@ export default class Home extends Vue {
   private rateStatus: any = []
   private response: boolean = false
 
+  private scoreAll:number = 0
+  private scoreArr:any = [];
   public async created() {
 
     await this.run()
@@ -311,6 +308,7 @@ export default class Home extends Vue {
     this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}`)
     this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
     await this.generateTable()
+    await this.generateScore();
     this.response = true;
     await loader.hide()
   }
@@ -381,6 +379,32 @@ export default class Home extends Vue {
   getPassingTest(result:any){
     let res = _.filter(result,function(o) { return o.tester != null; })
     return res.length;
+  }
+  getScoreAll(result:any){
+    let score = _.meanBy(result, (p:any) => p.score);
+    return score
+  }
+
+  async generateScore(){
+    let listView = [];
+    for (let index = 0 ; index < this.rates.length ; index++){
+
+      let score = _.meanBy(this.rates[index].result, (p:any) => p.score);
+      listView.push({
+        "name":this.rates[index].name,
+        "score":score,
+        "order":index
+      })
+
+    }
+    let scoreTmp = _.meanBy(listView, (p:any) => p.score)
+    let response = {
+      "list":listView,
+      "score_avg":scoreTmp,
+      "score60":((scoreTmp/100)*60).toFixed(2)
+    }
+    console.log('[dd]',response)
+
   }
 }
 </script>

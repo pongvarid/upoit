@@ -18,6 +18,7 @@ class IitClass extends VuexModule {
                 value: Iit.getDataIssue(value)
             }))
             .value();
+
         return issueGroup
     }
 

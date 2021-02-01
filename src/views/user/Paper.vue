@@ -75,7 +75,7 @@
                                            <h2 class="p-2 text-xl text-green-600">ส่งแล้ว {{rate.result.length}}</h2><br>
                                             <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">
                                               <h2>ตรวจแล้ว {{getPassingTest(rate.result,)}} / {{rate.result.length}}</h2><br>
-                                              <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>
+<!--                                              <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>-->
                                             </div>
                                             <div v-else>
                                                 <div class="p-2 flex justify-center ">

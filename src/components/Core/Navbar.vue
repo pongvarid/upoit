@@ -27,26 +27,30 @@
         <h2 class="text-sm font-bold text-purple-800" >ทั่วไป</h2>
         <hr>
         <v-list-item-group v-for="item,windex in homeList" :key="windex"  class="mt-2" >
-          <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600 ':''">
+          <v-list-item  @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600 ':''">
             <v-list-item-title ><v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="pl-4 text-base" :class="(item.name == $route.name)?'text-white':''" >{{item.text}} </span></v-list-item-title>
           </v-list-item>
         </v-list-item-group><br>
-         <h2 class="text-sm font-bold text-purple-800" >ผู้ดูแลระบบ</h2> <hr>
-        <v-list-item-group   class="mt-2"  >
-          <v-list-item @click="$router.push('/admin/oit/all')"  > 
+         <h2  v-if="user.is_superuser || user.passing "  class="text-sm font-bold text-purple-800" >ผู้ดูแลระบบ</h2> <hr v-if="user.is_superuser || user.passing ">
+        <v-list-item-group   class="mt-2" v-if="user.is_superuser || user.passing " >
+          <v-list-item  v-if="user.is_superuser" @click="$router.push('/admin/oit/all')"  >
             <v-list-item-title><v-icon style="font-size:28px; color:#8080ff;">mdi-book-edit</v-icon> <span class="pl-4  text-base" >ตรวจ OIT </span></v-list-item-title>
           </v-list-item>
-            <v-list-item @click="$router.push('/admin/eit/user')"  > 
+            <v-list-item v-if="user.passing" @click="$router.push('/admin/eit/user')"  >
             <v-list-item-title><v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base" >ข้อมูลหน่วยงาน </span></v-list-item-title>
           </v-list-item> 
-             <v-list-item @click="$router.push('/report/home')"  > 
+             <v-list-item v-if="user.is_superuser" @click="$router.push('/report/home')"  >
             <v-list-item-title><v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base" >ข้อมูลผลการประเมิน </span></v-list-item-title>
           </v-list-item>
+          <v-list-item v-if="user.is_superuser"    >
+            <v-list-item-title><v-icon style="font-size:18px; color:green;">em-building_construction </v-icon>
+              <a class="pl-4  text-base" href="/admin">Super Admin</a></v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
-    <br>
+    <br v-if="user.is_superuser || user.passing ">
 
         <h2 class="text-sm font-bold text-purple-800" >การประเมิน OIT</h2> <hr>  
-         <v-list-item @click="$router.push('/user/oit-home')" class="mt-2" > 
+         <v-list-item v-if="user.ext_link.oit"  @click="$router.push('/user/oit-home')" class="mt-2" >
             <v-list-item-title><v-icon style="font-size:18px; color:#8080ff;">em em-clipboard</v-icon> <span class="pl-4  text-base" >บันทึกข้อมูล OIT </span></v-list-item-title>
           </v-list-item>
         <v-list-item-group v-for="item,uindex in oitList" :key="uindex"  class="mt-2"  >
@@ -132,8 +136,8 @@ export default class UserClass extends Vue {
     await Auth.logout();
     if(user.register_type == 'microsoft.com'){
       window.open('https://login.microsoftonline.com/logout.srf', '_blank');
-
     }
+    await this.$router.replace('/')
     await location.reload()
   }
 
