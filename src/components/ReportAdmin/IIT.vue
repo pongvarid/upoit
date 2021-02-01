@@ -216,8 +216,7 @@ export default class Home extends Vue {
     private async run() {
         this.user = await User.getUser();
         this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.$route.query.agency}/`)
-        this.yearData = await Core.getHttp(`/api/iit/v2/year/${this.$route.query.year}/`)
-        
+        this.yearData = await Core.getHttp(`/api/iit/v2/year/${this.$route.query.year}/`) 
     }
 
     private async getAssessment() {

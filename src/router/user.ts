@@ -156,14 +156,14 @@ const userRouter:any  = [
     {
         path: '/report/home',
         name: 'report-home',
-        component: getView('List'),
+        component: getViewReport('List'),
        
     },
 
     {
         path: '/alert',
         name: 'all-alert',
-        component: getViewReport('ALERT'),
+        component: getView('ALERT'),
        
     },
 ]
