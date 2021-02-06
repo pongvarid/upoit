@@ -23,16 +23,16 @@
                                         <div class="w-full md:w-4/12 p-2" v-for="agency,i in agencyies" :key="i">
                                             <v-card flat class="bgh shadow-xl" @click="$router.push(`/user/iit/report?id=${agency.id}`)">
                                                 <div class="flex h-20 items-center elevation-6">
-                                                    <v-icon class="p-4 ml-4">em em-classical_building</v-icon> 
+                                                    <v-icon class="p-4 ml-4">em em-classical_building</v-icon>
                                                     <div class="p-4">
                                                         <h2 class="text-base">{{agency.name}}</h2>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                             </v-card>
-                       
-                                        </div>  
+
+                                        </div>
                                     </div>
-                                </div> 
+                                </div>
                             </v-tab-item>
                         </v-tabs>
                     </div>
@@ -40,10 +40,23 @@
 
             </div>
 
-        </div>
+        </div> 
 
     </div>
-
+    <vs-dialog prevent-close not-close blur v-model="blockDialog"> 
+        <v-card flat>
+            <v-card-text>
+                 <center><i class="em em-cry text-4xl" s aria-role="presentation" aria-label="CRYING FACE"></i></center><br>
+                 <center><h2 class="text-4xl">ขออภัย</h2></center><br>
+                 <center><p class="text-xl">ระบบยังไม่เปิดให้ท่านเข้าถึงข้อมูล <b>ผลการประเมิน (IIT)</b> ได้ <br> กรุณาลองใหม่ในภายหลัง</p></center>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn class="w-full" large color="primary"   outlined @click="$router.go(-1)">
+                    กลับ
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </vs-dialog>
 </div>
 </template>
 
@@ -85,6 +98,7 @@ export default class AdminHome extends Vue {
     private tabs: any = []
     private tab: number = 0
     private search: string = ''
+    private blockDialog: boolean = true;
     public async created() {
 
         await this.run()
@@ -131,7 +145,5 @@ export default class AdminHome extends Vue {
     color: white !important;
 }
 
-.bgh {
-    
-}
+.bgh {}
 </style>

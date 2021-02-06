@@ -167,7 +167,7 @@
           </div>
         </div>
         <br><br>
-        <h2 class="text-2xl" >รายระเอียดการประเมิน</h2>
+        <h2 class="text-2xl" >รายละเอียดการประเมิน</h2>
         <v-tabs>
           <v-tab>IIT</v-tab>
           <v-tab-item>

@@ -15,10 +15,17 @@
                         <h4 class="not-margin">
                             เลือกหน่วยงานที่ต้องการประเมิน
                         </h4>
-                    </template>
-                    <span v-if="chooseAgency && lockUser">
-                        <i class="em em-x" aria-role="presentation" aria-label="CROSS MARK"></i> คุณได้ประเมินให้หน่วยงานนี้แล้ว ไม่สามารถทำการประเมินได้
-                    </span>
+                    </template> 
+
+                        <v-alert type="error" v-if="chooseAgency && lockUser" >
+                            คุณได้ประเมินให้หน่วยงานนี้แล้ว ไม่สามารถทำการประเมินได้
+                        </v-alert>
+                        
+
+                        <v-alert type="warning" v-if="chooseAgency == myAgency" >
+                            คุณไม่สามารประเมิน (EIT) หน่วยงานของตนเองได้ กรุณาเลือกหน่วยงานอื่น
+                        </v-alert>
+                        
 
                     <v-card flat>
                         <v-card-text>
@@ -27,12 +34,13 @@
                             <v-autocomplete v-model="chooseAgency" :items="agencies" item-text="name" item-value="id" filled label="หน่วยงาน"></v-autocomplete>
 
                         </v-card-text>
-                        <v-card-actions v-if="chooseAgency">
+                        <v-card-actions v-if="chooseAgency && chooseAgency != myAgency">
                             <v-btn v-if="!lockUser" dark color="#1E8449" style="width:100%;" large @click="getStart">
                                 ยืนยัน
                             </v-btn>
 
                         </v-card-actions>
+                    
                     </v-card>
 
                     <template #footer>
@@ -44,39 +52,7 @@
                     </template>
                 </vs-dialog>
 
-                <vs-dialog prevent-close not-close blur v-model="dialogUser">
-                    <template #header>
-                        <h4 class="not-margin">
-                            ผู้มีส่วนได้ส่วนเสียภายนอก
-                        </h4>
-                    </template>
-
-                    <v-card flat>
-                        <v-card-text>
-                            <v-btn @click="useUserData()" color="success" text>ใช้ข้อมูลระบบ</v-btn>
-                            <input type="text" v-model="formUser.agency" :class="`${$xinput} mb-2`" placeholder="ชื่อหน่วยงาน *">
-                            <input type="text" v-model="formUser.name" :class="`${$xinput} mb-2`" placeholder="ชื่อองค์กร/ชื่อ - นามสกุล *">
-                            <input type="text" v-model="formUser.tel" :class="`${$xinput} mb-2`" placeholder="เบอร์โทรศัพท์">
-                            <input type="text" v-model="formUser.email" :class="`${$xinput} mb-2`" placeholder="อีเมล์ ">
-                            <input type="text" v-model="formUser.other" :class="`${$xinput} mb-2`" placeholder="ช่องทางการติดต่ออื่นๆ">
-                            <input type="text" v-model="formUser.contact" :class="`${$xinput} mb-2`" placeholder="ประเภทการติดต่อ *">
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn dark color="#1E8449" style="width:100%;" large @click="dialogUser = false">
-                                ยืนยัน
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-
-                    <template #footer>
-                        <div class="footer-dialog">
-                            <div class="new">
-                                <v-btn @click="$router.go(-1)" color="primary" text>กลับ</v-btn>
-                            </div>
-                        </div>
-                    </template>
-                </vs-dialog>
-
+          
                 <!-- {{resultAll.length}} -->
                 <v-stepper v-model="e1" v-if="chooseAgency">
                     <v-stepper-header style=" overflow-x: scroll; overflow-y:hidden;  display:flex; flex-wrap: nowrap; padding:4px;">
@@ -223,6 +199,8 @@ export default class Home extends Vue {
     private dialog: boolean = true
     private dialogUser: boolean = false;
     private formUser: any = {};
+    private myAgency :any = 0
+    
 
     private async getStart() {
         this.dialog = false;
@@ -324,6 +302,7 @@ export default class Home extends Vue {
         this.years = this.$route.query.year
         this.data = await Core.getHttp(`/api/eit/v1/issue?year=${this.years}`)
         await Web.switchLoad(false);
+        this.myAgency = this.user.ext_link.agency
         this.response = true
     }
 

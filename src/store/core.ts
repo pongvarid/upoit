@@ -14,7 +14,9 @@ class CoreModule extends VuexModule {
     }
 
     async postHttp(url:string,form:object):Promise<any>{
-        return  await axios.post(url,form).then((r)=>{return r.data}).catch((e)=>{return e.response.data})
+        return  await axios.post(url,form).then((r)=>{return r.data}).catch((e)=>{
+          console.log(e)
+            return e.response.data})
     }
 
     async putHttp(url:string,form:object):Promise<any>{

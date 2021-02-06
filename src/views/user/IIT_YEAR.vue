@@ -12,7 +12,7 @@
 
             <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
 
-                <div class="flex items-center  " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="getIssue(year.id,year.status)" v-if="!year.status">
+                <div class="flex items-center cursor-pointer	 " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="getIssue(year.id,year.status)" v-if="!year.status">
                    
                     <bin-card c="#800080" i='mdi-calendar' t="ปีงบประมาณ" :h="year.year"></bin-card>
             

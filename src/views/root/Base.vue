@@ -1,12 +1,16 @@
 <template>
 <div>
-    <!-- <navbar /> -->
+   
+     <v-app  >
     <main>
         <section class="">
                     <router-view   />
-            <!-- <footer-small absolute  /> -->
+    
         </section>
     </main>
+
+ <Loading />
+    </v-app>
 </div>
 </template>
 
@@ -22,9 +26,10 @@ import {
 import {
     Auth
 } from "@/store/auth";
+import Loading from "@/components/Web/Loading.vue";
 @Component({
     components: {
-  
+  Loading
     },
     computed: {}
 }) export default class Test extends Vue {
@@ -32,7 +37,7 @@ import {
     response: boolean = false
     
     async created() {
-        
+       
     }
 }
 </script>

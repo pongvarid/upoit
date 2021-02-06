@@ -35,7 +35,7 @@
                   ? 'bg-gray-100 text-gray-600 border-gray-200'
                   : 'bg-green-800 text-green-300 border-green-700',
               ]">
-                                        รายระเอียด
+                                        รายละเอียด
                                     </th>
                                     <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
                 color === 'light'

@@ -17,7 +17,7 @@
           <h2 class="text-xl">EIT : {{binEIT}}</h2>
           <h2 class="text-xl">OIT : {{binOIT}}</h2>
             <br>
-          <h2 class="text-xl">รายระเอียด</h2>
+          <h2 class="text-xl">รายละเอียด</h2>
           <v-expansion-panels v-model="exTab" multiple>
             <v-expansion-panel >
               <v-expansion-panel-header>

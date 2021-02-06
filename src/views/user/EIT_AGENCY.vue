@@ -47,7 +47,20 @@
       </div>
 
     </div>
-
+    <vs-dialog prevent-close not-close blur v-model="blockDialog"> 
+        <v-card flat>
+            <v-card-text>
+                 <center><i class="em em-cry text-4xl" s aria-role="presentation" aria-label="CRYING FACE"></i></center><br>
+                 <center><h2 class="text-4xl">ขออภัย</h2></center><br>
+                 <center><p class="text-xl">ระบบยังไม่เปิดให้ท่านเข้าถึงข้อมูล <b>ผลการประเมิน (EIT)</b> ได้ <br> กรุณาลองใหม่ในภายหลัง</p></center>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn class="w-full" color="primary" large outlined @click="$router.go(-1)">
+                    กลับ
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </vs-dialog>
 
   </div>
 </template>
@@ -91,6 +104,7 @@ export default class AdminHome extends Vue {
   private tabs:any = []
   private tab:number = 0
   private search:string = ''
+  private blockDialog:boolean = true;
   public async created() {
 
     await this.run()

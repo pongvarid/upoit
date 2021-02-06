@@ -24,7 +24,7 @@
                         <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
                             <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-yellow-600">
                                 <div class="flex items-center justify-between px-4 py-3 border-b bg-yellow-600 rounded-t-xl">
-                                    <h3 class="text-lg font-semibold font-heading text-white">บุคคลากรภายใน</h3>
+                                    <h3 class="text-lg font-semibold font-heading text-white">บุคลากรภายใน</h3>
                                 </div>
                                 <div class="flex flex-col p-4">
                                     <h3 class="text-xl mb-3 font-semibold font-heading font-semibold">{{agency.count}} คน</h3> 
@@ -34,7 +34,7 @@
                         <div class="w-full lg:w-1/4 px-4 mb-4 lg:mb-0">
                             <div class="h-35 rounded-xl shadow-xl bg-white border-b-4 border-purple-600">
                                 <div class="flex items-center justify-between px-4 py-3 border-b bg-purple-600 rounded-t-xl">
-                                    <h3 class="text-lg font-semibold font-heading text-white">บุคคลากรที่ประเมิน</h3>
+                                    <h3 class="text-lg font-semibold font-heading text-white">บุคลากรที่ประเมิน</h3>
                                 </div>
                                 <div class="flex flex-col p-4">
                                     <h3 class="text-xl mb-3 font-semibold font-heading font-semibold">{{userDone}} คน</h3>

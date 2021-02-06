@@ -12,6 +12,10 @@ class UserClass extends VuexModule {
 
     public async loadUser(){
             let user = await Core.getHttp(`/api/ita/v2/user/`)
+            if(!user.pk){
+                await alert('เซสชั่นหมดอายุ กรุณา เข้าสู่ระบบอีกครั้ง')
+                await window.location.replace("/"); 
+            }
             this.user = user;
             this.permission = user.is_staff
         if(user.is_staff == true || user.is_staff == false){
@@ -19,12 +23,16 @@ class UserClass extends VuexModule {
         }else{
             this.routeUser = '/'
         }
-
-
+ 
     }
 
     public async getUser(){
         return await Core.getHttp(`/api/ita/v2/user/`)
+    }
+
+    public async getProfile(){
+        let user = await Core.getHttp(`/api/ita/v2/user/`)
+        return user;
     }
 
 

@@ -24,7 +24,10 @@ class AuthClass extends VuexModule {
     }
 
     public async checkUser(user:string){
-        return await Core.postHttp(`/api/ita/v2/check/`,{"username":user})
+         
+        let data =  await Core.postHttp(`/api/ita/v2/check/`,{"username":user})
+     
+        return data;
     }
 
     public async loginMicrosoft365() {

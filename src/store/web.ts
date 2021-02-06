@@ -5,11 +5,22 @@ import _ from "lodash"
 @Module({generateMutationSetters: true})
 class WebModule extends VuexModule {
     public loading: boolean =  false;
-    public async switchLoad(load:boolean){
-        this.loading = load
+    public loadTxt:any = 'กำลังโหลด'
+    public async switchLoad(load:boolean ){ 
+      //  this.loadTxt = 'กำลังโหลด'
+        this.loading = load 
     }
 
+    public async onLoad(txt:string){
+        this.loadTxt = txt
+        this.loading = true 
+    }
 
+    public async offLoad(){
+        this.loading = false 
+    }
+
+  
 }
 
 import store from "@/store"

@@ -18,7 +18,7 @@ const adminRouter:any = [
         component: getView('Xhome')
     },
     {
-        path: 'oit/all',
+        path: '/oit/all',
         name: 'admin-oit-all',
         component: getView('Home')
     },
@@ -72,7 +72,7 @@ const adminRouter:any = [
         component: getView('EIT_MAP')
     }, 
     {
-        path: 'eit/user',
+        path: '/eit/user',
         name: 'admin-eit-user',
         component: getView('EIT_USER')
     },
