@@ -27,15 +27,15 @@
                 <v-card-text>
                     <form @submit.prevent="saveProfile()">
                         <v-alert v-if="form.in_up" color="#7e4d9e" border="left" dense elevation="2" colored-border>
-                            <div class="flex"><img class="h-8 w-auto" src="https://upload.wikimedia.org/wikipedia/commons/e/e6/UPLogo.png" alt="">
-                                <h2 style="color:#7e4d9e;" class="p-1 pl-2 font-bold">เป็นรายละเอียดากรของมหาวิทยาลัยพะเยา</h2>
+                            <div class="flex"><img class="h-8 w-auto" src="https://sv1.picz.in.th/images/2021/01/24/lnRs0t.png" alt="">
+                                <h2 style="color:#7e4d9e;" class="p-1 pl-2 font-bold">เป็นบุคลากรภายในมหาวิทยาลัยพะเยา</h2>
                             </div>
 
                         </v-alert>
                         <v-text-field disabled v-model="form.register_type" filled label="เข้าสู่ระบบโดย"></v-text-field>
                         <v-autocomplete v-model="chooseAgencyType" :items="agencyType" item-text="name" item-value="id" filled label="ประเภทหน่วยงาน / บุคคล"></v-autocomplete>
                         <v-autocomplete v-model="form.agency" :items="agencies" item-text="name" item-value="id" filled label="หน่วยงาน"></v-autocomplete>
-                        <v-checkbox    v-model="form.in_up"></v-checkbox>
+                        <v-checkbox  label="เป็นบุคลากรภายใน มหาวิทยาลัยพะเยา"  v-model="form.in_up"></v-checkbox>
                         <center>
                             <v-btn type="submit" large dark color="#298aff">
                                 <v-icon>mdi-account-child-circle</v-icon>ยืนยันตัวตน
@@ -82,7 +82,9 @@ export default class UserClass extends Vue {
 
     private userDialog: boolean = false
 
-    private form: any = {}
+    private form: any = {
+        in_up : true
+    }
     private agencyType: any = []
     private chooseAgencyType: number | null = null
     private agencies: any = []
@@ -98,6 +100,7 @@ export default class UserClass extends Vue {
         let user = await User.getUser();
 
         if (!user.register_type) {
+            
             await Web.switchLoad(false);
             this.form.user = user.pk
             this.agencyType = await Core.getHttp(`/api/ita/v1/agencytype/`)
@@ -113,6 +116,7 @@ export default class UserClass extends Vue {
                  
             }
             this.userDialog = true
+            
         }
 
     }

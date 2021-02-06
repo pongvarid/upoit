@@ -77,7 +77,7 @@ export default class Home extends Vue {
     if(this.user.ext_link.in_up){
       let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`)
     if(userInAnswer.length > 0){
-      await this.$router.push(`detail?year=${yearId}`)
+      await this.$router.push(`/eit/detaildetail?year=${yearId}`)
     }else{
       alert('กรุณาประเมิน IIT ก่อน')
     }

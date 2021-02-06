@@ -73,7 +73,7 @@ $vs:any
             if (userInAnswer.length > 0) {
                 await this.openNotification('top-right', 'primary', `<i class="em em-female-teacher" aria-role="presentation" aria-label=""></i>`,'คุณได้ทำการประเมินแล้ว','ระบบอนุญาตให้ประเมินได้ครั้งเดียว')
             } else {
-                await this.$router.push(`detail?year=${yearId}`)
+                await this.$router.push(`/iit/detail?year=${yearId}`)
             }
           //   await this.$router.push(`detail?year=${yearId}`)
         } else {
