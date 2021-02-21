@@ -16,6 +16,11 @@ const userRouter:any  = [
         component: getView('Home')
     },
     {
+        path: '/profile',
+        name: 'profile',
+        component: getView('Profile')
+    },
+    {
         path: '/home',
         name: 'homes',
         text:'หน้าแรก',

@@ -76,13 +76,13 @@ export default class Home extends Vue {
   public async openEit(yearId:any){
     if(this.user.ext_link.in_up){
       let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`)
-    if(userInAnswer.length > 0){
-      await this.$router.push(`/eit/detaildetail?year=${yearId}`)
+      if(userInAnswer.length > 0){
+        await this.$router.push(`/eit/detail?year=${yearId}`)
+      }else{
+        alert('กรุณาประเมิน IIT ก่อน')
+      }
     }else{
-      alert('กรุณาประเมิน IIT ก่อน')
-    }
-    }else{
-      await this.$router.push(`detail?year=${yearId}`)
+      await this.$router.push(`/eit/detail?year=${yearId}`)
     }
 
     console.log(this.user.ext_link.in_up);

@@ -70,7 +70,7 @@
                                 <div v-for="issue,index in tab.issue">
                                     <h2>
                                         <v-avatar color="teal" size="36">
-                                            <span class="white--text headline">i{{issue.order}} </span>
+                                            <span class="white--text headline">e{{issue.order}} </span>
                                         </v-avatar> &nbsp;{{issue.name}}
                                     </h2>
 

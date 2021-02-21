@@ -7,7 +7,14 @@
         </v-tab>
         <v-tab-item>
                <AgencyEitUser />
-        </v-tab-item> 
+        </v-tab-item>
+      <v-tab>
+       จำนวนผู้ประเมิน
+      </v-tab>
+      <v-tab-item>
+<Result />
+      </v-tab-item>
+
     </v-tabs>
 </div>
 </template>
@@ -18,9 +25,10 @@ import {
     Vue
 } from 'vue-property-decorator';
 import AgencyEitUser from "@/components/Core/AgencyEitUser.vue";
+import Result from "@/components/Core/Result.vue";
 @Component({
     components: {
-        AgencyEitUser
+        AgencyEitUser,Result
     },
 })
 export default class EitUser extends Vue {

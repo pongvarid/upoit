@@ -86,6 +86,8 @@ class AuthClass extends VuexModule {
     public async loginFacebook() {
         var provider = new firebase.auth.FacebookAuthProvider();
         provider.addScope('email');
+        provider.addScope('public_profile');
+
         firebase.auth().signInWithRedirect(provider);
     }
 
@@ -101,6 +103,7 @@ class AuthClass extends VuexModule {
                 }
             })
             .catch(async (error: any) => {
+                console.log(error);
                 return false;
             });
         console.log(user);

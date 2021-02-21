@@ -32,10 +32,11 @@
                             </div>
 
                         </v-alert>
-                        <v-text-field disabled v-model="form.register_type" filled label="เข้าสู่ระบบโดย"></v-text-field>
+                      <v-checkbox    label="เป็นบุคลากรภายใน มหาวิทยาลัยพะเยา"  v-model="form.in_up"></v-checkbox>
+
+                      <v-text-field disabled v-model="form.register_type" filled label="เข้าสู่ระบบโดย"></v-text-field>
                         <v-autocomplete v-model="chooseAgencyType" :items="agencyType" item-text="name" item-value="id" filled label="ประเภทหน่วยงาน / บุคคล"></v-autocomplete>
                         <v-autocomplete v-model="form.agency" :items="agencies" item-text="name" item-value="id" filled label="หน่วยงาน"></v-autocomplete>
-                        <v-checkbox  label="เป็นบุคลากรภายใน มหาวิทยาลัยพะเยา"  v-model="form.in_up"></v-checkbox>
                         <center>
                             <v-btn type="submit" large dark color="#298aff">
                                 <v-icon>mdi-account-child-circle</v-icon>ยืนยันตัวตน
@@ -83,7 +84,7 @@ export default class UserClass extends Vue {
     private userDialog: boolean = false
 
     private form: any = {
-        in_up : true
+        in_up : false
     }
     private agencyType: any = []
     private chooseAgencyType: number | null = null
@@ -103,26 +104,34 @@ export default class UserClass extends Vue {
             
             await Web.switchLoad(false);
             this.form.user = user.pk
-            this.agencyType = await Core.getHttp(`/api/ita/v1/agencytype/`)
+
             this.form.register_type = ((user.username).split("@__@"))[1]
             console.log(((user.email).split("@"))[1])
             let in_up = ((user.email).split("@"))[1]
             if (in_up === "up.ac.th") {
                 this.form.in_up = true
             }
+
             if (!this.form.register_type) {
                 this.form.register_type = "ปกติ"
-                 
-                 
             }
-            this.userDialog = true
+
+          let typeAg = await Core.getHttp(`/api/ita/v1/agencytype/`)
+          if(this.form.in_up ){
+            typeAg.pop();
+            this.agencyType = typeAg
+          }else{
+            this.agencyType = typeAg[2]
+          }
+
+          this.userDialog = true
             
         }
 
     }
     async saveProfile() { 
-         this.form.passing = true;
-         this.form.oit = true;
+         // this.form.passing = true;
+         // this.form.oit = true;
         let profile = await Core.postHttp(`/api/ita/v1/profile/`, this.form)
         if (profile.id) {
             await location.reload()
@@ -134,6 +143,18 @@ export default class UserClass extends Vue {
         this.agencies = await Core.getHttp(`/api/ita/v2/agencys/?agency_type=${val}`)
     }
 
+    @Watch('form.in_up')
+    private async chnageAgency(val: boolean) {
+      this.agencies = []
+      let typeAg = await Core.getHttp(`/api/ita/v1/agencytype/`)
+        if(val){
+          typeAg.pop();
+          this.agencyType = typeAg
+        }else{
+          this.agencyType = typeAg[2]
+        }
+    }
+
      async logout(){
     let user = await User.getUser();
     console.log(user)
@@ -142,6 +163,8 @@ export default class UserClass extends Vue {
     await this.$router.replace('/')
     await location.reload()
   }
+
+
 
 }
 </script>

@@ -35,26 +35,34 @@
                         <v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="pl-4 text-base" :class="(item.name == $route.name)?'text-white':''">{{item.text}} </span>
                     </v-list-item-title>
                 </v-list-item>
-            </v-list-item-group><br>
+            </v-list-item-group>
+          <br>
+          <v-list-item :class="($route.name=='profile')?'bg-purple-600 ':''"  @click="$router.push('/profile')" >
+              <v-list-item-title>
+                <v-icon style="font-size:18px; color:#8080ff;">em em-female-teacher</v-icon>
+                <span :class="($route.name=='profile')?'text-white ':''"  class="pl-4  text-base">ข้อมูลผู้ใช้</span>
+              </v-list-item-title>
+          </v-list-item>
+          <br>
 
-            <h2 v-if="user.is_superuser || user.passing  && myAgency != publicAgency" class="text-sm font-bold text-purple-800">ผู้ดูแลระบบ</h2>
-            <hr v-if="user.is_superuser || user.passing && myAgency != publicAgency">
-            <v-list-item-group class="mt-2" v-if="user.is_superuser || user.passing && myAgency != publicAgency">
+            <h2 v-if="user.is_superuser || user.passing || user.ext_link.oit  && myAgency != publicAgency" class="text-sm font-bold text-purple-800">ผู้ดูแลระบบ</h2>
+            <hr v-if="user.is_superuser || user.passing || user.ext_link.oit && myAgency != publicAgency">
+            <v-list-item-group class="mt-2" v-if="user.is_superuser || user.passing || user.ext_link.oit && myAgency != publicAgency">
                 <v-list-item v-if="user.is_superuser" @click="$router.push('/oit/all')">
                     <v-list-item-title>
                         <v-icon style="font-size:28px; color:#8080ff;">mdi-book-edit</v-icon> <span class="pl-4  text-base">ตรวจ OIT </span>
                     </v-list-item-title>
                 </v-list-item>
-                <v-list-item v-if="user.passing  " @click="$router.push('/eit/user')">
+                <v-list-item v-if="user.ext_link.oit" @click="$router.push('/eit/user')">
                     <v-list-item-title>
                         <v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base">ข้อมูลหน่วยงาน </span>
                     </v-list-item-title>
                 </v-list-item>
-                <v-list-item v-if="user.is_superuser" @click="$router.push('/report/home')">
-                    <v-list-item-title>
-                        <v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base">ข้อมูลผลการประเมิน </span>
-                    </v-list-item-title>
-                </v-list-item>
+<!--                <v-list-item v-if="user.is_superuser" @click="$router.push('/report/home')">-->
+<!--                    <v-list-item-title>-->
+<!--                        <v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base">ข้อมูลผลการประเมิน </span>-->
+<!--                    </v-list-item-title>-->
+<!--                </v-list-item>-->
                 <v-list-item v-if="user.is_superuser">
                     <v-list-item-title>
                         <v-icon style="font-size:18px; color:green;">em-building_construction </v-icon>
@@ -114,6 +122,7 @@
                 </v-list-item>
             </v-list-item-group>
         </v-list>
+        <br><br><br><br><br><br>
     </v-navigation-drawer>
 </div>
 </template>

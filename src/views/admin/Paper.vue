@@ -5,7 +5,7 @@
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
           <h3 class="font-semibold text-xl text-gray-800">
             <i class="em em-blue_book" aria-role="presentation" aria-label="BLUE BOOK"></i>&nbsp;ข้อมูลประจำปี
-            {{ year.year }} {{scoreAll}}
+            {{ year.year }}
           </h3>
           <hr class="border-gray-600 border-2 mt-2">
         </div>
@@ -61,7 +61,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="rate,index in rates" :key="index" :class="(index % 2!=0)?`bg-gray-200`:``">
+                <tr v-for="rate,index in rates" :key="index"
+                    :style="(getPassingTest(rate.result) == rate.result.length && rate.result.length > 0)  ? 'background-color:#5F9EA0;':''"
+                    class="border-2 border-black"  :class="(rate.result.length)?`bg-green-200`:`bg-yellow-200`" >
                   <th class="font-bold text-gray-700" style="width:20px!important;">
 
                     {{ rate.number }}
@@ -305,7 +307,7 @@ export default class Home extends Vue {
     this.user = await User.getUser();
     this.year = await Core.getHttp(`/api/ita/v2/year/${this.$route.query.year}/`)
     this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.$route.query.year}/`)
-    this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}`)
+    this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.$route.query.id}`)
     this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
     await this.generateTable()
     await this.generateScore();
@@ -341,7 +343,7 @@ export default class Home extends Vue {
     this.rate = await Core.getHttp(`/api/ita/v1/rate/${rate.id}/`)
     this.form.rate = rate.id
     this.form.name = rate.name
-    this.rateDatas = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}&rate=${this.rate.id}`)
+    this.rateDatas = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.$route.query.id}&rate=${this.rate.id}`)
     console.log(this.rate)
     this.resultResponse = true;
   }
@@ -382,7 +384,7 @@ export default class Home extends Vue {
   }
   getScoreAll(result:any){
     let score = _.meanBy(result, (p:any) => p.score);
-    return score
+    return isNaN(score)?0:score
   }
 
   async generateScore(){

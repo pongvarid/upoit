@@ -16,46 +16,26 @@
                         <table class="items-center w-full bg-transparent border-collapse">
                             <thead>
                                 <tr>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
+                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" >
                                         ลำดับ
                                     </th>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
+                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" >
                                         ชื่อ
                                     </th>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
+                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" >
                                         รายละเอียด
                                     </th>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
+                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" >
                                         รายละเอียด
                                     </th>
-                                    <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
+                                    <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" >
                                         จัดการ
                                     </th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="rate,index in rates" :key="index" :class="(index % 2!=0)?`bg-gray-200`:``">
+                                <tr v-for="rate,index in rates" :key="index" class="border-2 border-black" :style="(rate.result.length)?`background-color:#b3ffcc!important;`:`background-color:#FAFAD2!important;`" >
                                     <th class="font-bold text-gray-700" style="width:20px!important;">
 
                                         {{ rate.number }}
@@ -233,9 +213,9 @@
                                         <v-btn class="w-full" v-if="!result.passing && result.id" x-large outlined color="deep-purple accent-4" dark @click="passingStore(result)">
                                             <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
                                         </v-btn>
-                                        <v-btn class="w-full" v-else x-large outlined color="red" dark @click="removePassingStore(result)">
-                                            <v-icon>mdi-bookmark-remove</v-icon><b> ยกเลิกการส่ง</b>
-                                        </v-btn>
+<!--                                        <v-btn class="w-full" v-else x-large outlined color="red" dark @click="removePassingStore(result)">-->
+<!--                                            <v-icon>mdi-bookmark-remove</v-icon><b> ยกเลิกการส่ง</b>-->
+<!--                                        </v-btn>-->
                                     </div>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>

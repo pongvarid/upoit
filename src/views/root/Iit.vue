@@ -125,10 +125,10 @@
                     <v-text-field dense required v-model="formReg.first_name" type="text" filled label="ชื่อ"></v-text-field>
                     <v-text-field dense required v-model="formReg.last_name" type="text" filled label="นามสกุล"></v-text-field>
                     <hr><br>
-                    <ul>
-                        <li>รหัสผ่านต้องประกอบด้วย อักษร A-Z a-z 0-9</li>
-                        <li>รหัสผ่านต้องไม่ตรงกับ ชื่อผู้ใช้ หรือ ชื่อ-หรือชื่อนามสกุล</li>
-                    </ul><br>
+<!--                    <ul>-->
+<!--                        <li>รหัสผ่านต้องประกอบด้วย อักษร A-Z a-z 0-9</li>-->
+<!--                        <li>รหัสผ่านต้องไม่ตรงกับ ชื่อผู้ใช้ หรือ ชื่อ-หรือชื่อนามสกุล</li>-->
+<!--                    </ul><br>-->
                     <v-text-field dense required v-model="formReg.password" type="password" filled label="รหัสผ่าน"></v-text-field>
                     <v-text-field dense required v-model="formReg.password_confirm" :hint="(formReg.password != formReg.password_confirm)?'รหัสผ่านต้องตรงกัน':''" type="password" filled label="ยืนยันรหัสผ่าน"></v-text-field>
 
@@ -235,7 +235,7 @@ export default class Test extends Vue {
             await Auth.run();
             await this.callback()
         } catch (Error) {
-            alert('error')
+            //alert('error')
             await Web.offLoad()
         }
 
