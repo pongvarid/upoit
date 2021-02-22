@@ -32,7 +32,14 @@
                             </div>
 
                         </v-alert>
-                      <v-checkbox    label="เป็นบุคลากรภายใน มหาวิทยาลัยพะเยา"  v-model="form.in_up"></v-checkbox>
+                      <v-alert v-if="studentUp" color="#7e4d9e" border="left" dense elevation="2" colored-border>
+                        <div class="flex"><img class="h-8 w-auto" src="https://sv1.picz.in.th/images/2021/01/24/lnRs0t.png" alt="">
+                          <h2 style="color:#7e4d9e;" class="p-1 pl-2 font-bold">เป็นนิสิตภายในมหาวิทยาลัยพะเยา</h2>
+                        </div>
+                      </v-alert>
+
+
+                      <v-checkbox  v-if="!studentUp"  label="เป็นบุคลากรภายใน มหาวิทยาลัยพะเยา"  v-model="form.in_up"></v-checkbox>
 
                       <v-text-field disabled v-model="form.register_type" filled label="เข้าสู่ระบบโดย"></v-text-field>
                         <v-autocomplete v-model="chooseAgencyType" :items="agencyType" item-text="name" item-value="id" filled label="ประเภทหน่วยงาน / บุคคล"></v-autocomplete>
@@ -86,6 +93,7 @@ export default class UserClass extends Vue {
     private form: any = {
         in_up : false
     }
+    private studentUp:boolean = false;
     private agencyType: any = []
     private chooseAgencyType: number | null = null
     private agencies: any = []
@@ -109,7 +117,13 @@ export default class UserClass extends Vue {
             console.log(((user.email).split("@"))[1])
             let in_up = ((user.email).split("@"))[1]
             if (in_up === "up.ac.th") {
+                let student =  await this.checkType(user.username)
+
                 this.form.in_up = true
+              if(student){
+                this.form.in_up = false
+                this.studentUp = true
+              }
             }
 
             if (!this.form.register_type) {
@@ -117,7 +131,7 @@ export default class UserClass extends Vue {
             }
 
           let typeAg = await Core.getHttp(`/api/ita/v1/agencytype/`)
-          if(this.form.in_up ){
+          if(this.form.in_up && !this.studentUp){
             typeAg.pop();
             this.agencyType = typeAg
           }else{
@@ -162,6 +176,16 @@ export default class UserClass extends Vue {
      window.open('https://login.microsoftonline.com/logout.srf', '_blank');
     await this.$router.replace('/')
     await location.reload()
+  }
+
+  async checkType(email:any) {
+    let cutMail = email.split('@');
+    let mail = Number(cutMail[0]);
+    if (isNaN(mail)) {
+      return false
+    } else {
+      return true
+    }
   }
 
 

@@ -317,6 +317,8 @@ export default class Test extends Vue {
             await this.$router.push('/user/')
         }
     }
+
+
 }
 </script>
 
