@@ -160,7 +160,7 @@ export default class Result extends Vue {
   }
 
   private async getOIT(){
-    let oit = await Core.getHttp(`/api/ita/v2/rate/3/`)
+    let oit = await Core.getHttp(`/api/ita/v2/rate/${this.OITYEAR.id}/`)
     console.log(oit.length);
     this.countAllOIT = oit.length;
   }

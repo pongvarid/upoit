@@ -74,6 +74,12 @@
                         <a class="pl-4  text-base" href="https://ita.up.ac.th/admin/login/?next=/admin/">Super Admin</a>
                     </v-list-item-title>
                 </v-list-item>
+              <v-list-item v-if="user.is_superuser">
+                <v-list-item-title  @click="$router.push('/list-user')">
+                  <v-icon style="font-size:18px; color:green;">em-lower_left_fountain_pen </v-icon>
+                  <span class="pl-4  text-base">ข้อมูลการประเมิน</span>
+                </v-list-item-title>
+              </v-list-item>
             </v-list-item-group>
             <br v-if="user.is_superuser || user.passing ">
 

@@ -87,7 +87,7 @@ export default class Home extends Vue {
 
   @Prop({default:'2563'})
   year:any ;
-  responseDetail:boolean = false
+  responseDetail:boolean = true
   lists:any = null
   all:any = null
   response:boolean = false

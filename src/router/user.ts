@@ -171,7 +171,12 @@ const userRouter:any  = [
         component: getView('ALERT'),
        
     },
+    {
+        path: '/list-user',
+        name: 'list-user',
+        component: getView('LIST_USER'),
 
+    },
     {
         path: '/xtesterx/',
         name: 'all-alert',
