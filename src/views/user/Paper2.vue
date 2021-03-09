@@ -5,7 +5,7 @@
             <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
                 <h3 class="font-semibold text-xl text-gray-800">
                     <i class="em em-blue_book" aria-role="presentation" aria-label="BLUE BOOK"></i>&nbsp;ข้อมูลประจำปี
-                    {{ year.year }} <span class="text-base" v-if="AGENCY_DATA">({{AGENCY_DATA.name}})</span>
+                    {{ year.year }}
                 </h3>
                 <hr class="border-gray-600 border-2 mt-2">
             </div>
@@ -13,10 +13,6 @@
                 <div class="flex flex-wrap">
 
                     <div class="block w-full overflow-x-auto">
-
-
-
-
                         <table class="items-center w-full bg-transparent border-collapse">
                             <thead>
                                 <tr>
@@ -41,6 +37,7 @@
                             <tbody>
                                 <tr v-for="rate,index in rates" :key="index" :class="(index%2 != 0)?`bg-gray-200`:``" >
                                     <th class="font-bold text-gray-700" style="width:20px!important;">
+
                                         {{ rate.number }}
 
                                     </th>
@@ -55,49 +52,29 @@
 
                                     </td>
                                     <td style="width:500px;" class="p-2">
-                                      <h2>
-                                        <v-icon v-if="rate.result.length > 0" style="color:green;">mdi-check-circle</v-icon>
-                                        <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
-                                        การบันทึกข้อมูล (จำนวน Url {{rate.result.length}} )
-                                      </h2>
-
-                                      <h2>
-                                        <v-icon v-if="passingAllCheckTrue(rate.result)" style="color:green;">mdi-check-circle</v-icon>
-                                        <v-icon v-else  style="color:red;">mdi-clock-time-eight</v-icon>
-                                        การยืนยันจากหัวหน้าหน่วยงาน
-                                      </h2>
-                                      <hr class="mt-2 mb-2" >
-                                      <h2><v-icon   style="color:red;">mdi-clock-time-eight</v-icon> การตรวจและการให้คะแนน</h2>
-
-
-
-<!--                                      <h2><v-icon style="color:orange;">mdi-check-circle</v-icon>  <v-icon style="color:green;">mdi-check-circle</v-icon> การยืนยันจากหัวหน้าหน่วยงาน </h2>-->
-<!--                                      <h2>การตรวจและการให้คะแแนน</h2>-->
-
-<!--                                      <pre>{{rate.result}}}</pre>-->
-<!--                                           <h2 class="p-2 text-xl " :class="(rate.result.length)?`text-green-600`:`text-orange-600`">-->
-<!--                                             <v-icon v-if="rate.result.length" color="success">mdi-check-underline-circle</v-icon>-->
-<!--                                             <v-icon v-else color="error">mdi-information</v-icon>-->
-<!--                                             ส่งแล้ว {{rate.result.length}}-->
-<!--                                           </h2><br>-->
-<!--                                            <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">-->
-<!--                                              <h2>ตรวจแล้ว {{getPassingTest(rate.result,)}} / {{rate.result.length}}</h2><br>-->
-<!--&lt;!&ndash;                                              <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>&ndash;&gt;-->
-<!--                                            </div>-->
-<!--                                            <div v-else>-->
-<!--                                                <div class="p-2 flex justify-center ">-->
-<!--                                                    <div class="p-2 flex flex-col justify-center items-center ">-->
-<!--                                                        <v-icon style="font-size:36px; color:#71b064;">mdi-clock-time-two</v-icon>-->
-<!--                                                        <h2 class="text-tiny" style="color:#71b064;">รอตรวจสอบ</h2>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
+                                           <h2 class="p-2 text-xl " :class="(rate.result.length)?`text-green-600`:`text-orange-600`">
+                                             <v-icon v-if="rate.result.length" color="success">mdi-check-underline-circle</v-icon>
+                                             <v-icon v-else color="error">mdi-information</v-icon>
+                                             ส่งแล้ว {{rate.result.length}}
+                                           </h2><br>
+                                            <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">
+                                              <h2>ตรวจแล้ว {{getPassingTest(rate.result,)}} / {{rate.result.length}}</h2><br>
+<!--                                              <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>-->
+                                            </div>
+                                            <div v-else>
+                                                <div class="p-2 flex justify-center ">
+                                                    <div class="p-2 flex flex-col justify-center items-center ">
+                                                        <v-icon style="font-size:36px; color:#71b064;">mdi-clock-time-two</v-icon>
+                                                        <h2 class="text-tiny" style="color:#71b064;">รอตรวจสอบ</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                     </td>
 
                                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                                         <div class="flex items-center">
-                                            <v-btn @click="openDialog(rate)" color="#5e5a98" dark v-if="(rate.result).length <= 0">
+                                            <v-btn @click="openDialog(rate)" color="#5e5a98" dark v-if="!rate.result">
                                                 <v-icon>mdi-book-plus</v-icon>เพิ่มข้อมูล
                                             </v-btn>
                                             <v-btn @click="openDialog(rate)" color="#2e9837" dark v-else>
@@ -134,7 +111,7 @@
 
 
                         <v-expansion-panels>
-                            <v-expansion-panel v-if="passingDisableAdd(rateDatas)" >
+                            <v-expansion-panel>
                                 <v-expansion-panel-header>
                                     <h2>
                                         <v-icon>mdi-plus-box</v-icon> เพิ่มข้อมูล
@@ -236,16 +213,17 @@
                                         <v-textarea  readonly v-model="result.comment" placeholder="ข้อความ" label="ความคิดเห็น" filled></v-textarea>
                                     </div>
 
-
+                                    <div v-if="user.passing && !result.tester" class="pt-4">
+                                        <v-btn class="w-full" v-if="!result.passing && result.id" x-large outlined color="deep-purple accent-4" dark @click="passingStore(result)">
+                                            <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
+                                        </v-btn>
+<!--                                        <v-btn class="w-full" v-else x-large outlined color="red" dark @click="removePassingStore(result)">-->
+<!--                                            <v-icon>mdi-bookmark-remove</v-icon><b> ยกเลิกการส่ง</b>-->
+<!--                                        </v-btn>-->
+                                    </div>
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                         </v-expansion-panels>
-                    <br> <br>
-                     <v-btn class="w-full" v-if="user.passing && passingAllCheck(rateDatas)"  @click="passingAllStore(rateDatas)"  x-large outlined color="deep-purple accent-4" dark  >
-                        <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
-                      </v-btn>
-<!--                      <v-btn @click="removePassingAllStore(rateDatas)">ยกเลิก</v-btn>-->
-
 
                     </div>
                 </v-card-text>
@@ -288,8 +266,7 @@ import {
     }
 })
 export default class Home extends Vue {
-    private CURRNT_AGENGY:number = 0;
-  private AGENCY_DATA:any = null;
+
     private user: any = {}
     private year: any = []
     private rates: any = []
@@ -318,11 +295,9 @@ export default class Home extends Vue {
         let loader = await this.$loading.show()
         this.response = false;
         this.user = await User.getUser();
-        this.CURRNT_AGENGY = this.user.ext_link.agency
-        this.AGENCY_DATA = await Core.getHttp(`api/ita/v2/agency/${this.CURRNT_AGENGY}/`)
         this.year = await Core.getHttp(`/api/ita/v2/year/${this.$route.query.year}/`)
         this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.$route.query.year}/`)
-        this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.CURRNT_AGENGY}`)
+        this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}`)
         this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
         await this.generateTable();
         this.response = true;
@@ -349,7 +324,7 @@ export default class Home extends Vue {
         this.rate = await Core.getHttp(`/api/ita/v1/rate/${rate.id}/`)
         this.form.rate = rate.id
         this.form.name = rate.name
-        this.rateDatas = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.CURRNT_AGENGY}&rate=${this.rate.id}`)
+        this.rateDatas = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.user.ext_link.agency}&rate=${this.rate.id}`)
         console.log(this.rate)
         this.resultResponse = true;
     }
@@ -363,7 +338,7 @@ export default class Home extends Vue {
 
     private async saveData() {
         this.form.user = this.user.pk
-        this.form.agency = this.CURRNT_AGENGY
+        this.form.agency = this.user.ext_link.agency
         let data = await Core.postHttp(`/api/ita/v1/rateresult/`, this.form)
         if (data.id) {
           alert('บันทึกข้อมูลสำเร็จแล้ว')
@@ -375,7 +350,7 @@ export default class Home extends Vue {
 
     private async getResultByUser(i: number) {
         return await Core.putHttp(`/api/ita/v2/rateresult/`, {
-            "agency": this.CURRNT_AGENGY,
+            "agency": this.user.ext_link.agency,
             "rate": this.rates[i].id
         })
     }
@@ -400,81 +375,34 @@ export default class Home extends Vue {
     }
 
     private async passingStore(data: any) {
+        let check = confirm("คุณแน่ใจใช่ไหมที่จะส่งเนื้อหานี้ให้กับผู้ตรวจ")
+        if (check) {
             let form = {
                 "user_passing": this.user.pk,
                 "passing": true
             }
             let store = await Core.putHttp(`/api/ita/v2/passing/${data.id}/`, form)
             if (store.id) {
-              console.log('ยืนยันการส่งสำเร็จ');
+                await this.loadRateData(this.rate)
             }
-    }
-
-    private async passingAllStore(datas:any[]){
-      let check = confirm("คุณแน่ใจใช่ไหมที่จะส่งเนื้อหานี้ให้กับผู้ตรวจ")
-      if(check){
-        for(let i=0; i < datas.length; i++){
-          await this.passingStore(datas[i])
         }
-        await this.loadRateData(this.rate)
-      }
+
     }
 
     private async removePassingStore(data: any) {
+        let check = confirm("คุณแน่ใจใช่ไหมที่จะส่งเนื้อหานี้ให้กับผู้ตรวจ")
+        if (check) {
             let form = {
                 "user_passing": this.user.pk,
                 "passing": false
             }
             let store = await Core.putHttp(`/api/ita/v2/passing/${data.id}/`, form)
             if (store.id) {
-              console.log('ยกเลิก');
+                await this.loadRateData(this.rate)
             }
+        }
+
     }
-
-  private async removePassingAllStore(datas:any[]){
-    let check = confirm("คุณแน่ใจใช่ไหมที่จะยกเลิกส่งเนื้อหานี้ให้กับผู้ตรวจ")
-    if(check){
-      for(let i=0; i < datas.length; i++){
-        await this.removePassingStore(datas[i])
-      }
-      await this.loadRateData(this.rate)
-    }
-  }
-
-  private passingDisableAdd(datas:any[]){
-    if(datas.length > 0){
-      let passed = _.filter(datas,{passing:false})
-      console.log(passed);
-      return (passed.length >0) ? true:false;
-    }else{
-      return true;
-    }
-  }
-
-  private passingAllCheck(datas:any[]){
-
-      if(datas.length > 0){
-        let passed = _.filter(datas,{passing:false})
-        console.log(passed);
-        return (passed.length >0) ? true:false;
-      }else{
-        return false;
-      }
-
-  }
-
-  private passingAllCheckTrue(datas:any[]){
-
-    if(datas.length > 0){
-      let passed = _.filter(datas,{passing:true})
-      //console.log(passed.length , datas);
-      return (passed.length >0) ? true:false;
-    }else{
-      return false;
-    }
-
-  }
-
 
     private openLink(url: string) {
         window.open(url, '_blank');

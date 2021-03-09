@@ -110,11 +110,6 @@ class AuthClass extends VuexModule {
         return user;
     }
 
-
-
-
-
-
     public async reToken(){
         axios.defaults.headers.common['Authorization'] = '';
     }

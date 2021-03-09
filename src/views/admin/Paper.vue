@@ -63,7 +63,7 @@
                 <tbody>
                 <tr v-for="rate,index in rates" :key="index"
                     :style="(getPassingTest(rate.result) == rate.result.length && rate.result.length > 0)  ? 'background-color:#5F9EA0;':''"
-                    class="border-2 border-black"  :class="(rate.result.length)?`bg-green-200`:`bg-yellow-200`" >
+                    :class="(index%2 != 0)?`bg-gray-200`:``" >
                   <th class="font-bold text-gray-700" style="width:20px!important;">
 
                     {{ rate.number }}
@@ -95,7 +95,12 @@
                     </div>
                   </td>
                   <td  style="width:300px;" class="p-2">
-                    <h2 class="p-2 text-xl text-green-600">ส่งแล้ว {{rate.result.length}}</h2><br>
+<!--                    <h2 class="p-2 text-xl text-green-600">ส่งแล้ว {{rate.result.length}}</h2><br>-->
+                    <h2 class="p-2 text-xl " :class="(rate.result.length)?`text-green-600`:`text-orange-600`">
+                      <v-icon v-if="rate.result.length" color="success">mdi-check-underline-circle</v-icon>
+                      <v-icon v-else color="error">mdi-information</v-icon>
+                      ส่งแล้ว {{rate.result.length}}
+                    </h2><br>
                     <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">
                       <h2>ตรวจแล้ว {{getPassingTest(rate.result)}} / {{rate.result.length}}</h2><br>
 

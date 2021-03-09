@@ -58,6 +58,11 @@
                         <v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base">ข้อมูลหน่วยงาน </span>
                     </v-list-item-title>
                 </v-list-item>
+                 <v-list-item v-if="user.ext_link.oit" @click="$router.push('/agency/count')">
+                    <v-list-item-title>
+                        <v-icon style="font-size:28px; color:purple;">mdi-file-document-multiple</v-icon> <span class="pl-4  text-base">จำนวนผู้ประเมิน </span>
+                    </v-list-item-title>
+                </v-list-item>
 <!--                <v-list-item v-if="user.is_superuser" @click="$router.push('/report/home')">-->
 <!--                    <v-list-item-title>-->
 <!--                        <v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base">ข้อมูลผลการประเมิน </span>-->

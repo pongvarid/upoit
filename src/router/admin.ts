@@ -76,6 +76,11 @@ const adminRouter:any = [
         name: 'admin-eit-user',
         component: getView('EIT_USER')
     },
+    {
+        path: '/agency/count',
+        name: 'admin-agency-count',
+        component: getView('AGENCY_COUNT')
+    },
  
 ]
 

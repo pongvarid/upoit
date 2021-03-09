@@ -68,6 +68,9 @@ import {
   User
 } from '@/store/user'
 import _ from 'lodash'
+import {
+    Web
+} from '@/store/web'
 @Component({
   components: {
 
@@ -88,6 +91,7 @@ export default class Result extends Vue {
     countIIT:any = 0;
     countEIT:any = 0;
     async created() {
+      await Web.switchLoad(true)
       this.user = await User.getUser();
       this.myAgency = this.user.ext_link.agency
       this.years = await Core.getHttp(`/api/ita/v1/year/`)
@@ -100,6 +104,7 @@ export default class Result extends Vue {
       await this.getOITResult()
       await this.getIITRes();
       await this.getEITRes();
+      await Web.switchLoad(false)
       this.response = true;
     }
 
