@@ -183,6 +183,10 @@ const userRouter:any  = [
         component: getView('Tester'),
 
     },
+    {    path: '/dev/',
+        name: 'dev',
+        component: () =>import(`@/views/dev/Home.vue`)
+    },
 ]
 
 export  {

@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <div v-if="response">
+  <h2>sdsd</h2>
+<pre>{{rawDetail}}</pre>
+<!--      <div v-for="xx,i in rawDetail" :key="i">-->
+<!--        <v-toolbar>{{xx.xagency.name}} <v-spacer></v-spacer> {{xx.name}}</v-toolbar>-->
+<!--      </div>-->
 
 <!--    <v-btn @click="store2563()">Save</v-btn>-->
-    <v-btn @click="storeAll365()">Save All</v-btn>
-    <pre >
-      {{rawAll}}
-    </pre>
-
-
+    <v-btn @click="store2563()">Save</v-btn>
+    <v-btn @click="storeAll365()">SaveALL</v-btn>
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import FooterSmall from "@/components/Footers/FooterSmall.vue";
 import dd from '@/tmp/result.json'
 import detail from '@/tmp/detail2563.json'
 import all from '@/tmp/all2563.json'
+import agency from '@/tmp/agency.json'
 import {
     Component,
     Vue,
@@ -43,24 +45,32 @@ export default class Test extends Vue {
     response: boolean = false
     raw:any = dd.Sheet1
     rawDetail:any = detail.data
-  rawAll:any = all.data
+    rawAll:any = all.data
+    agencies:any =  agency
+
+    rawx:any = null
 
     async created()   {
-
-      console.log(this.rawAll.length)
+      //this.agencies = await Core.getHttp(`/api/agency/v1/`)
+      await this.genLoop();
+      await this.genLoop2();
+      this.response = true
+    //  console.log(this.rawAll.length)
       // await this.genLoop()
     }
 
     async storeAll365(){
       for (let i=0; i< this.rawAll.length; i++){
-        await Core.postHttp(`/api/report/v1/reportall/`,this.rawAll[i])
+         await Core.postHttp(`/api/report/v1/reportall/`,this.rawx[i])
       }
     }
 
     async store2563(){
       for (let i=0; i< this.rawDetail.length; i++){
       //  console.log(form)
+        console.log(i,this.rawDetail[i]['name'],'---------------------------------------------------------------')
         for (let j=0; j< this.rawDetail[i].data.length; j++){
+          console.log(j,this.rawDetail[i].data[j]['name'])
           let form = {
             "year": "2563",
             "name": this.rawDetail[i].data[j]['name'],
@@ -69,7 +79,8 @@ export default class Test extends Vue {
             "agency": this.rawDetail[i].agency
           }
 
-          await Core.postHttp(`/api/report/v1/reportdetail/`,form)
+        await Core.postHttp(`/api/report/v1/reportdetail/`,form)
+
         }
 
       }
@@ -86,7 +97,7 @@ export default class Test extends Vue {
             'rate' : this.raw[i]['ระดับ'],
             "year" : '2563',
             'all' : this.raw[i]['ผลสรุปการประเมิน'],
-             agency: await this.foundAgency(this.raw[i]['คณะ/หน่วย'] ),
+             agency:  this.getAgency(this.raw[i]['คณะ/หน่วย']),
             }
           y++;
         }
@@ -111,10 +122,15 @@ export default class Test extends Vue {
         }
 
       }
+      this.rawx = agencies
       //console.log(agencies)
-      console.log(JSON.stringify(agencies))
+    //  console.log(JSON.stringify(agencies))
     }
-
+    async genLoop2(){
+      for (let i=0; i < this.rawDetail.length; i++){
+       this.rawDetail[i].agency =   this.getAgency(this.rawDetail[i].name );
+      }
+    }
     async foundAgency(name:string){
       let ag = await Core.getHttp(`/api/ita/v1/agency/?name=${name}`)
       if(ag.length>= 1){
@@ -122,6 +138,11 @@ export default class Test extends Vue {
       }else{
         return null;
       }
+    }
+
+      getAgency(name:string){
+      let data =   _.find(this.agencies,{name:name})
+      return data.id
     }
 }
 </script>

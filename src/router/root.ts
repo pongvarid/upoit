@@ -30,7 +30,14 @@ const rootRouter:any  = [
         name: 'report',
         component: getView('Report')
     },
-    
+
+
+
+    // {    path: '/dev/change-agency-eit',
+    //     name: 'dev-change-agency-eit',
+    //     component: () =>import(`@/views/dev/ChangeAgencyEIT.vue`)
+    // },
+    //
    
 ]
 

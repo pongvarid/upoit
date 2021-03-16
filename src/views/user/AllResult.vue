@@ -150,7 +150,7 @@
                                 </div>
                             </v-timeline-item>
                         </v-timeline>
-                        <v-btn color="red" dark v-if="user.is_superuser && passingAllCheck(rateDatas)" @click="removePassingAllStore(rateDatas)">ยกเลิกการยืนยันจากหัวหน้าหน่วยงาน</v-btn>
+                        <v-btn color="red" dark v-if="user.is_superuser && !passingAllCheck(rateDatas)" @click="removePassingAllStore(rateDatas)">ยกเลิกการยืนยันจากหัวหน้าหน่วยงาน</v-btn>
                     </div>
                 </v-card-text>
             </v-card>

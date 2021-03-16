@@ -23,6 +23,7 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/admin/Base.vue'),
     children: adminRouter
   },
+
 ]
 
 const router = new VueRouter({
