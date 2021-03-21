@@ -165,7 +165,9 @@ import {
     Vue,
     Watch
 } from 'vue-property-decorator';
- 
+import {
+  Web
+} from '@/store/web'
 
 import {
     Auth
@@ -205,11 +207,16 @@ export default class Home extends Vue {
     private score30 :number = 0
 
     public async created() {
+      await Web.switchLoad(true)
         await this.run();
         await this.getAssessment();
         await this.getUserAnswer()
         await this.generateScore();
         await this.getAverage();
+      //  await this.start()
+
+      await Web.switchLoad(false)
+
         this.response = true
     }
 
@@ -230,6 +237,15 @@ export default class Home extends Vue {
         let user = await Core.groupBy(this.issueRaw, 'user')
         this.userDone = user.length
     }
+
+    private async start(){
+      let assessmentData = this.assessmentData[0]
+      //console.log(newIndex, assessmentData.id)
+      await this.getRawIssue(assessmentData.id)
+      await this.generateScore()
+    }
+
+
 
     @Watch('assessmentTab')
     private async switchTab(newIndex: number, oldIndex: number) {

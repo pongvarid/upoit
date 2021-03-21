@@ -21,7 +21,20 @@
           :headers="headers"
           :items="agencies" :items-per-page="20"
           :search="search"
-      ></v-data-table>
+      >
+        <template v-slot:item.data.oit_passing="{ item }">
+          <v-chip
+              :color="(item.data.oit_passing)?'success':'red'"
+              dark
+          >
+            <v-icon v-if="(item.data.oit_passing)">mdi-checkbox-marked-circle</v-icon>
+            <v-icon v-else>mdi-close-circle</v-icon>
+
+            {{ (item.data.oit_passing)?'ครบแล้ว' : 'ยังไม่ครบ' }}
+          </v-chip>
+        </template>
+
+      </v-data-table>
     </v-card>
     <br><br>
   </div>
@@ -68,7 +81,8 @@ export default class Home extends Vue {
     { text: 'ชื่อหน่วยงาน', value: 'name' },
     { text: 'IIT', value: 'data.iit' },
     { text: 'EIT', value: 'data.eit' },
-    { text: 'OIT', value: 'data.oit' }
+    { text: 'OIT', value: 'data.oit' },
+    { text: 'การยืนยัน', value: 'data.oit_passing' }
   ]
 
   public async created() {
@@ -88,7 +102,8 @@ export default class Home extends Vue {
         this.agencies[i]['data'] = {
           "iit":  (await _.filter(this.IIT_ALL,{agency:this.agencies[i].id})).length + '/' + this.agencies[i]['iit'],
           "eit":  (await _.filter(this.EIT_ALL,{agency:this.agencies[i].id})).length + '/' + this.agencies[i]['eit'],
-          "oit" : await this.getOITResult(this.agencies[i].id)+ '/' + this.OIT_COUNT, // await this.getOITResult(this.agencies[i].id)
+          "oit" : await this.getOITResult(this.agencies[i].id,false)+ '/' + this.OIT_COUNT, // await this.getOITResult(this.agencies[i].id)
+          "oit_passing" :  await this.getOITResult(this.agencies[i].id,true)
         }
       }
     }
@@ -148,19 +163,29 @@ export default class Home extends Vue {
     }
   }
 
-  private async getOITResult(agency:number){
+  private async getOITResult(agency:number,passing:boolean){
     let raw = await _.filter(this.OIT_ALL,{agency:agency})
 
     let result = await _(raw)
         .groupBy('rate')
-        .map(function(items, data) {
+        .map((items, data)=> {
           return {
+            passing:this.getPassing(items),
             data: data,
           };
         }).value();
 
-    return result.length;
+   // console.log(result)
 
+
+    return (passing)?this.getPassing(result):result.length;
+
+  }
+
+  private getPassing(data:any){
+    let dd = _.filter(data,{passing:false})
+    //console.log('check',(dd.length > 0) ? false : true);
+    return (dd.length > 0) ? false : true
   }
 }
 </script>

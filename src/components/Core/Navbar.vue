@@ -45,10 +45,10 @@
           </v-list-item>
           <br>
 
-            <h2 v-if="user.is_superuser || user.passing || user.ext_link.oit  && myAgency != publicAgency" class="text-sm font-bold text-purple-800">ผู้ดูแลระบบ</h2>
-            <hr v-if="user.is_superuser || user.passing || user.ext_link.oit && myAgency != publicAgency">
-            <v-list-item-group class="mt-2" v-if="user.is_superuser || user.passing || user.ext_link.oit && myAgency != publicAgency">
-                <v-list-item v-if="user.is_superuser" @click="$router.push('/oit/all')">
+            <h2 v-if="user.is_superuser || user.is_staff  || user.is_staff  || user.passing || user.ext_link.oit  && myAgency != publicAgency" class="text-sm font-bold text-purple-800">ผู้ดูแลระบบ</h2>
+            <hr v-if="user.is_superuser || user.is_staff  || user.passing || user.ext_link.oit && myAgency != publicAgency">
+            <v-list-item-group class="mt-2" v-if="user.is_superuser || user.is_staff || user.passing || user.ext_link.oit && myAgency != publicAgency">
+                <v-list-item v-if="user.is_staff" @click="$router.push('/oit/all')">
                     <v-list-item-title>
                         <v-icon style="font-size:28px; color:#8080ff;">mdi-book-edit</v-icon> <span class="pl-4  text-base">ตรวจ OIT </span>
                     </v-list-item-title>

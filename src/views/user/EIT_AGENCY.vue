@@ -1,6 +1,6 @@
 <template>
-  <div class="relative md:pt-32 pb-32 pt-12">
-    <div class="relative  flex flex-col min-w-0 break-words w-full mb-6  bg-white rounded shadow-lg ">
+  <div class="  md:pt-32 pb-32 pt-12">
+    <div class="   flex flex-col min-w-0 break-words w-full mb-6  bg-white rounded shadow-lg ">
       <div class="rounded-t mb-0 px-4 py-3 border-0 ">
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
           <h3 class="font-semibold text-xl text-gray-800">
@@ -9,7 +9,7 @@
           </h3>
           <hr class="border-gray-600 border-2 mt-2">
         </div>
-        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
+        <div class="  w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
           <div class="flex flex-wrap">
             <div class="block w-full overflow-x-auto">
               <v-tabs v-model="tab">
@@ -47,6 +47,7 @@
       </div>
 
     </div>
+
     <vs-dialog prevent-close not-close blur v-model="blockDialog"> 
         <v-card flat>
             <v-card-text>
@@ -82,7 +83,9 @@ import {
 import {
   User
 } from '@/store/user'
-
+import {
+  Web
+} from '@/store/web'
 @Component({
   components: {
      
@@ -104,7 +107,7 @@ export default class AdminHome extends Vue {
   private tabs:any = []
   private tab:number = 0
   private search:string = ''
-  private blockDialog:boolean = true;
+  private blockDialog:boolean = false;
   public async created() {
 
     await this.run()
@@ -121,13 +124,17 @@ export default class AdminHome extends Vue {
       return 'mdi mdi-account-tie-outline'
     }
   }
-
+  private async getBlock(){
+    let user = await User.getProfile();
+    this.blockDialog = (user.is_superuser)?false:true
+  }
   private async run(){
-    let loader = await this.$loading.show()
+    await this.getBlock();
+    await Web.switchLoad(true)
     await this.loadTabType()
     await this.loadAgency(this.tabs[0].id)
     this.response = true
-    await loader.hide()
+    await Web.switchLoad(false)
   }
 
   private async loadTabType(){

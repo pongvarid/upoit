@@ -116,8 +116,15 @@ export default class AdminHome extends Vue {
         }
     }
 
+    private async getBlock(){
+      let user = await User.getProfile();
+      this.blockDialog = (user.is_superuser)?false:true
+    }
+
     private async run() {
+      await this.getBlock();
         let loader = await this.$loading.show()
+
         await this.loadTabType()
         await this.loadAgency(this.tabs[0].id)
         this.response = true

@@ -54,12 +54,12 @@
                         </div>
                     </div>
                 </section>
-                <v-tabs v-model="assessmentTab" color="#5E2C73" slider-color="#5E2C73" class="shadow-lg border-4 rounded-xl">
+                <v-tabs v-if="response" v-model="assessmentTab" color="#5E2C73" slider-color="#5E2C73" class="shadow-lg border-4 rounded-xl">
                     <v-tab v-for="assessment,index in assessmentData" :key="index">
                         {{assessment.name}}
                     </v-tab>
-                    <v-tab-item v-for="assessment,index in assessmentData" :key="index">
-                        <div v-if="assessment.name != 'ข้อเสนอเเนะ'">
+                    <v-tab-item v-for="assessment,index in assessmentData" :key="index" >
+                        <div v-if="assessment.name != 'ข้อเสนอเเนะ  ' && tabResponse">
 
                             <!-- <pre v-if="issueData">{{issueData}}</pre> -->
 
@@ -178,6 +178,9 @@ import {
     Iit
 } from '@/store/iit'
 import _ from "lodash"
+import {
+  Web
+} from '@/store/web'
 
 @Component({
     components: {
@@ -202,26 +205,34 @@ export default class Home extends Vue {
     private score100 :number = 0
     private score30 :number = 0
 
+  tabResponse:boolean = false
+
     public async created() {
+      await Web.switchLoad(true)
         await this.run();
         await this.getAssessment();
         await this.getUserAnswer()
         await this.generateScore();
         await this.getAverage();
+      await Web.switchLoad(false)
         this.response = true
     }
 
     private async run() {
+
+
         this.user = await User.getUser();
         this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.$route.query.agency}/`)
         this.yearData = await Core.getHttp(`/api/eit/v2/year/${this.$route.query.year}/`)
-        
+      this.response = true
+
     }
 
     private async getAssessment() {
         this.assessmentData = await Core.getHttp(`/api/eit/v2/assessmentissues/?&year=${this.yearData.id}`)
         this.assessmentTab = 0
         await this.getRawIssue(this.assessmentData[0].id)
+      this.tabResponse = true
     }
 
     private async getUserAnswer() {
@@ -231,10 +242,12 @@ export default class Home extends Vue {
 
     @Watch('assessmentTab')
     private async switchTab(newIndex: number, oldIndex: number) {
+      this.tabResponse = false
         let assessmentData = this.assessmentData[newIndex]
         //console.log(newIndex, assessmentData.id)
         await this.getRawIssue(assessmentData.id)
       await this.generateScore()
+      this.tabResponse = true
     }
 
     private async getRawIssue(assignId: number) {

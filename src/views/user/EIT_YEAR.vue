@@ -13,7 +13,7 @@
         <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
 
           <div class="flex items-center p-4  bg-white rounded-lg shadow-xl dark:bg-gray-800 border-b-4  cursor-pointer	"
-               style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="openEit(year.id)" >
+               style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="openEit(year.id,year.status)" >
             <v-btn style="margin-right: 10px" color="#7837B1" large fab dark>
               <v-icon>mdi mdi-calendar-cursor</v-icon>
             </v-btn>
@@ -66,27 +66,45 @@ export default class Home extends Vue {
   private user: any = {}
   private years: any = []
   private response: boolean = false
-
+  $vs:any
   public async created() {
     this.user = await User.getUser(); 
     this.years = await Core.getHttp(`/api/eit/v1/year`) 
     this.response = true
   }
 
-  public async openEit(yearId:any){
-    if(this.user.ext_link.in_up){
-      let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`)
-      if(userInAnswer.length > 0){
-        await this.$router.push(`/eit/detail?year=${yearId}`)
+  public async openEit(yearId:any,status:boolean){
+
+    if(!status){
+      if(this.user.ext_link.in_up){
+        let userInAnswer = await Core.getHttp(`/api/iit/v2/ansewer/user/?user=${this.user.pk}&year=${yearId}`)
+        if(userInAnswer.length > 0){
+          await this.$router.push(`/eit/detail?year=${yearId}`)
+        }else{
+          alert('กรุณาประเมิน IIT ก่อน')
+        }
       }else{
-        alert('กรุณาประเมิน IIT ก่อน')
+        await this.$router.push(`/eit/detail?year=${yearId}`)
       }
-    }else{
-      await this.$router.push(`/eit/detail?year=${yearId}`)
+    } else {
+      await this.openNotification('top-right', '#D65B6D', `<i class="em em-lock" aria-role="presentation" aria-label="LOCK"></i>`,'ปิดการให้ประเมิน','ไม่สามารถประเมินได้ เนื่องจากระบบปิดการให้ประเมินแล้ว กรุณาติดต่อผู้ดูแลระบบ')
     }
+
+
 
     console.log(this.user.ext_link.in_up);
      
+  }
+
+  async openNotification(position:any = null, color:any, icon:any,title:string,text:string) {
+
+    const noti = this.$vs.notification({
+      icon,
+      color,
+      position,
+      title: title,
+      text: text
+    })
   }
 
 }
