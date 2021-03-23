@@ -5,127 +5,80 @@
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
           <h3 class="font-semibold text-xl text-gray-800">
             <i class="em em-blue_book" aria-role="presentation" aria-label="BLUE BOOK"></i>&nbsp;ข้อมูลประจำปี
-            {{ year.year }}
+            {{ year.year }}  <span class="text-base" v-if="AGENCY_DATA">({{AGENCY_DATA.name}})</span>
           </h3>
           <hr class="border-gray-600 border-2 mt-2">
         </div>
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
           <div class="flex flex-wrap">
 
-            <div class="block w-full overflow-x-auto">
-              <table class="items-center w-full bg-transparent border-collapse">
-                <thead>
-                <tr>
-                  <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-                      :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    ลำดับ
-                  </th>
-                  <th  class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-                      :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    ชื่อ
-                  </th>
-                  <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-                      :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    รายละเอียด
-                  </th>
-                  <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-                      :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    จัดการ
-                  </th>
-                       <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left"
-                      :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    ข้อมูล
-                  </th>
+            <div class="block w-full overflow-x-auto bg-gray-100">
 
 
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="rate,index in rates" :key="index"
-                    :style="(getPassingTest(rate.result) == rate.result.length && rate.result.length > 0)  ? 'background-color:#5F9EA0;':''"
-                    :class="(index%2 != 0)?`bg-gray-200`:``" >
-                  <th class="font-bold text-gray-700" style="width:20px!important;">
+              <v-expansion-panels>
+                <v-expansion-panel
+                    v-for="(oit,index) in rates"
+                    :key="index"
+                >
+                  <v-expansion-panel-header>
 
-                    {{ rate.number }}
+                      <h2 class="text-base font-bold" style="width:450px;">
 
-                  </th>
-                  <td class="font-bold text-gray-700" >
-
-                    {{ rate.name }}
-
-                  </td>
-                  <td   class="p-2">
-
-                    <p v-html="rate.detail"></p>
-
-                  </td>
+                        {{oit.name}}
 
 
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                    <div class="flex items-center">
+                      </h2>
 
-                      <v-btn @click="openDialog(rate)" color="#987122" dark v-if="rate.result.length <= 0">
-                        <v-icon>mdi-folder-information</v-icon>
-                        ยังไม่มีข้อมูล
-                      </v-btn>
-                      <v-btn @click="openDialog(rate)" :color="(rate.result.tester)?'#2e9837':'#ff751a'" dark v-else>
-                        <span v-if="!rate.result.tester"><v-icon>mdi-eye</v-icon>ตรวจสอบข้อมูล</span>
-                        <span v-else><v-icon>mdi-book-check</v-icon>ตรวจสอบแล้ว</span>
-                      </v-btn>
-                    </div>
-                  </td>
-                  <td  style="width:300px;" class="p-2">
-<!--                    <h2 class="p-2 text-xl text-green-600">ส่งแล้ว {{rate.result.length}}</h2><br>-->
-                    <h2 class="p-2 text-xl " :class="(rate.result.length)?`text-green-600`:`text-orange-600`">
-                      <v-icon v-if="rate.result.length" color="success">mdi-check-underline-circle</v-icon>
-                      <v-icon v-else color="error">mdi-information</v-icon>
-                      ส่งแล้ว {{rate.result.length}}
-                    </h2><br>
-                    <div class="border-2 border-green-600 rounded shadow-xl p-2 bg-white" v-if="rate.result">
-                      <h2>ตรวจแล้ว {{getPassingTest(rate.result)}} / {{rate.result.length}}</h2><br>
+                    <v-chip  v-if="passingAllCheckTrue(oit.result)" class="mr-4" color="primary" small  style="width:50px!important;"  >
+                      <v-icon left> mdi-check-network</v-icon> หัวหน้าหน่วยงานยืนยันแล้ว  </v-chip>
+                    <v-chip  v-else class="mr-4"  small  style="width:50px!important;"  >  <v-icon left> mdi-close-network </v-icon>  หัวหน้าหน่วยงานไม่ได้ยืนยัน </v-chip>
 
-                      <h2>คะแนน {{getScoreAll(rate.result)}}</h2>
-<!--                      <h2>ผ่านแล้ว {{getTest(rate.result)}} / {{rate.result.length}}</h2>-->
-                    </div>
-                    <div v-else>
-                      <div class="p-2 flex justify-center ">
-                        <div class="p-2 flex flex-col justify-center items-center ">
-                          <v-icon style="font-size:36px; color:#71b064;">mdi-clock-time-two</v-icon>
-                          <h2 class="text-tiny" style="color:#71b064;">รอตรวจสอบ</h2>
-                        </div>
+                    <v-chip small style="width:10px!important;"   v-if="oit.evaluate.score || oit.evaluate.score == 0" small    color="success"     text-color="white"  >  <v-icon left>  mdi-marker-check </v-icon>  ตรวจแล้ว  </v-chip>
+                    <v-chip small style="width:10px!important;"   v-else small    >  <v-icon left>mdi-do-not-disturb-off</v-icon> ยังไม่ได้ตรวจ </v-chip>
+
+
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p class="text-sm" v-html="oit.detail"></p>
+                    <div class="flex flex-col md:flex-row">
+                      <div class="w-full md:w-2/3">
+                        <v-timeline align-top dense>
+                          <v-timeline-item v-for="result,i in oit.result" :key="i" color="purple" small>
+                            <h2 class="font-bold text-base">{{result.name}}</h2>
+                            <span class="text-sm text-purple-900 ">สถานะ : {{result.register_type}}</span>
+                            <p class="text-sm">{{result.ref}}</p>
+                            <v-btn @click="openLink(result.urls)" dark color="purple" small><v-icon>mdi-play</v-icon>เปิดลิ้ง</v-btn>
+                          </v-timeline-item>
+                        </v-timeline>
+
+                      </div>
+                      <div class="w-full md:w-1/3">
+                        <form v-if="passingAllCheckTrue(oit.result)"  @submit.prevent="(oit.evaluate.id)?updateEvaluate(oit):storeEvaluate(oit)" class="shadow-2xl md:border-t-2 md:border-b-2 md:border-purple-500 rounded-xl md:m-2 md:p-6 p-2" >
+                          <h2 class="p-2 text-xl font-bold text-purple-800">การให้คะแนน</h2>
+                          <v-select  required v-model="oit.evaluate.rate_status" label="สถานะการตรวจสอบ" placeholder="ระบุสถานะ"
+                                    :items="rateStatus" item-text="name" item-value="id" filled></v-select>
+                          <v-textarea  v-model="oit.evaluate.comment" label="ความคิดเห็น" placeholder="ข้อความ" outlined></v-textarea>
+                          <input required v-model="oit.evaluate.score" type="radio" id="score0" name="score" :value="0">
+                          <label class="p-2 text-base font-bold" for="score0">คะแนน 0</label><br>
+                          <input required v-model="oit.evaluate.score" type="radio" id="score05" name="score" :value="0.5">
+                          <label class="p-2  text-base font-bold"  for="score05">คะแนน 0.5</label><br>
+                          <input required v-model="oit.evaluate.score" type="radio" id="score1" name="score" :value="1">
+                          <label class="p-2  text-base font-bold"  for="score1">คะแนน 1</label>
+                                  <br>
+                          <center v-if="(oit.evaluate.id)" class="mt-6 mb-4"><v-btn type="submit" color="orange" dark large>แก้ไขการให้คะแนน</v-btn></center>
+                          <center v-else class="mt-6 mb-4"><v-btn type="submit" color="success" dark large>บันทึกการให้คะแนน</v-btn></center>
+                        </form>
                       </div>
                     </div>
-<!--                         <div v-if="rate.result" class="p-2   " >-->
-<!--                            <div v-for="data,iindex in rate.result.urls" :key="iindex" class="p-2">  -->
-<!--                              <v-btn class="w-full" @click="openLink(data.urls)" dark small color="#1188ff"><v-icon style="color:white;" >mdi-play</v-icon>{{data.name}}</v-btn> -->
-<!--                            </div>-->
-<!--                                        -->
-<!--                       </div>  -->
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
 
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+
+
+
+
+
             </div>
           </div>
 
@@ -136,117 +89,6 @@
 
     </div>
 
-    <v-app v-if="dialog">
-      <v-dialog v-model="dialog" persistent max-width="900px">
-        <v-card>
-          <v-card-title>
-            <b>{{ rate.number }}. {{ rate.name }}</b>
-            <v-spacer></v-spacer>
-            <v-btn @click="closeDialog" icon text>
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-card-title>
-          <v-card-text>
-            <p v-html="rate.detail"></p>
-            <div class="block w-full overflow-x-auto">
-<!--              <v-alert v-if="form.passing" type="success">-->
-<!--                ได้รับการยืนยันจากหัวหน้าหน่วยงานแล้ว-->
-<!--              </v-alert>-->
-<!--              <v-alert v-if="!form.passing && form.id" type="info">-->
-<!--                เนื้อหานี้จะยังไม่สามารถให้ผู้ตรวจ ตรวจได้เนื่องจากยังไม่ได้รับการยืนยัน จากหัวหน้าหน่วยงาน-->
-<!--              </v-alert>-->
-
-              <v-expansion-panels>
-                <v-expansion-panel  v-for="data_rate,index in rateDatas" :key="index" >
-                  <v-expansion-panel-header>
-                    <v-toolbar flat color="transparent">
-                      <h2>{{data_rate.name}}</h2>
-                      <v-spacer></v-spacer>
-                      <span v-if="!data_rate.passing" class="bg-orange-400 p-2 rounded">
-                                            <v-icon>mdi-information</v-icon>ยังไม่ได้ยืนยันจากหัวหน้าหน่วยงาน
-                                        </span>
-                      <span v-if="data_rate.passing" class="bg-green-400 p-2 rounded ">
-                                            <v-icon>mdi-check</v-icon>ยืนยันจากหัวหน้าหน่วยงานแล้ว
-                                        </span>
-                      <span v-if="data_rate.tester" class="m-2 bg-blue-200 p-2 rounded">
-                                            <v-icon>mdi-account-check</v-icon> มีการตรวจแล้ว
-                                        </span>
-                      <span v-if="data_rate.rate_status == 4" class="m-2 bg-green-600 text-white p-2 rounded">
-                                            <v-icon>mdi-check</v-icon> ข้อมูลครบถ้วนแล้ว ( {{data_rate.score}} คะแนน )
-                                        </span>
-                    </v-toolbar>
-
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-tabs>
-                      <v-tab>การส่งข้อมูล</v-tab>
-                      <v-tab>การตรวจสอบ</v-tab>
-                      <v-tab-item><br>
-
-                        <form @submit.prevent="(!data_rate.id)?saveData():updateData(data_rate)">
-
-                          <v-text-field readonly v-model="data_rate.name" placeholder="ข้อความ" label="หัวข้อ"
-                                        filled></v-text-field>
-                          <v-select readonly required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']"
-                                    v-model="data_rate.register_type"
-                                    filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-                          <v-text-field readonly v-model="data_rate.ref" placeholder="คำอธิบายเพิ่มเติม" label="หมายเหตุ"
-                                        filled></v-text-field>
-                          <v-text-field readonly required v-model="data_rate.urls" placeholder="้https://test//" label="URL"
-                                        filled></v-text-field>
-
-                          <center>
-                            <v-btn v-if="data_rate.urls" color="#49bcff" @click="openLink(data_rate.urls)" dark>
-                              <v-icon>mdi-play</v-icon>
-                              เปิดลิ้ง
-                            </v-btn> &nbsp;
-                          </center>
-                        </form>
-                      </v-tab-item>
-                      <v-tab-item><br>
-
-                        <form @submit.prevent="updateData(data_rate)" v-if="data_rate.passing">
-                          <v-select required v-model="data_rate.rate_status" label="สถานะการตรวจสอบ" placeholder="ระบุสถานะ"
-                                    :items="rateStatus" item-text="name" item-value="id" filled></v-select>
-                          <v-text-field required v-model="data_rate.score" label="คะแนน" placeholder="ระบุตัวเลข" filled
-                                        type="number"></v-text-field>
-                          <v-textarea   v-model="data_rate.comment" placeholder="ข้อความ" label="ความคิดเห็น"
-                                        filled></v-textarea>
-                          <center>
-                            <v-btn v-if="data_rate.urls" color="#49bcff" @click="openLink(data_rate.urls)" dark>
-                              <v-icon>mdi-play</v-icon>
-                              เปิดลิ้ง
-                            </v-btn> &nbsp;
-                            <v-btn type="submit" color="#3eb83e" dark>
-                              <v-icon>mdi-clipboard-check</v-icon>
-                              ยืนยันการจรวจสอบ
-                            </v-btn> &nbsp;
-
-                          </center>
-
-                        </form>
-                        <div v-else class="p-4">
-                          <v-alert type="info">
-                            ยังไม่สามารถตรวจสอบได้เนื่องจาก ยังไม่มีข้อมูลการส่งหรือ หัวหน้าหน่วยงานยังไม่อนุมัติการส่ง
-                          </v-alert>
-                        </div>
-                      </v-tab-item>
-                    </v-tabs>
-
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-
-
-
-
-
-            </div>
-          </v-card-text>
-
-        </v-card>
-      </v-dialog>
-    </v-app>
 
   </div>
 </template>
@@ -285,6 +127,7 @@ import _ from 'lodash'
   }
 })
 export default class Home extends Vue {
+  private AGENCY_DATA:any = null;
   private currentId: any | null = null
   private user: any = {}
   private year: any = []
@@ -314,6 +157,7 @@ export default class Home extends Vue {
     this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.$route.query.year}/`)
     this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.$route.query.id}`)
     this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
+    this.AGENCY_DATA = await Core.getHttp(`api/ita/v2/agency/${this.currentId}/`)
     await this.generateTable()
     await this.generateScore();
     this.response = true;
@@ -322,12 +166,60 @@ export default class Home extends Vue {
 
   private async generateTable() {
     for (let i = 0; i < this.rates.length; i++) {
-      console.log(this.rates[i].id);
+      // console.log(this.rates[i].id);
       let result: any = _.filter(this.result, {
         'rate': this.rates[i].id
       })
+      this.rates[i].evaluate  = await this.getEvaluate(this.rates[i].id)
       this.rates[i].result = result
+
     }
+  }
+
+  private async getEvaluate(rateId:number){
+    let data = await Core.getHttp(`/api/oit/v1/evaluateoit/?rate=${rateId}&agency=${this.currentId}`);
+    return (data.length > 0)?data[0]:{}
+  }
+  private  async storeEvaluate(oit:any){
+    if(oit.evaluate.rate_status){
+      let form = {
+        "score": oit.evaluate.score,
+        "comment": (oit.evaluate.comment)?oit.evaluate.comment:'',
+        "rate": oit.id,
+        "rate_status": oit.evaluate.rate_status,
+        "tester":  this.user.pk,
+        "agency": Number(this.currentId)
+      }
+      let store = await Core.postHttp(`/api/oit/v1/evaluateoit/`,form)
+      if(store.id){
+        alert('ให้คะแนนสำเร็จแล้ว')
+        location.reload()
+      }
+    }else{
+      alert('กรุณาระบุสถานะการตรวจสอบ')
+    }
+
+  }
+  private  async updateEvaluate(oit:any){
+    if(oit.evaluate.rate_status){
+      let form = {
+        "id":oit.evaluate.id,
+        "score": oit.evaluate.score,
+        "comment": (oit.evaluate.comment)?oit.evaluate.comment:'',
+        "rate": oit.id,
+        "rate_status": oit.evaluate.rate_status,
+        "tester":  this.user.pk,
+        "agency": Number(this.currentId)
+      }
+      let store = await Core.putHttp(`/api/oit/v1/evaluateoit/${oit.evaluate.id}/`,form)
+      if(store.id){
+        alert('ให้คะแนนสำเร็จแล้ว')
+        location.reload()
+      }
+    }else{
+      alert('กรุณาระบุสถานะการตรวจสอบ')
+    }
+
   }
 
   public async openDialog(rate: any) {
@@ -373,6 +265,17 @@ export default class Home extends Vue {
     }
   }
 
+  private passingAllCheckTrue(datas:any[]){
+
+    if(datas.length > 0){
+      let passed = _.filter(datas,{passing:true})
+      //console.log(passed.length , datas);
+      return (passed.length >0) ? true:false;
+    }else{
+      return false;
+    }
+
+  }
 
 
   private openLink(url: string) {
