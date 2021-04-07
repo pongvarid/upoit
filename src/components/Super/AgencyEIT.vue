@@ -27,7 +27,7 @@
       <v-card v-for="(issue,i) in issues" class="m-3"
               :key="i"  v-if="issue.assessment == chooseAssignId"  >
         <v-card-title class="bg-purple-x text-white shadow-xl">
-          <h2 class="text-sm"><span class="font-bold">(i{{issue.order}})</span> {{issue.name}}</h2>
+          <h2 class="text-sm"><span class="font-bold">(e{{issue.order}})</span> {{issue.name}}</h2>
 
         </v-card-title>
         <v-card-text>

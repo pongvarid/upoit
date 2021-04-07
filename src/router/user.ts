@@ -199,6 +199,10 @@ const userRouter:any  = [
         name: 'genport',
         component: () =>import(`@/views/dev/GenPort.vue`)
     },
+    {    path: '/super',
+        name: 'super',
+        component: () =>import(`@/views/dev/Super.vue`)
+    },
 ]
 
 export  {

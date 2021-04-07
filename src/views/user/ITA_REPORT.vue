@@ -1,6 +1,6 @@
 <template>
 <div class="block relative mt-32" style="z-index:1;" >
-  <v-tabs>
+  <v-tabs  >
     <v-tab>
       ภาพรวม
     </v-tab>
@@ -14,6 +14,16 @@
       <AgencyUp></AgencyUp>
     </v-tab-item>
   </v-tabs>
+
+<!--  <div>-->
+<!--    <center>-->
+<!--      <div>-->
+<!--        <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>-->
+<!--        <h2  class="text-2xl">ยังไม่เปิดให้เข้าถึงข้อมูล</h2>-->
+<!--      </div>-->
+<!--    </center>-->
+<!--  </div>-->
+
 </div>
 </template>
 
@@ -40,6 +50,7 @@ import _ from 'lodash'
     },
 })
 export default class Home extends Vue {
+    dialogPause:boolean = false
     private form: any = {}
     chooseYear: any = '1'
     series: any = [{
@@ -69,7 +80,12 @@ export default class Home extends Vue {
         this.down = _.orderBy(this.agency, ['count'], ['asc']);
         //     let loader = await this.$loading.show()
 
-        //   await loader.hide()
+        //   await loader.hide()\
+      
+      let web = await Core.getHttp(`/setting/app/`)
+      if(web.result){
+        this.dialogPause = web.result;
+      }
 
     }
 

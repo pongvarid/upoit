@@ -1,32 +1,7 @@
 <template>
   <div  >
     <div class="flex flex-wrap flex-col md:flex-row" v-if="response">
-      <div class="w-full md:w-1/2">
-        <h2 class="text-2xl">ผลประเมินภาพรวม    </h2>
 
-        <h2>คะแนนภาพรวมหน่วยงาน {{ (all.all).toFixed(2)}} คะแนน</h2><v-btn small @click="genData([all],lists)">ส่งออกข้อมูล</v-btn> <br> <br>
-        <div class="flex flex-wrap">
-          <bin-card class="m-2" c="rgb(51, 102, 204)" :h="all.iit" t="คะแนน" i="IIT"></bin-card>
-          <bin-card class="m-2" c="rgb(255, 102, 0)"  :h="all.eit"  t="คะแนน" i="EIT"></bin-card>
-          <bin-card class="m-2" c="rgb(77, 153, 0)"  :h="all.oit"  t="คะแนน" i="OIT"></bin-card>
-        </div>
-
-        <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
-        <center>
-          <h2>ระดับผลการประเมิน</h2>
-          <h2 class="text-5xl">{{all.rate}}</h2>
-        </center>
-      </div>
-      <div class="w-full md:w-1/2" >
-
-
-        <v-card class="m-2 p-4 elevation-5" v-for="item,index in lists" :key="index">
-          <b>{{item.order}}.{{item.name}}</b> ({{item.score}})
-          <v-progress-linear striped height="10" :color="getColor(item.score)" :value="item.score" :buffer-value="100"></v-progress-linear>
-        </v-card>
-      </div>
-
-      <br><br><br><br>
       <h2 class="text-2xl"   >รายละเอียดการประเมิน</h2>
       <v-tabs v-model="tab" v-if="responseDetail">
         <v-tab>IIT</v-tab>
