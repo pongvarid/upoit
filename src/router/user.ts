@@ -187,6 +187,18 @@ const userRouter:any  = [
         name: 'dev',
         component: () =>import(`@/views/dev/Home.vue`)
     },
+    {    path: '/res-iit',
+        name: 'resiit',
+        component: () =>import(`@/views/dev/TestIIT.vue`)
+    },
+    {    path: '/res-eit',
+        name: 'reseit',
+        component: () =>import(`@/views/dev/TestEIT.vue`)
+    },
+    {    path: '/gen-port',
+        name: 'genport',
+        component: () =>import(`@/views/dev/GenPort.vue`)
+    },
 ]
 
 export  {

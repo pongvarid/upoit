@@ -2,8 +2,9 @@
   <div  >
     <div class="flex flex-wrap flex-col md:flex-row" v-if="response">
       <div class="w-full md:w-1/2">
-        <h2 class="text-2xl">ผลประเมินภาพรวม</h2>
-        <h2>คะแนนภาพรวมหน่วยงาน {{all.all}} คะแนน</h2>
+        <h2 class="text-2xl">ผลประเมินภาพรวม    </h2>
+
+        <h2>คะแนนภาพรวมหน่วยงาน {{ (all.all).toFixed(2)}} คะแนน</h2><v-btn small @click="genData([all],lists)">ส่งออกข้อมูล</v-btn> <br> <br>
         <div class="flex flex-wrap">
           <bin-card class="m-2" c="rgb(51, 102, 204)" :h="all.iit" t="คะแนน" i="IIT"></bin-card>
           <bin-card class="m-2" c="rgb(255, 102, 0)"  :h="all.eit"  t="คะแนน" i="EIT"></bin-card>
@@ -17,6 +18,8 @@
         </center>
       </div>
       <div class="w-full md:w-1/2" >
+
+
         <v-card class="m-2 p-4 elevation-5" v-for="item,index in lists" :key="index">
           <b>{{item.order}}.{{item.name}}</b> ({{item.score}})
           <v-progress-linear striped height="10" :color="getColor(item.score)" :value="item.score" :buffer-value="100"></v-progress-linear>
@@ -25,18 +28,18 @@
 
       <br><br><br><br>
       <h2 class="text-2xl" >รายละเอียดการประเมิน</h2>
-      <v-tabs v-if="responseDetail">
+      <v-tabs v-model="tab" v-if="responseDetail">
         <v-tab>IIT</v-tab>
         <v-tab-item>
-          <AgencyIIT />
+          <AgencyIIT v-if="tab==0" :yearData="year" :agencyData="agency" />
         </v-tab-item>
         <v-tab>EIT</v-tab>
         <v-tab-item>
-          <AgencyEIT></AgencyEIT>
+          <AgencyEIT v-if="tab==1"  :yearData="year" :agencyData="agency"></AgencyEIT>
         </v-tab-item>
         <v-tab>OIT</v-tab>
         <v-tab-item>
-          <AgencyOIT></AgencyOIT>
+          <AgencyOIT v-if="tab==2"  :yearData="year" :agencyData="agency" ></AgencyOIT>
         </v-tab-item>
       </v-tabs>
       <div v-else>
@@ -75,6 +78,7 @@ import AgencyIIT from './AgencyIIT.vue'
 import AgencyOIT from './AgencyOIT.vue'
 import AgencyEIT from './AgencyEIT.vue'
 import _ from 'lodash'
+import XLSX from 'xlsx'
 @Component({
   components: {
     AgencyIIT,AgencyOIT,AgencyEIT,
@@ -87,7 +91,9 @@ export default class Home extends Vue {
 
   @Prop({default:'2563'})
   year:any ;
-  responseDetail:boolean = false
+
+  tab:number = 0
+  responseDetail:boolean = true
   lists:any = null
   all:any = null
   response:boolean = false
@@ -151,6 +157,19 @@ export default class Home extends Vue {
       return "#4cc700"
     }
   }
+
+  async genData(dataA:any,dataB:any){
+    await this.onExport(dataA)
+    await this.onExport(dataB)
+  }
+
+  async onExport(data:any) {
+    const dataWS = XLSX.utils.json_to_sheet(data)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, dataWS)
+    XLSX.writeFile(wb,'export.xlsx')
+  }
+
 
 }
 </script>

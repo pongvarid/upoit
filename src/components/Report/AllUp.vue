@@ -12,7 +12,7 @@
       <div class="flex flex-wrap flex-col md:flex-row" v-if="response">
         <div class="w-full md:w-1/2">
           <h2 class="text-2xl">ผลประเมินภาพรวมของมหาวิทยาลัยพะเยา</h2>
-          <h2>คะแนนรวม {{up.all}} คะแนน</h2>
+          <h2>คะแนนรวม {{up.all}} คะแนน</h2>  <v-btn small @click="onExport(all)">ส่งออกข้อมูล</v-btn><br> <br>
           <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
 
           <center>
@@ -21,6 +21,7 @@
           </center>
         </div>
         <div class="w-full md:w-1/2">
+
           <v-tabs>
             <v-tab>A</v-tab>
             <v-tab-item>
@@ -58,7 +59,7 @@
 
         </div><br><br>
         <div class="w-full p-6">
-          <h2 class="mt-3 text-xl">รายระเอียดผลการประเมิน</h2>
+          <h2 class="mt-3 text-xl">รายระเอียดผลการประเมิน</h2>   <v-btn @click="onExport(listsData)">ส่งออกข้อมูล</v-btn>
           <v-card class="m-2 p-4 elevation-5"v-for="item,key in listsData" :key="key">
             <b>{{ (key+1)}}.{{item.name}}</b> ({{item.score}})
             <v-progress-linear striped height="10" :color="getColor(item.score)" :value="item.score" :buffer-value="100"></v-progress-linear>
@@ -94,6 +95,7 @@ import _ from 'lodash'
 import UpIIT from './UpIIT.vue'
 import UpEIT from './UpEIT.vue'
 import UpOIT from './UpOIT.vue'
+import XLSX from 'xlsx'
 @Component({
   components: {
     UpIIT,UpEIT,UpOIT
@@ -145,6 +147,10 @@ export default class Home extends Vue {
     let data =  await Core.getHttp(`/api/report/v1/reportall-all/?year=${this.year}`)
     if(data.length > 0){
       this.all = _.orderBy(data,'all','desc') ;
+      for (let i =0; i< this.all.length; i++){
+        this.all[i].agency_name= this.all[i].agency.name
+        this.all[i].all = Number( (this.all[i].all).toFixed(2))
+      }
       this.response = true;
     }else{
       this.response = false;
@@ -191,6 +197,15 @@ export default class Home extends Vue {
       return "#4cc700"
     }
   }
+
+
+  async onExport(data:any) {
+    const dataWS = XLSX.utils.json_to_sheet(data)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, dataWS)
+    XLSX.writeFile(wb,'export.xlsx')
+  }
+
 }
 </script>
 

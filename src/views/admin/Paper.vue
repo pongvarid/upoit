@@ -13,18 +13,40 @@
           <div class="flex flex-wrap">
 
             <div class="block w-full overflow-x-auto bg-gray-100">
+  <div class="flex flex-wrap flex-col md:flex-row">
+    <div class="w-full md:w-1/2 " >
+      <form @submit.prevent="insertNum()" class="flex flex-row flex-wrap p-4">
+        <v-text-field required v-model="checkNum" label="ตรวจข้อใดบ้าง" persistent-hint placeholder="ตัวอย่าง 1"></v-text-field>
+        <v-btn  type="submit" style="right:0;" class=" w-24 items-end	" color="success" >ยืนยัน</v-btn>
+      </form>
+     <div class="w-full p-4">
+       <h2>ข้อที่ตรวจ</h2>
+       <h3>{{numChoice}}</h3>
+     </div>
+    </div>
+    <div class="w-full md:w-1/2 p-4">
+      <h2>การแสดงผล</h2>
+      <v-radio-group v-model="checkedData">
+        <v-radio label="ทั้งหมด" :value="0"></v-radio>
+        <v-radio label="ตรวจแล้ว" :value="1"></v-radio>
+        <v-radio label="ยังไม่ได้ตรวจ" :value="2"></v-radio>
+      </v-radio-group>
+    </div>
+  </div>
+
 
 
               <v-expansion-panels>
                 <v-expansion-panel
                     v-for="(oit,index) in rates"
                     :key="index"
+                    v-if="checkDataTest((oit.evaluate.score || oit.evaluate.score == 0)) && checkNumData(oit.number)"
                 >
                   <v-expansion-panel-header>
 
                       <h2 class="text-base font-bold" style="width:450px;">
 
-                        {{oit.name}}
+                       <span class="text-purple-600 font-bold">O-{{oit.number}} &nbsp;&nbsp;</span>&nbsp;&nbsp;{{oit.name}}
 
 
                       </h2>
@@ -33,7 +55,12 @@
                       <v-icon left> mdi-check-network</v-icon> หัวหน้าหน่วยงานยืนยันแล้ว  </v-chip>
                     <v-chip  v-else class="mr-4"  small  style="width:50px!important;"  >  <v-icon left> mdi-close-network </v-icon>  หัวหน้าหน่วยงานไม่ได้ยืนยัน </v-chip>
 
-                    <v-chip small style="width:10px!important;"   v-if="oit.evaluate.score || oit.evaluate.score == 0" small    color="success"     text-color="white"  >  <v-icon left>  mdi-marker-check </v-icon>  ตรวจแล้ว  </v-chip>
+
+
+
+                    <v-chip small style="width:10px!important;"   v-if="oit.evaluate.rate_status != 1 && (oit.evaluate.score || oit.evaluate.score == 0)" small    color="success"     text-color="white"  >  <v-icon left>  mdi-marker-check </v-icon>  ตรวจแล้ว  </v-chip>
+                    <v-chip  v-else-if="oit.evaluate.rate_status == 1" class="mr-4" color="warning" small  style="width:50px!important;"  >
+                      <v-icon left> mdi-check-network</v-icon> รอตรวจสอบผลการตรวจ  </v-chip>
                     <v-chip small style="width:10px!important;"   v-else small    >  <v-icon left>mdi-do-not-disturb-off</v-icon> ยังไม่ได้ตรวจ </v-chip>
 
 
@@ -46,7 +73,7 @@
                           <v-timeline-item v-for="result,i in oit.result" :key="i" color="purple" small>
                             <h2 class="font-bold text-base">{{result.name}}</h2>
                             <span class="text-sm text-purple-900 ">สถานะ : {{result.register_type}}</span>
-                            <p class="text-sm">{{result.ref}}</p>
+                        `    <p class="text-sm">{{result.ref}}</p>`
                             <v-btn @click="openLink(result.urls)" dark color="purple" small><v-icon>mdi-play</v-icon>เปิดลิ้ง</v-btn>
                           </v-timeline-item>
                         </v-timeline>
@@ -127,6 +154,8 @@ import _ from 'lodash'
   }
 })
 export default class Home extends Vue {
+  private checkNum:any = ''
+  private checkedData:number = 0;
   private AGENCY_DATA:any = null;
   private currentId: any | null = null
   private user: any = {}
@@ -193,7 +222,7 @@ export default class Home extends Vue {
       let store = await Core.postHttp(`/api/oit/v1/evaluateoit/`,form)
       if(store.id){
         alert('ให้คะแนนสำเร็จแล้ว')
-        location.reload()
+        await this.run()
       }
     }else{
       alert('กรุณาระบุสถานะการตรวจสอบ')
@@ -214,7 +243,7 @@ export default class Home extends Vue {
       let store = await Core.putHttp(`/api/oit/v1/evaluateoit/${oit.evaluate.id}/`,form)
       if(store.id){
         alert('ให้คะแนนสำเร็จแล้ว')
-        location.reload()
+        await this.run()
       }
     }else{
       alert('กรุณาระบุสถานะการตรวจสอบ')
@@ -315,6 +344,38 @@ export default class Home extends Vue {
     }
     console.log('[dd]',response)
 
+  }
+
+  numChoice:any = []
+  async insertNum(){
+    let data = _.includes(this.numChoice,Number(this.checkNum))
+    if(!data){
+      this.numChoice.push(Number(this.checkNum))
+      this.checkNum = ''
+    }else{
+      this.checkNum = ''
+      alert('ใส่ข้อนี้แล้ว')
+    }
+  }
+  checkNumData(num:number){
+    if(this.numChoice.length > 0){
+      return _.includes(this.numChoice,num)
+    }else{
+      return true
+    }
+  }
+
+  checkDataTest(check:boolean){
+    console.log(check)
+    if(this.checkedData == 0){
+      return true;
+    }else if(this.checkedData == 1){
+      return check
+    }else if(this.checkedData == 2){
+      return !check
+    }else{
+      return true;
+    }
   }
 }
 </script>

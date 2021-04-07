@@ -1,82 +1,33 @@
 <template>
-  <div class="relative   pb-32  ">
-    <div class="relative  flex flex-col min-w-0 break-words w-full mb-6  bg-white rounded shadow-lg ">
-      <div class="rounded-t mb-0 px-4   border-0 ">
-        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
+  <div class="relative md:pt-32 pb-32 pt-12"  style="z-index:1;" v-if="response">
 
-          <hr class="border-gray-600 border-2 mt-2">
-        </div>
-        <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
-          <div class="flex flex-wrap">
+    <v-toolbar>
 
-            <div class="block w-full overflow-x-auto">
-              <table class="items-center w-full bg-transparent border-collapse">
-                <thead>
-                <tr>
-                  <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    ลำดับ
-                  </th>
-                  <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    ชื่อ
-                  </th>
-                  <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left" :class="[
-                color === 'light'
-                  ? 'bg-gray-100 text-gray-600 border-gray-200'
-                  : 'bg-green-800 text-green-300 border-green-700',
-              ]">
-                    คะแนน
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="rate,index in rates" :key="index" :class="(index % 2!=0)?`bg-gray-200`:``">
-                  <th class="font-bold text-gray-700" style="width:20px!important;">
+      <h2 class="text-xl font-bold">ผลการประเมิน OIT ({{agency.name}})</h2>
 
-                    {{ rate.number }}
+      <v-spacer></v-spacer>
+      <v-icon>mdi-calendar</v-icon>
+      {{year.year}}
+    </v-toolbar>
 
-                  </th>
-                  <td class="font-bold text-gray-700"  >
-
-                    {{ rate.name }}
-
-                  </td>
-                  <td   class="p-2">
-
-                    {{getRandomInt(100)}}
-
-                  </td>
-
-
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
+    <v-toolbar flat color="transparent"  v-for="(oit,index) in rates"
+               :key="index">
+      <h2><span class="text-purple-600 font-bold">O-{{oit.number}} &nbsp;&nbsp;</span>&nbsp;&nbsp;{{oit.name}}</h2>
+      <v-spacer></v-spacer>
+      <h2>{{oit.score}}</h2>
+    </v-toolbar>
 
   </div>
 </template>
 
+
 <script lang="ts">
 import {
-  Component,
+  Component, Prop,
   Vue
 } from 'vue-property-decorator';
 
-
+import { Web } from "@/store/web";
 import {
   Auth
 } from '@/store/auth'
@@ -86,10 +37,11 @@ import {
 import {
   User
 } from '@/store/user'
+import _ from 'lodash'
 
 @Component({
   components: {
-    
+
   },
   props: {
     color: {
@@ -102,91 +54,49 @@ import {
   }
 })
 export default class Home extends Vue {
-  private currentId: any | null = null
-  private user: any = {}
+  @Prop({default:7})
+  agencyData:any;
+
+  @Prop({default:'2563'})
+  yearData:any ;
   private year: any = []
   private rates: any = []
-  private dialog: boolean = false
-  private rate: any = {}
-  private form: any = {}
-  private formUpdate: any = null
-  private rateDatas: any = []
-  private rateStatus: any = []
   private response: boolean = false
 
+  private agency:any = {};
   public async created() {
 
     await this.run()
 
   }
-
+  result:any = []
   private async run() {
-    let loader = await this.$loading.show()
-    this.response = false;
-    this.currentId = 27
-    this.user = await User.getUser();
-    this.year = await Core.getHttp(`/api/ita/v2/year/${3}/`)
-    this.rates = await Core.getHttp(`/api/ita/v2/rate/${3}/`)
-    this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
-    for (let i = 0; i < this.rates.length; i++) {
-      let result = await this.getResultByUser(i)
-      this.rates[i].result = (result.id) ? result : null
-    }
+    await Web.switchLoad(true)
+    this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.agencyData}/`)
+    this.year = await Core.getHttp(`/api/ita/v2/year/`)
+    this.year   = await _.find(this.year,{year:this.yearData})
+    this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.year.id}/`)
+    this.result = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${this.agencyData}`)
+
+    await this.generateTable()
+    await Web.switchLoad(false)
     this.response = true;
-    await loader.hide()
   }
 
-  public async openDialog(rate: any) {
-    this.rate = rate
-    this.form.rate = rate.id
-    this.form.name = rate.name
-    await this.loadRateData();
-    this.dialog = true;
-  }
+  private async generateTable() {
+    for (let i = 0; i < this.rates.length; i++) {
+      // console.log(this.rates[i].id);
+      let result: any = _.filter(this.result, {
+        'rate': this.rates[i].id
+      })
+      //this.rates[i].evaluate  = await this.getEvaluate(this.rates[i].id)
 
-  public async closeDialog() {
-    this.rate = null
-    this.form = {}
-    this.dialog = false;
-  }
-
-  private async loadRateData() {
-    this.rateDatas = await Core.putHttp(`/api/ita/v2/rateresult/`, {
-      "agency": this.currentId,
-      "rate": this.rate.id
-    })
-    if (this.rateDatas.id) {
-      this.form = this.rateDatas
-    }
-  }
-
-  private async getResultByUser(i: number) {
-    return await Core.putHttp(`/api/ita/v2/rateresult/`, {
-      "agency": this.currentId,
-      "rate": this.rates[i].id
-    })
-  }
-
-  private async updateData(data: any) {
-    data.user = data.user.pk
-    data.user_passing = data.user_passing.pk
-    data.tester = this.user.pk
-    let update = await Core.putHttp(`/api/ita/v1/rateresult/${data.id}/`, data)
-    if (update.id) {
-      this.form = {}
-      await this.run()
-      await this.loadRateData()
+      let score = ((await _.sumBy(result,'score'))/1)*100
+      this.rates[i].score = score + "%"
 
     }
   }
 
-  private openLink(url: string) {
-    window.open(url, '_blank');
-  }
-
-  getRandomInt(max:any) {
-    return Math.floor(Math.random() * Math.floor(max));
-  }
 
 }
 </script>

@@ -123,12 +123,11 @@ export default class TestDevClass extends Vue {
 
 
   async created(){
-    await Web.switchLoad(true)
     this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.$route.query.agency}/`)
     this.year = await Core.getHttp(`/api/eit/v2/year/${this.$route.query.year}/`)
     await this.getIssue();
     await this.getUserDone();
-    await Web.switchLoad(false)
+
     this.response = true;
 
   }

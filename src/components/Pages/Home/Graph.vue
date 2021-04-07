@@ -15,7 +15,7 @@
 
         <div class="w-full h-full flex flex-col justify-center overflow-hidden lg:w-1/2 xl:w-1/2">
 
-            <h2 class="text-blue-500 text-xl">คะแนนการประเมิน {{all.all}} คะแนน </h2>
+            <h2 class="text-blue-500 text-xl">คะแนนการประเมิน {{ (all.all).toFixed(2)}} คะแนน </h2>
             <h2 class="text-blue-500 text-2xl font-bold">ระดับผลการประเมิน {{all.rate}} </h2>
 
             <div class="flex flex-col items-center">
@@ -57,7 +57,7 @@ export default class Graph extends Vue {
   agency:any = 0
 
 
-  year:any = '2563'
+  year:any = '2564'
   responseDetail:boolean = false
   lists:any = null
   all:any = null

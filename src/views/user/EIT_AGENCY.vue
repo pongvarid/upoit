@@ -107,7 +107,7 @@ export default class AdminHome extends Vue {
   private tabs:any = []
   private tab:number = 0
   private search:string = ''
-  private blockDialog:boolean = false;
+  private blockDialog:boolean = true;
   public async created() {
 
     await this.run()
