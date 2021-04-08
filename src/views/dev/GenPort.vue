@@ -184,13 +184,22 @@ export default class TestDevClass extends Vue {
       let oit = await this.getOIT(3,agency);
 
       let result = Number(oit)+Number(iit)+Number(eit)
+      let rate = this.getRate(result)
+      if(this.agency[i].name == 'กองกฎหมายและทรัพย์สิน' ||
+          this.agency[i].name == 'กองอาคารสถานที่' ||
+          this.agency[i].name == 'คณะวิทยาการจัดการและสารสนเทศศาสตร์' ||
+          this.agency[i].name == 'ศูนย์บริการเทคโนโลยีสารสนเทศและการสื่อสาร' ||
+          this.agency[i].name == 'สภาพนักงาน' ){
+        rate =  'ไม่ผ่านเกณฑ์' + `(${rate})`
+      }
+
       let data = {
         "year": "2564",
         "iit": Number(iit),
         "eit": Number(eit),
         "oit": Number(oit),
-        "all": result,
-        "rate": this.getRate(result),
+        "all": Number(result.toFixed(2)),
+        "rate": rate,
         "agency": agency
       }
 
@@ -203,18 +212,22 @@ export default class TestDevClass extends Vue {
   }
 
   getRate(rate:any){
-    if(this.inRange(rate,0,50) ){
+    if(this.inRange(rate,0,49.99) ){
       return 'F'
-    }else if(this.inRange(rate,50,65) ){
-      return 'D'
-    }else if(this.inRange(rate,65,75) ){
+    }else if(this.inRange(rate,50.00,54.99) ){
+      return 'E'
+    }else if(this.inRange(rate,55.00,64.99) ){
       return 'C'
-    }else if(this.inRange(rate,75,85) ){
+    }else if(this.inRange(rate,65.00,74.99) ){
+      return 'C'
+    }else if(this.inRange(rate,75.00,84.99) ){
       return 'B'
-    }else if(this.inRange(rate,85,100) ){
+    }else if(this.inRange(rate,85.00,94.99) ){
       return 'A'
+    }else if(this.inRange(rate,95.00,100) ){
+      return 'AA'
     }else{
-      return 'F'
+      return 'ไม่ทราบค่า'
     }
   }
 

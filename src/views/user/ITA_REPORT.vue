@@ -1,28 +1,30 @@
 <template>
 <div class="block relative mt-32" style="z-index:1;" >
-  <v-tabs  >
-    <v-tab>
-      ภาพรวม
-    </v-tab>
-    <v-tab-item>
-      <AllUp></AllUp>
-    </v-tab-item>
-    <v-tab>
-      หน่วยงาน
-    </v-tab>
-    <v-tab-item>
-      <AgencyUp></AgencyUp>
-    </v-tab-item>
-  </v-tabs>
+    <div>
+      <center>
+        <div>
+          <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>
+          <h2  class="text-2xl">อยู่ในระหว่างปรับปรุงและตรวจสอบข้อมูล</h2>
+        </div>
+      </center>
+    </div>
 
-<!--  <div>-->
-<!--    <center>-->
-<!--      <div>-->
-<!--        <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>-->
-<!--        <h2  class="text-2xl">ยังไม่เปิดให้เข้าถึงข้อมูล</h2>-->
-<!--      </div>-->
-<!--    </center>-->
-<!--  </div>-->
+<!--  <v-tabs  >-->
+<!--    <v-tab>-->
+<!--      ภาพรวม-->
+<!--    </v-tab>-->
+<!--    <v-tab-item>-->
+<!--      <AllUp></AllUp>-->
+<!--    </v-tab-item>-->
+<!--    <v-tab>-->
+<!--      หน่วยงาน-->
+<!--    </v-tab>-->
+<!--    <v-tab-item>-->
+<!--      <AgencyUp></AgencyUp>-->
+<!--    </v-tab-item>-->
+<!--  </v-tabs>-->
+
+
 
 </div>
 </template>

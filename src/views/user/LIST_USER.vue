@@ -34,6 +34,18 @@
           </v-chip>
         </template>
 
+        <template v-slot:item.data.rate="{ item }">
+          <v-chip
+              :color="(item.data.rate)?'success':'red'"
+              dark
+          >
+            <v-icon v-if="(item.data.rate)">mdi-checkbox-marked-circle</v-icon>
+            <v-icon v-else>mdi-close-circle</v-icon>
+
+            {{ (item.data.rate)?'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์' }}
+          </v-chip>
+        </template>
+
       </v-data-table>
     </v-card>
     <br><br>
@@ -82,7 +94,8 @@ export default class Home extends Vue {
     { text: 'IIT', value: 'data.iit' },
     { text: 'EIT', value: 'data.eit' },
     { text: 'OIT', value: 'data.oit' },
-    { text: 'การยืนยัน', value: 'data.oit_passing' }
+    { text: 'การยืนยัน', value: 'data.oit_passing' },
+    { text: 'rate', value: 'data.rate' }
   ]
 
   public async created() {
@@ -99,11 +112,16 @@ export default class Home extends Vue {
     if(this.agencies.length > 0){
       for (let i =0 ; i< this.agencies.length; i++ ){
         this.agencies[i]['oit'] = this.OIT_COUNT
+        let iit_done = (await _.filter(this.IIT_ALL,{agency:this.agencies[i].id})).length
+        let iit_set = this.agencies[i]['iit'];
+        let eit_done = (await _.filter(this.EIT_ALL,{agency:this.agencies[i].id})).length
+        let eit_set = this.agencies[i]['eit']
         this.agencies[i]['data'] = {
-          "iit":  (await _.filter(this.IIT_ALL,{agency:this.agencies[i].id})).length + '/' + this.agencies[i]['iit'],
-          "eit":  (await _.filter(this.EIT_ALL,{agency:this.agencies[i].id})).length + '/' + this.agencies[i]['eit'],
-          "oit" : await this.getOITResult(this.agencies[i].id,false)+ '/' + this.OIT_COUNT, // await this.getOITResult(this.agencies[i].id)
-          "oit_passing" :  await this.getOITResult(this.agencies[i].id,true)
+          "iit": iit_done + '/' + iit_set , // (await _.filter(this.IIT_ALL,{agency:this.agencies[i].id})).length + '/' + this.agencies[i]['iit'],
+          "eit":  eit_done + '/' + eit_set ,//(await _.filter(this.EIT_ALL,{agency:this.agencies[i].id})).length + '/' + this.agencies[i]['eit'],
+          "oit" :  await this.getOITResult(this.agencies[i].id,false)+ '/' + this.OIT_COUNT, // await this.getOITResult(this.agencies[i].id)
+          "oit_passing" :   await this.getOITResult(this.agencies[i].id,true),
+          "rate": ((iit_done >= iit_set)&&(eit_done >= eit_set))?true:false
         }
       }
     }

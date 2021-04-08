@@ -8,20 +8,29 @@
         <div class="container px-4 py-4 mx-auto">
               <h2 class="text-3xl mt-2 leading-tight font-semibold font-heading"> <v-btn @click="$router.go(-1)" flat icon text x-large ><v-icon>mdi-arrow-left-circle-outline</v-icon></v-btn>ผลการประเมิน</h2>
           <div class="block relative  " style="z-index:1;" >
-            <v-tabs>
-              <v-tab>
-                ภาพรวม
-              </v-tab>
-              <v-tab-item>
-                <AllUp></AllUp>
-              </v-tab-item>
-              <v-tab>
-                หน่วยงาน
-              </v-tab>
-              <v-tab-item>
-                <AgencyUp></AgencyUp>
-              </v-tab-item>
-            </v-tabs>
+
+            <div>
+              <center>
+                <div>
+                  <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>
+                  <h2  class="text-2xl">อยู่ในระหว่างปรับปรุงและตรวจสอบข้อมูล</h2>
+                </div>
+              </center>
+            </div>
+<!--            <v-tabs>-->
+<!--              <v-tab>-->
+<!--                ภาพรวม-->
+<!--              </v-tab>-->
+<!--              <v-tab-item>-->
+<!--                <AllUp></AllUp>-->
+<!--              </v-tab-item>-->
+<!--              <v-tab>-->
+<!--                หน่วยงาน-->
+<!--              </v-tab>-->
+<!--              <v-tab-item>-->
+<!--                <AgencyUp></AgencyUp>-->
+<!--              </v-tab-item>-->
+<!--            </v-tabs>-->
           </div>
         </div>
     </div>
