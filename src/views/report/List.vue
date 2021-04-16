@@ -46,11 +46,6 @@
           </v-expansion-panels>
 
 
-<!--         >-->
-
-<!--           -->
-
-
         </v-card-text>
         <v-card-actions>
           <v-btn @click="storeData" x-large color="success" class="w-full">บันทึกผลคะแนน &nbsp;&nbsp; <b>{{agency.name}}</b>&nbsp;  ปีงบประมาณ <b>{{year}}</b></v-btn>
