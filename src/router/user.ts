@@ -199,7 +199,7 @@ const userRouter:any  = [
         name: 'genport',
         component: () =>import(`@/views/dev/GenPort.vue`)
     },
-ad    {    path: '/gen-port2',
+    {    path: '/gen-port2',
         name: 'genport2',
         component: () =>import(`@/views/dev/GenPort2.vue`)
     },
