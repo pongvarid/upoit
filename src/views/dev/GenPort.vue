@@ -85,22 +85,22 @@ export default class TestDevClass extends Vue {
 
   async onExport(data:any, name:string) {
 
-   //let  dataWS = XLSX.utils.aoa_to_sheet([["ปีงบประมาณ", this.year]]);
-    let  dataWS:any =   XLSX.utils.json_to_sheet(data,{
-      origin: 3,  // append to bottom of worksheet starting on first column
-    })
-
-    let wb:any = XLSX.utils.book_new()
-    console.log(dataWS);
-
-    XLSX.utils.sheet_add_aoa(dataWS, [
-      ["ปีงบประมาณ", this.year,'',''],
-      ["คะแนนรวม", this.base,'',''],
-      ["ผล", this.rate,'','']
-    ], {origin: 0})
-    XLSX.utils.book_append_sheet(wb, dataWS)
-    // XLSX.utils.book_append_sheet(wb, [1,2,3])
-    XLSX.writeFile(wb,name)
+   // //let  dataWS = XLSX.utils.aoa_to_sheet([["ปีงบประมาณ", this.year]]);
+   //  let  dataWS:any =   XLSX.utils.json_to_sheet(data,{
+   //    origin: 3,  // append to bottom of worksheet starting on first column
+   //  })
+   //
+   //  let wb:any = XLSX.utils.book_new()
+   //  console.log(dataWS);
+   //
+   //  XLSX.utils.sheet_add_aoa(dataWS, [
+   //    ["ปีงบประมาณ", this.year,'',''],
+   //    ["คะแนนรวม", this.base,'',''],
+   //    ["ผล", this.rate,'','']
+   //  ], {origin: 0})
+   //  XLSX.utils.book_append_sheet(wb, dataWS)
+   //  // XLSX.utils.book_append_sheet(wb, [1,2,3])
+   //  XLSX.writeFile(wb,name)
   }
 
 

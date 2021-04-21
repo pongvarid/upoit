@@ -31,7 +31,7 @@
         </div>
         <br>
 
-        <Graph v-if="myAgency != publicAgency" />
+<!--        <Graph v-if="myAgency != publicAgency" />-->
 
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="myAgency != publicAgency">
             <h3 class=" text-2xl text-gray-800">

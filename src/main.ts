@@ -27,6 +27,8 @@ Vue.component('apexchart', VueApexCharts)
 
 import Card from '@/components/Bin/Card.vue'
 Vue.component('bin-card', Card)
+import Card2 from '@/components/Bin/Card2.vue'
+Vue.component('bin-card2', Card2)
 import {
   Core
 } from '@/store/core'

@@ -14,10 +14,10 @@
         <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
         <center>
           <h2>ระดับผลการประเมิน</h2>
-          <h2 class="text-5xl">{{all.rate}}</h2>
+          <h2 class="text-2xl">{{all.rate}}</h2>
         </center>
       </div>
-      <div class="w-full md:w-1/2" >
+      <div class="w-full md:w-1/2 mt-6" >
 
 
         <v-card class="m-2 p-4 elevation-5" v-for="item,index in lists" :key="index">
@@ -31,15 +31,15 @@
       <v-tabs v-model="tab" v-if="responseDetail">
         <v-tab>IIT</v-tab>
         <v-tab-item>
-          <AgencyIIT v-if="tab==0" :yearData="year" :agencyData="agency" />
+          <AgencyIIT v-if="tab==0" :yearData="year" :agencyData="agency" :all="all" />
         </v-tab-item>
         <v-tab>EIT</v-tab>
         <v-tab-item>
-          <AgencyEIT v-if="tab==1"  :yearData="year" :agencyData="agency"></AgencyEIT>
+          <AgencyEIT v-if="tab==1"  :yearData="year" :agencyData="agency" :all="all" ></AgencyEIT>
         </v-tab-item>
         <v-tab>OIT</v-tab>
         <v-tab-item>
-          <AgencyOIT v-if="tab==2"  :yearData="year" :agencyData="agency" ></AgencyOIT>
+          <AgencyOIT v-if="tab==2"  :yearData="year" :agencyData="agency" :all="all" ></AgencyOIT>
         </v-tab-item>
       </v-tabs>
       <div v-else>

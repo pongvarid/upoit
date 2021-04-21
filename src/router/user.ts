@@ -96,15 +96,15 @@ const userRouter:any  = [
         component: getView('IIT_YEAR'),
         group : 'iit'
     },
-    {
-        path: '/iit/all',
-        name: 'iit-all',
-        text:'ผลการประเมิน',
-        icon:'em em-checkered_flag',
-        enabled:true,
-        component: getView('IIT_AGENCY'),
-        group : 'iit'
-    },
+    // {
+    //     path: '/iit/all',
+    //     name: 'iit-all',
+    //     text:'ผลการประเมิน',
+    //     icon:'em em-checkered_flag',
+    //     enabled:true,
+    //     component: getView('IIT_AGENCY'),
+    //     group : 'iit'
+    // },
     {
         path: '/iit/detail',
         name: 'iit-detail',
@@ -133,15 +133,15 @@ const userRouter:any  = [
         component: getView('EIT_YEAR'),
         group : 'eit'
     },
-    {
-        path: '/eit/all',
-        name: 'eit-all',
-        text:'ผลการประเมิน',
-        icon:'em em-checkered_flag',
-        enabled:true,
-        component: getView('EIT_AGENCY'),
-        group : 'eit'
-    },
+    // {
+    //     path: '/eit/all',
+    //     name: 'eit-all',
+    //     text:'ผลการประเมิน',
+    //     icon:'em em-checkered_flag',
+    //     enabled:true,
+    //     component: getView('EIT_AGENCY'),
+    //     group : 'eit'
+    // },
     {
         path: '/eit/detail',
         name: 'eit-detail',
@@ -207,9 +207,17 @@ const userRouter:any  = [
         name: 'up-report',
         component: () =>import(`@/views/dev/GenPort3.vue`)
     },
+    {    path: '/gen-port4',
+        name: 'genport4',
+        component: () =>import(`@/views/dev/GenPort4.vue`)
+    },
     {    path: '/super',
         name: 'super',
         component: () =>import(`@/views/dev/Super.vue`)
+    },
+    {    path: '/data-analysis-before-show-end-user',
+        name: 'analysis',
+        component: () =>import(`@/views/dev/Analysis.vue`)
     },
 ]
 

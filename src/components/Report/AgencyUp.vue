@@ -14,7 +14,7 @@
 
     </div>
 
-    <div class="block relative " style="z-index:1;" v-if="response && (appSetting.year != chooseYear ||  appSetting.result == true) " >
+    <div class="block relative " style="z-index:1;" v-if="response" >
       <div class="container mx-auto">
 
 
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import {
-  Component,
+  Component, Prop,
   Vue
 } from 'vue-property-decorator';
 import {
@@ -68,18 +68,51 @@ import RawDataChart from './AgencyRawDataChart.vue'
   },
 })
 export default class Home extends Vue {
+
+
+  @Prop({default:false})
+  private debug:any;
+
   appSetting:any = {}
   chooseYear: any = '2563'
-  chooseAgency:any = 7
+  chooseAgency:any = 85
 
   response:boolean = false
   private agency: any = null
   private years:any = []
   async created() {
+
+
+
    this.appSetting = await Core.getHttp(`/setting/app/`)
-   this.chooseYear = this.appSetting.year
+
+    this.appSetting = await Core.getHttp(`/setting/app/`)
+    if(!this.debug){
+      this.years = await _.filter(this.appSetting.year_result,{open:true})
+    }else{
+      this.years = this.appSetting.year_result
+    }
+
+    if(this.years[0]){
+      this.chooseYear = this.years[this.years.length-1].year
+    }
+
+
+
     this.agency = await Core.getHttp(`/api/ita/v1/agency/`)
-    this.years = await Core.getHttp(`/api/ita/v1/year/`)
+    try {
+      let user = await User.getProfile();
+      if(user){
+        this.chooseAgency = user.ext_link.agency
+      }
+
+    }
+    catch(err) {
+
+    }
+
+    await this.loadData();
+
     this.response = true;
   }
 
@@ -102,12 +135,3 @@ export default class Home extends Vue {
 }
 </script>
 
-<style>
-.md\:w-74 {
-  width: 26rem;
-}
-
-.f-white {
-  color: white;
-}
-</style>

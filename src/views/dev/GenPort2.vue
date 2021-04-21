@@ -251,10 +251,10 @@ export default class TestDevClass extends Vue {
   }
 
   async onExport() {
-    const dataWS = XLSX.utils.json_to_sheet(this.issues)
-    const wb = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(wb, dataWS)
-    XLSX.writeFile(wb,'export.xlsx')
+    // const dataWS = XLSX.utils.json_to_sheet(this.issues)
+    // const wb = XLSX.utils.book_new()
+    // XLSX.utils.book_append_sheet(wb, dataWS)
+    // XLSX.writeFile(wb,'export.xlsx')
   }
 
 

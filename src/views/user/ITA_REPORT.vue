@@ -1,28 +1,29 @@
 <template>
 <div class="block relative mt-32" style="z-index:1;" >
-    <div>
-      <center>
-        <div>
-          <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>
-          <h2  class="text-2xl">อยู่ในระหว่างปรับปรุงและตรวจสอบข้อมูล</h2>
-        </div>
-      </center>
-    </div>
 
-<!--  <v-tabs  >-->
-<!--    <v-tab>-->
-<!--      ภาพรวม-->
-<!--    </v-tab>-->
-<!--    <v-tab-item>-->
-<!--      <AllUp></AllUp>-->
-<!--    </v-tab-item>-->
-<!--    <v-tab>-->
-<!--      หน่วยงาน-->
-<!--    </v-tab>-->
-<!--    <v-tab-item>-->
-<!--      <AgencyUp></AgencyUp>-->
-<!--    </v-tab-item>-->
-<!--  </v-tabs>-->
+<!--    <div>-->
+<!--      <center>-->
+<!--        <div>-->
+<!--          <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>-->
+<!--          <h2  class="text-2xl">อยู่ในระหว่างปรับปรุงและตรวจสอบข้อมูล</h2>-->
+<!--        </div>-->
+<!--      </center>-->
+<!--    </div>-->
+
+  <v-tabs  >
+    <v-tab>
+      ผลประเมินภาพรวมระดับมหาวิทยาลัย
+    </v-tab>
+    <v-tab-item>
+      <AllUp></AllUp>
+    </v-tab-item>
+    <v-tab>
+      ผลประเมินระดับหน่วยงาน
+    </v-tab>
+    <v-tab-item>
+      <AgencyUp></AgencyUp>
+    </v-tab-item>
+  </v-tabs>
 
 
 
@@ -75,6 +76,7 @@ export default class Home extends Vue {
     private down: any = []
     private scoreTop: any = [95.67, 85.45, 75.44, 74.55, 73.22, 73.11, 73.05, 72.95, 72.11, 71.99]
     private scoreDown: any = [71.99, 72.11, 72.95, 73.05, 73.11, 73.22, 74.55, 75.44, 85.45, 95.67]
+    private setting:any
     async created() {
       //  await Auth.reToken();
         this.agency = await Core.getHttp(`/api/ita/v1/agency/`)
@@ -85,6 +87,7 @@ export default class Home extends Vue {
         //   await loader.hide()\
       
       let web = await Core.getHttp(`/setting/app/`)
+      this.setting = web
       if(web.result){
         this.dialogPause = web.result;
       }

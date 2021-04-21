@@ -1,16 +1,28 @@
 <template>
-  <div class="md:pt-24 pb-32 pt-44" v-if="response">
-        <h2 class="text-2xl">ผลประเมินมหาวิทยาลัยพะเยา (Developer Preview)</h2>
-      <v-select @change="loadEnv()" label="ปีงบประมาณ" :items="years" v-model="year"></v-select>
-
+  <div class="" v-if="response">
     <div class="flex flex-row">
-  {{base}} {{rate}}
-       <div class="w-1/2">
 
-       </div>
       <div class="w-1/2">
-        <v-btn @click="onExport(report,'มหาวิทยาลัยพะเยา.xlsx')">Export</v-btn>
-        <v-toolbar v-for="(r,i) in raw" :key="raw">{{r.order}}. {{r.value}} <v-spacer></v-spacer> {{r.score}} </v-toolbar>
+            <v-toolbar flat>
+              <img class="w-16" src="https://www.flaticon.com/svg/vstatic/svg/4118/4118182.svg?token=exp=1618941323~hmac=94814d118f644834f6fc7111d6c7ed71" alt="">
+              <h2 class="text-2xl pl-4 font-bold"> ผลการประเมินภาพรวม </h2>
+
+            </v-toolbar>
+        <h2 class="pl-24 text-purple-600 font-bold">มหาวิทยาลัยพะเยา</h2>
+
+        <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
+        <center>
+          <h2 class="text-xl">คะแนน {{base}} </h2>
+          <h2 class="text-5xl font-bold">    {{rate}}</h2>
+          <v-btn @click="onExport(raw,'มหาวิทยาลัยพะเยา.xlsx')">ส่งออกข้อมูล</v-btn>
+        </center>
+      </div>
+      <div class="w-1/2">
+
+
+        <bin-card2 class="m-2 " v-for="(r,i) in raw" :key="raw"  c="purple" :i="r.order" :t="r.value" :h="r.score" />
+<!--        <v-toolbar class="m-2 " v-for="(r,i) in raw" :key="raw">{{r.order}}. {{r.value}} <v-spacer></v-spacer> <span class="font-bold">{{r.score}}% </span></v-toolbar>-->
+<!--    -->
       </div>
     </div>
 
@@ -24,7 +36,7 @@ import { User } from "@/store/user";
 import { Auth } from "@/store/auth";
 import { Core } from "@/store/core";
 import { Web } from "@/store/web";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch,Prop } from "vue-property-decorator";
 import _ from 'lodash'
 import XLSX from 'xlsx' // import xlsx
 import {Result} from '@/store/result'
@@ -38,27 +50,44 @@ import {CoreResult} from '@/store/core_result'
 })
 
 export default class TestDevClass extends Vue {
+  @Prop({default:''})
+  year:any
+
   report:any = ''
   response:boolean = false;
   rawDetail:any = [];
   rawBase:any = [];
-  years:any = ['2564','2565','2566','2567','2568','2569','2570',]
-  year:any = '2564'
   raw:any = []
   base:any = 0;
   rate:string = '';
-  async created(){
-      await this.loadEnv();
-      //await this.genReport()
+  series: any = [{
+    name: 'คะแนน',
+    data: [],
+  }]
+  chartOptions: any = {
+    chart: {
+      height: 350,
+      type: 'radar',
+    },
+    title: {},
+    xaxis: {
+      categories:[]
+    }
   }
 
-  async loadEnv(){ this.rawDetail
+  async created(){
+    await this.loadEnv();
+    //await this.genReport()
+  }
+
+  async loadEnv(){
     this.rawDetail = await Core.getHttp(`/api/report/v1/reportdetail/?year=${this.year}`)
     this.rawDetail = await _.filter(this.rawDetail , (a:any)=> {return a.agency != 98 && a.agency != 99})
     this.rawBase = await Core.getHttp(`/api/report/v1/reportall/?year=${this.year}`)
     this.rawBase = await _.filter(this.rawBase , (a:any)=> {return a.agency != 98 && a.agency != 99})
     await this.groupByDetail()
     await this.groupBase();
+    await this.generateGraph();
     this.response = true;
   }
   async groupBase(){
@@ -79,13 +108,9 @@ export default class TestDevClass extends Vue {
     console.log(data)
   }
 
-
-
   async genReport(){
     let group:any =  await _.chain(this.rawDetail)
-        // Group the elements of Array based on `color` property
         .groupBy("name")
-        // `key` is group's name (color), `value` is the array of objects
         .map( (value, key) => ({ "ลำดับ":value[0].order,"หัวข้อ": key, "คะแนน": Number( (_.meanBy(value,(e:any)=>{return e.score})).toFixed(2) ) }))
         .value()
     this.report =group
@@ -114,26 +139,28 @@ export default class TestDevClass extends Vue {
       return 'ไม่ทราบค่า'
     }
   }
+
+  async generateGraph(){
+
+
+    let categories = _.map(this.raw, 'value');
+    let score = _.map(this.raw, 'score');
+    console.log(this.raw);
+    this.series[0].data = score
+    this.chartOptions.xaxis.categories = categories
+
+
+  }
   inRange(x:number, min:number, max:number) {
     return ((x-min)*(x-max) <= 0);
   }
 
-  async onExport(data:any, name:string) {
-    // let dataWS = XLSX.utils.json_to_sheet(data)
-    //
-    // let wb:any = XLSX.utils.book_new()
-    // console.log(dataWS);
-    //
-    // XLSX.utils.sheet_add_aoa(dataWS, [
-    //   ["ปีงบประมาณ", this.year],
-    //   ["คะแนนรวม", this.base],
-    //   ["ผล", this.rate]
-    // ], {origin: -1})
-    // XLSX.utils.book_append_sheet(wb, dataWS)
-    // // XLSX.utils.book_append_sheet(wb, [1,2,3])
-    // XLSX.writeFile(wb,name)
+  async onExport(data:any,name:any) {
+    const dataWS = XLSX.utils.json_to_sheet(data)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, dataWS)
+    XLSX.writeFile(wb,name)
   }
-
 }
 </script>
 

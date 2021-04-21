@@ -10,7 +10,7 @@
           <hr class="border-gray-600 border-2 mt-2">
         </div>
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="response">
-          <div class="flex flex-wrap">
+          <div v-if="appSetting.oit" class="flex flex-wrap">
             <div class="block w-full overflow-x-auto">
               <v-tabs v-model="tab">
                 <v-tab  v-for="tab,i in tabs" :key="i">{{tab.name}}</v-tab>
@@ -42,7 +42,9 @@
               </v-tabs>
             </div>
           </div>
-
+          <div>
+            <h2 class="text-xl"><i class="em em-disappointed_relieved" aria-role="presentation" aria-label="DISAPPOINTED BUT RELIEVED FACE"></i> ยังไม่เปิดให้ดูข้อมูล</h2>
+          </div>
         </div>
 
 
@@ -109,12 +111,16 @@ export default class AdminHome extends Vue {
       return 'mdi mdi-account-tie-outline'
     }
   }
-
+  appSetting:any = {oit:false}
   private async run(){
     let loader = await this.$loading.show()
-    await this.loadTabType()
-    await this.loadAgency(this.tabs[0].id)
-    this.response = true
+    this.appSetting = await Core.getHttp(`/setting/app/`)
+
+      await this.loadTabType()
+      await this.loadAgency(this.tabs[0].id)
+      this.response = true
+
+
     await loader.hide()
   }
 

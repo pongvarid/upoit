@@ -1,5 +1,5 @@
 <template>
-  <div class="block relative container mx-auto" style="z-index:1;" >
+  <div class="block relative container mx-auto mt-24" style="z-index:1;" >
     <h2 class="text-3xl mt-2 leading-tight font-semibold font-heading"> <v-btn @click="$router.go(-1)" flat icon text x-large ><v-icon>mdi-arrow-left-circle-outline</v-icon></v-btn>ผลการประเมิน</h2>
 
     <!--    <div>-->
@@ -16,13 +16,13 @@
         ผลประเมินภาพรวมระดับมหาวิทยาลัย
       </v-tab>
       <v-tab-item>
-        <AllUp></AllUp>
+        <AllUp :debug="true"></AllUp>
       </v-tab-item>
       <v-tab>
         ผลประเมินระดับหน่วยงาน
       </v-tab>
       <v-tab-item>
-        <AgencyUp></AgencyUp>
+        <AgencyUp :debug="true"></AgencyUp>
       </v-tab-item>
     </v-tabs>
 

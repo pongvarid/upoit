@@ -1,21 +1,51 @@
 <template>
   <div class="relative md:pt-32 pb-32 pt-12"  style="z-index:1;" v-if="response">
-
-    <v-toolbar>
-
+    <h2 class="text-xl font-bold m-2"> <v-icon>mdi-calendar</v-icon> ปีงบประมาณ {{year.year}}</h2>
+    <v-toolbar   color="bg-purple-x" dark>
       <h2 class="text-xl font-bold">ผลการประเมิน OIT ({{agency.name}})</h2>
 
+
       <v-spacer></v-spacer>
-      <v-icon>mdi-calendar</v-icon>
-      {{year.year}}
+      <h2><span class="font-bold">ผลรวม</span> {{all.oit}} คะแนน</h2>
+
     </v-toolbar>
 
-    <v-toolbar flat color="transparent"  v-for="(oit,index) in rates"
-               :key="index">
-      <h2><span class="text-purple-600 font-bold">O-{{oit.number}} &nbsp;&nbsp;</span>&nbsp;&nbsp;{{oit.name}}</h2>
-      <v-spacer></v-spacer>
-      <h2>{{oit.score}}</h2>
-    </v-toolbar>
+<br>
+    <v-expansion-panels multiple v-model="panel">
+      <v-expansion-panel >
+        <v-expansion-panel-header>
+           <h2 class="text-xl text-purple-600 font-bold"><i class="em em-card_index_dividers" aria-role="presentation" aria-label=""></i> การเปิดเผยข้อมูล</h2>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-toolbar flat color="transparent"  v-for="(oit,index) in rates"
+                     :key="index" v-if="oit.number < 34">
+            <h2><span class="text-purple-600 font-bold">O-{{oit.number}} &nbsp;&nbsp;</span>&nbsp;&nbsp;{{oit.name}}</h2>
+            <v-spacer></v-spacer>
+            <h2>{{oit.score}}</h2>
+          </v-toolbar>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel >
+        <v-expansion-panel-header>
+          <h2 class="text-xl text-purple-600 font-bold"><i class="em em-card_index_dividers" aria-role="presentation" aria-label=""></i> การป้องกันการทุจริต</h2>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-toolbar flat color="transparent"  v-for="(oit,index) in rates"
+                     :key="index" v-if="oit.number >= 34">
+            <h2><span class="text-purple-600 font-bold">O-{{oit.number}} &nbsp;&nbsp;</span>&nbsp;&nbsp;{{oit.name}}</h2>
+            <v-spacer></v-spacer>
+            <h2>{{oit.score}}</h2>
+          </v-toolbar>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+
+
+
+
+
+
+
 
   </div>
 </template>
@@ -57,12 +87,15 @@ export default class Home extends Vue {
   @Prop({default:7})
   agencyData:any;
 
+  @Prop({default:{oit:0}})
+  all:any;
+
   @Prop({default:'2563'})
   yearData:any ;
   private year: any = []
   private rates: any = []
   private response: boolean = false
-
+  private panel:any = [1, 0]
   private agency:any = {};
   public async created() {
 

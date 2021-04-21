@@ -103,7 +103,8 @@ export default class TestDevClass extends Vue {
 
   @Prop({default:'2563'})
   yearData:any ;
-
+  @Prop({default:{eit:0}})
+  all:any;
   agency:any = null
   assignments:any = null
   year:any = null;
