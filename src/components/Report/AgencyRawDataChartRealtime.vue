@@ -39,7 +39,7 @@
         </v-tab-item>
         <v-tab>OIT</v-tab>
         <v-tab-item>
-          <AgencyOIT v-if="tab==2"  :yearData="year" :agencyData="agency" :all="all" :lists="lists" ></AgencyOIT>
+          <AgencyOIT v-if="tab==2"  :yearData="year" :agencyData="agency" :all="all" ></AgencyOIT>
         </v-tab-item>
       </v-tabs>
       <div v-else>
@@ -74,9 +74,9 @@ import {
 import {
   User
 } from '@/store/user'
-import AgencyIIT from './AgencyIIT.vue'
+import AgencyIIT from './AgencyIITRealtime.vue'
 import AgencyOIT from './AgencyOIT.vue'
-import AgencyEIT from './AgencyEIT.vue'
+import AgencyEIT from './AgencyEITRealtime.vue'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 @Component({

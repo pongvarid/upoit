@@ -2,32 +2,32 @@
   <div class="md:pt-6 pb-32 pt-44" v-if="response">
 
     <v-toolbar>
+
       <h2 class="text-xl font-bold">ผลการประเมิน EIT ({{agency.name}})</h2>
 
       <v-spacer></v-spacer>
       <v-icon>mdi-calendar</v-icon>
-      {{year}}
+      {{year.year}}
     </v-toolbar>
     <div class="flex mt-4">
-      <bin-card class="m-2"  c="#8A2BE2" i="mdi-account-group" t="บุคลากร (ที่ประเมิน/ทั้งหมด)" :h="`${allUser}/${allAgency}`" />
+      <bin-card class="m-2"  c="#8A2BE2" i="mdi-account-group" t="บุคลากร (ที่ประเมิน/ทั้งหมด)" :h="`${allUser}/${agency.eit}`" />
       <bin-card class="m-2"  c="#ff8040" i="mdi-scoreboard" t="ผลคะแนนรวม (100%)" :h="score" />
       <bin-card class="m-2"  c="#1088B2" i="30%" t="ผลคะแนนรวม (30%)" :h="score30" />
-      <bin-card class="m-2"  :c="(score >= 79)?'#16B77D':'#FF5733'" i="mdi-newspaper-variant-multiple-outline" t="ผลการประเมิน" :h="result" />
+      <bin-card class="m-2"  :c="(score >= 79)?'#16B77D':'#FF5733'" i="mdi-newspaper-variant-multiple-outline" t="ผลการประเมิน" :h="(score >= 79)?'ผ่านการประเมิน':'ไม่ผ่านการประเมิน'" />
     </div>
 
     <div class="mt-6">
 
       <div class="flex justify-center items-center">
         <v-btn large :color="(chooseAssignId == assign.id)?`info`:`primary`" @click="chooseAssignId = assign.id" class="m-2"
-               v-for="(assign,i) in assignments" :key="i" v-if="assign.name !='ข้อเสนอแนะ'">{{assign.name}}</v-btn>
+               v-for="(assign,i) in assignments" :key="i" v-if="assign.id != 4">{{assign.name}}</v-btn>
       </div>
-
 
 
       <v-card v-for="(issue,i) in issues" class="m-3"
               :key="i"  v-if="issue.assessment == chooseAssignId"  >
         <v-card-title class="bg-purple-x text-white shadow-xl">
-          <h2 class="text-sm"><span class="font-bold">(e{{issue.order}})</span> {{issue.name}}</h2>
+          <h2 class="text-sm"><span class="font-bold">(i{{issue.order}})</span> {{issue.name}}</h2>
 
         </v-card-title>
         <v-card-text>
@@ -103,11 +103,10 @@ export default class TestDevClass extends Vue {
 
   @Prop({default:'2563'})
   yearData:any ;
-
+  @Prop({default:{eit:0}})
+  all:any;
   agency:any = null
   assignments:any = null
-
-
   year:any = null;
   issues:any = [];
   response:boolean  = false;
@@ -115,26 +114,13 @@ export default class TestDevClass extends Vue {
   score30:number = 0
   chooseAssignId:number = 1;
   allUser:number = 0;
-  allAgency:number = 0;
-  result:any = ''
 
   async getIssue(){
-    this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.agencyData}/`)
-    let raw = await Core.getHttp(`/api/report/v1/reportraweit/?agency=${this.agencyData}&year=${this.yearData}`)
-    if(raw.length > 0){
-      let data = raw[0]
-      this.allUser = data.user_do
-      this.allAgency = data.user_set
-      this.assignments = JSON.parse(data.rawType)
-      this.year = data.year
-      this.chooseAssignId = 1
-      this.issues  = JSON.parse(data.rawDone)
-      this.score = data.score
-      this.score30 = data.score30
-      this.result = data.result
-      this.response = true;
-    }
-
+    this.assignments = await Core.getHttp(`/api/eit/v2/assessmentissues/?year=${this.year.id}`)
+    this.chooseAssignId = this.assignments[0].id
+    this.issues = await CoreResult.getIssueEIT(this.year.id,this.agency.id)
+    this.score = await CoreResult.getScrollAll();
+    this.score30 = await CoreResult.getScoreEIT();
     console.log(this.issues );
   }
 
@@ -142,19 +128,30 @@ export default class TestDevClass extends Vue {
 
   async created(){
     await Web.switchLoad(true)
-
-    await this.getIssue();
-
+    this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.agencyData}/`)
+    this.year = await Core.getHttp(`/api/eit/v2/year/`)
+    this.year = await _.find(this.year,{year:this.yearData})
+    if(this.year ){
+      await this.getIssue();
+      await this.getUserDone();
+      await Web.switchLoad(false)
+      this.response = true;
+    }
     await Web.switchLoad(false)
-
-
-
-
   }
 
+  async getUserDone(){
 
+    let user = await Core.getHttp(`/api/eit/v2/answersuggestioneit/?year=${this.year.id}&agency=${this.agency.id}`)
+    this.allUser = user.length
+  }
 
-
+  async onExport() {
+    const dataWS = XLSX.utils.json_to_sheet(this.issues)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, dataWS)
+    XLSX.writeFile(wb,'export.xlsx')
+  }
 
 
 

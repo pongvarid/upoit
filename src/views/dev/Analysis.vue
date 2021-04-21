@@ -23,6 +23,7 @@
       </v-tab>
       <v-tab-item>
         <AgencyUp :debug="true"></AgencyUp>
+<!--        <AgencyUpRealTime :debug="true" />-->
       </v-tab-item>
     </v-tabs>
 
@@ -46,11 +47,12 @@ import {
   User
 } from '@/store/user'
 import  AllUp from '@/components/Report/AllUp.vue'
-import  AgencyUp from '@/components/Report/AgencyUp.vue'
+import  AgencyUp from '@/components/Report/AgencyUp.vue' //
+import  AgencyUpRealTime from '@/components/Report/AgencyUpRealTime.vue'
 import _ from 'lodash'
 @Component({
   components: {
-    AllUp,AgencyUp
+    AllUp,AgencyUp,AgencyUpRealTime
   },
 })
 export default class Home extends Vue {
