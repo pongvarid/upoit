@@ -1,6 +1,11 @@
 <template>
   <div class="relative md:pt-32 pb-32 pt-12"  style="z-index:1;" v-if="response">
-    <h2 class="text-xl font-bold m-2"> <v-icon>mdi-calendar</v-icon> ปีงบประมาณ {{year.year}}</h2>
+    <div class="flex">
+  <h2 class="text-xl font-bold m-2"> <v-icon>mdi-calendar</v-icon> ปีงบประมาณ {{year.year}}</h2>
+  <v-spacer></v-spacer>
+   <ExportOIT :data="rates" />
+    </div>
+  
     <v-toolbar   color="bg-purple-x" dark>
       <h2 class="text-xl font-bold">ผลการประเมิน OIT ({{agency.name}})</h2>
 
@@ -10,7 +15,7 @@
 
     </v-toolbar>
 
-<br>
+<br> 
     <v-expansion-panels multiple v-model="panel">
       <v-expansion-panel >
         <v-expansion-panel-header>
@@ -142,10 +147,10 @@ import {
   User
 } from '@/store/user'
 import _ from 'lodash'
-
+import ExportOIT from './ExportOIT.vue'
 @Component({
   components: {
-
+ExportOIT
   },
   props: {
     color: {
@@ -220,6 +225,7 @@ export default class Home extends Vue {
 
       let score = ((await _.sumBy(result,'score'))/1)*100
       this.rates[i].score = score + "%"
+      this.rates[i].score_raw = score 
       this.rates[i].detail = _.filter(this.data,{rate:this.rates[i].id })
 
       this.rates[i].comment = (result[0])?result[0].comment : ''

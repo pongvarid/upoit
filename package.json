@@ -39,6 +39,7 @@
     "vuetify": "^2.4.7",
     "vuex": "^3.4.0",
     "vuex-class-modules": "^1.1.3",
+    "write-excel-file": "^1.2.0",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {

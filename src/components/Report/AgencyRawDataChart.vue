@@ -77,11 +77,12 @@ import {
 import AgencyIIT from './AgencyIIT.vue'
 import AgencyOIT from './AgencyOIT.vue'
 import AgencyEIT from './AgencyEIT.vue'
+import ExportOIT from './ExportOIT.vue'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 @Component({
   components: {
-    AgencyIIT,AgencyOIT,AgencyEIT,
+    AgencyIIT,AgencyOIT,AgencyEIT,ExportOIT
   },
 })
 export default class Home extends Vue {

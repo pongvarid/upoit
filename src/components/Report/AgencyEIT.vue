@@ -7,7 +7,9 @@
       <v-spacer></v-spacer>
       <v-icon>mdi-calendar</v-icon>
       {{year}}
+     <ExportEIT class="ml-2" :data="issues" />
     </v-toolbar>
+     
     <div class="flex mt-4">
       <bin-card class="m-2"  c="#8A2BE2" i="mdi-account-group" t="บุคลากร (ที่ประเมิน/ทั้งหมด)" :h="`${allUser}/${allAgency}`" />
       <bin-card class="m-2"  c="#ff8040" i="mdi-scoreboard" t="ผลคะแนนรวม (100%)" :h="score" />
@@ -89,10 +91,12 @@ import _ from 'lodash'
 import XLSX from 'xlsx' // import xlsx
 import {Result} from '@/store/result'
 import {CoreResult} from '@/store/core_result'
+import ExportEIT from './ExportEIT.vue'
 @Component({
   components: {
     Navbar,
     Loading,
+    ExportEIT
   },
   computed: {}
 })
