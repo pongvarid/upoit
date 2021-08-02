@@ -9,7 +9,7 @@
     </center>
     <br>
     <All :agency="currentAgency" :year="currentYear" />
-   
+   <TableUser />
   
 </div>
 </template>
@@ -18,9 +18,10 @@
 import { Report } from '@/store/report'
 import { Core } from '@/store/core'
 import All from '@/components/ReportUp/ExportAgency.vue'
+import TableUser from '@/components/ReportUp/TableUser.vue'
 
 export default {
-    components:{All},
+    components:{All,TableUser},
     data() {
         return ({
             currentYear: this.$route.query.year,
