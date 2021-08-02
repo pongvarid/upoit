@@ -2,7 +2,7 @@
   <div  >
     <div class="container px-auto">
       <h2 class="text-xl mt-2 leading-tight font-semibold font-heading"> ผลการประเมิน
-        <v-btn class="m-1" @click="prePrint()"><i class="em em-printer" aria-role="presentation" aria-label=""></i>Print</v-btn>
+        <v-btn class="m-1" @click="$router.push(`/export/up?year=${year}`)"><i class="em em-printer" aria-role="presentation" aria-label=""></i>Export</v-btn>
       </h2><br>
       <div class="flex ">
         <v-select class="m-1" @change="loadData()" filled label="ปีงบประมาณ" v-model="year" :items="years" item-text="year" item-value="year"></v-select>

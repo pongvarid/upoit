@@ -2,14 +2,7 @@
   <div class="block relative container mx-auto" style="z-index:1;" >
     <h2 class="text-3xl mt-2 leading-tight font-semibold font-heading"> <v-btn @click="$router.go(-1)" flat icon text x-large ><v-icon>mdi-arrow-left-circle-outline</v-icon></v-btn>ผลการประเมิน</h2>
 
-    <!--    <div>-->
-    <!--      <center>-->
-    <!--        <div>-->
-    <!--          <v-icon  style="font-size:79px;">mdi-information</v-icon><br><br>-->
-    <!--          <h2  class="text-2xl">อยู่ในระหว่างปรับปรุงและตรวจสอบข้อมูล</h2>-->
-    <!--        </div>-->
-    <!--      </center>-->
-    <!--    </div>-->
+  
 
     <v-tabs  >
       <v-tab>

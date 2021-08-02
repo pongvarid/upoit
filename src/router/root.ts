@@ -30,6 +30,14 @@ const rootRouter:any  = [
         name: 'report',
         component: getView('Report')
     },
+    {    path: '/export/up',
+         name: 'export-up',
+    component: getView('ExportUP')
+},
+{    path: '/export/agency',
+    name: 'export-agency',
+    component: getView('ExportAgency')
+},
 
 
 
