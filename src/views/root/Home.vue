@@ -1,5 +1,25 @@
 <template>
 <div>
+    <vs-dialog prevent-close blur v-model="activeSelect">
+
+        <div class="con-form">
+            <h4 class="not-margin text-xl font-semibold text-blue-600">
+                ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย
+            </h4>
+            <h2 class=" text-gray-600">Integrity & Transparency Assessment: ITA</h2>
+            <br>
+            <div @click="$router.push('/iit')">
+                <bin-card class="m-2" c="rgb(51, 102, 204)" t="Internal Integrity and Transparency Assessment : IIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card>
+
+            </div>
+            <div @click="$router.push('/eit')">
+                <bin-card class="m-2" c="rgb(255, 102, 0)" t="External Integrity and Transparency Assessment : EIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card>
+
+            </div>
+
+        </div>
+
+    </vs-dialog>
     <div :class="`containerR ${switchc}`" ref="main">
         <div class="forms-containerR">
             <div class="signin-signup">
@@ -125,10 +145,10 @@
                     <v-text-field dense required v-model="formReg.first_name" type="text" filled label="ชื่อ"></v-text-field>
                     <v-text-field dense required v-model="formReg.last_name" type="text" filled label="นามสกุล"></v-text-field>
                     <hr><br>
-<!--                    <ul>-->
-<!--                        <li>รหัสผ่านต้องประกอบด้วย อักษร A-Z a-z 0-9</li>-->
-<!--                        <li>รหัสผ่านต้องไม่ตรงกับ ชื่อผู้ใช้ หรือ ชื่อ-หรือชื่อนามสกุล</li>-->
-<!--                    </ul><br>-->
+                    <!--                    <ul>-->
+                    <!--                        <li>รหัสผ่านต้องประกอบด้วย อักษร A-Z a-z 0-9</li>-->
+                    <!--                        <li>รหัสผ่านต้องไม่ตรงกับ ชื่อผู้ใช้ หรือ ชื่อ-หรือชื่อนามสกุล</li>-->
+                    <!--                    </ul><br>-->
                     <v-text-field dense required v-model="formReg.password" type="password" filled label="รหัสผ่าน"></v-text-field>
                     <v-text-field dense required v-model="formReg.password_confirm" :hint="(formReg.password != formReg.password_confirm)?'รหัสผ่านต้องตรงกัน':''" type="password" filled label="ยืนยันรหัสผ่าน"></v-text-field>
 
@@ -204,6 +224,7 @@ export default class Test extends Vue {
     formReg: any = {}
     errorReg: any = null
     errorLogin: any = null
+    activeSelect: boolean = true
 
     async closeRegDialog() {
         this.formReg = {};
@@ -310,14 +331,13 @@ export default class Test extends Vue {
 
     }
 
-    async checkLogined() { 
+    async checkLogined() {
         await Auth.storeToken(localStorage.getItem('token'))
         let user: any = await User.getProfile()
         if (user.pk) {
             await this.$router.push('/user/')
         }
     }
-
 
 }
 </script>

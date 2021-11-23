@@ -9,19 +9,22 @@
                             <img class="w-auto  h-auto" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
                         </div>
                         <div class="w-4/5 pl-3">
-                            <h2 class="text-2xl">UP ITA </h2>
-                            <p>เปิดประตูสู่ความโปร่งใส</p>
+                            <h2 class="text- xl font-semibold"> ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย มหาวิทยาลัยะเยา </h2>
+                            <p>Integrity & Transparency Assessment: ITA University Of Phayao</p>
                             <br />
                         </div>
                     </div>
                     <div class="hidden md:block">
                         <center>
                             <img class="w-auto  h-32" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
-                            <h2 class="text-2xl">UP ITA </h2>
-                            <p>เปิดประตูสู่ความโปร่งใส</p>
+                           <h2 class="text- xl font-semibold"> ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย มหาวิทยาลัยะเยา </h2>
+                            <p>Integrity & Transparency Assessment: ITA University Of Phayao (UP-ITA)</p>
                             <br />
                         </center>
                     </div>
+                     <bin-card3    c="rgb(51, 102, 204)" t="Internal Integrity and Transparency Assessment : IIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card3>
+
+                 
 
                     <hr class="border-gray-400 w-full"><br />
                     <button style="color:white;" @click="microsoft" :class="`bg-orange-700   f-white ${$btn} `" type="button">
@@ -51,16 +54,16 @@
                         <form @submit.prevent="getLogin">
                             <h2 class="text-2xl">UP ITA เปิดประตูสู่ความโปร่งใส</h2>
                             <p>เข้าสู่ระบบโดยใช้ ชื่อผู้ใช้ และ รหัสผ่าน</p>
-                            <v-alert type="error"  v-if="errorLogin">
-                              {{errorLogin}}
+                            <v-alert type="error" v-if="errorLogin">
+                                {{errorLogin}}
                             </v-alert>
-                            
+
                             <div class="relative w-full mb-3">
-                                <v-text-field required v-model="form.username" label="ชื่อผู้ใช้" filled  ></v-text-field>
+                                <v-text-field required v-model="form.username" label="ชื่อผู้ใช้" filled></v-text-field>
                             </div>
 
                             <div class="relative w-full mb-3">
-                                <v-text-field required v-model="form.password" type="password" label="รหัสผ่าน" filled  ></v-text-field>
+                                <v-text-field required v-model="form.password" type="password" label="รหัสผ่าน" filled></v-text-field>
                             </div>
                             <div class="text-center mt-6">
                                 <button style="color:white;" :class="`bg-green-600 f-white ${$btn}`" type="submit">
@@ -90,6 +93,7 @@
                     </div>
 
                 </div>
+         
                 <img src="@/assets/ss.png" class="image p-24" alt="" />
             </div>
             <div class="panel right-panel">
@@ -117,7 +121,7 @@
 
             </v-card-title>
             <v-card-text>
-             
+
                 <form @submit.prevent="userRegister()" id="editForm">
                     <v-text-field dense required v-model="formReg.username" type="text" filled label="ชื่อผู้ใช้"></v-text-field>
                     <v-text-field dense required v-model="formReg.email" type="email" filled label="อีเมล์"></v-text-field>
@@ -125,41 +129,41 @@
                     <v-text-field dense required v-model="formReg.first_name" type="text" filled label="ชื่อ"></v-text-field>
                     <v-text-field dense required v-model="formReg.last_name" type="text" filled label="นามสกุล"></v-text-field>
                     <hr><br>
-<!--                    <ul>-->
-<!--                        <li>รหัสผ่านต้องประกอบด้วย อักษร A-Z a-z 0-9</li>-->
-<!--                        <li>รหัสผ่านต้องไม่ตรงกับ ชื่อผู้ใช้ หรือ ชื่อ-หรือชื่อนามสกุล</li>-->
-<!--                    </ul><br>-->
+                    <!--                    <ul>-->
+                    <!--                        <li>รหัสผ่านต้องประกอบด้วย อักษร A-Z a-z 0-9</li>-->
+                    <!--                        <li>รหัสผ่านต้องไม่ตรงกับ ชื่อผู้ใช้ หรือ ชื่อ-หรือชื่อนามสกุล</li>-->
+                    <!--                    </ul><br>-->
                     <v-text-field dense required v-model="formReg.password" type="password" filled label="รหัสผ่าน"></v-text-field>
                     <v-text-field dense required v-model="formReg.password_confirm" :hint="(formReg.password != formReg.password_confirm)?'รหัสผ่านต้องตรงกัน':''" type="password" filled label="ยืนยันรหัสผ่าน"></v-text-field>
 
                     <hr><br>
-                      <div v-if="errorReg">
-                    <div v-if="errorReg.username">
-                        <v-alert dense v-for="err,index in errorReg.username" :key="index" type="error">
-                            {{err}}
-                        </v-alert>
-                    </div>
-                    <div v-if="errorReg.email">
-                        <v-alert dense v-for="err,index in errorReg.email" :key="index" type="error">
-                            {{err}}
-                        </v-alert>
-                    </div>
-                    <div v-if="errorReg.password">
-                        <v-alert dense v-for="err,index in errorReg.password" :key="index" type="error">
-                            {{err}}
-                        </v-alert>
-                    </div>
-                    <div v-if="errorReg.password_confirm">
-                        <v-alert dense v-for="err,index in errorReg.password_confirm" :key="index" type="error">
-                            {{err}}
-                        </v-alert>
-                    </div>
+                    <div v-if="errorReg">
+                        <div v-if="errorReg.username">
+                            <v-alert dense v-for="err,index in errorReg.username" :key="index" type="error">
+                                {{err}}
+                            </v-alert>
+                        </div>
+                        <div v-if="errorReg.email">
+                            <v-alert dense v-for="err,index in errorReg.email" :key="index" type="error">
+                                {{err}}
+                            </v-alert>
+                        </div>
+                        <div v-if="errorReg.password">
+                            <v-alert dense v-for="err,index in errorReg.password" :key="index" type="error">
+                                {{err}}
+                            </v-alert>
+                        </div>
+                        <div v-if="errorReg.password_confirm">
+                            <v-alert dense v-for="err,index in errorReg.password_confirm" :key="index" type="error">
+                                {{err}}
+                            </v-alert>
+                        </div>
 
-                </div>
+                    </div>
                     <v-btn type="submit" class="w-full" large color="primary">สมัครสมาชิก</v-btn>
                     <br>
                     <hr><br>
-                    
+
                 </form>
             </v-card-text>
             <v-card-actions>
@@ -213,7 +217,7 @@ export default class Test extends Vue {
     }
     async userRegister() {
         this.regitserDialog = false;
-       await Web.switchLoad(true)
+        await Web.switchLoad(true)
         let reg = await Core.postHttp(`/accounts/register/`, this.formReg)
         if (reg.id) {
             this.regitserDialog = false
@@ -294,10 +298,10 @@ export default class Test extends Vue {
         let key = await Core.postHttp(`/rest-auth/login/`, this.form)
         if (key.key) {
             await this.keyCall(key.key)
-        }else{
-             await Web.switchLoad(false)
-          this.errorLogin = "กรุณาตรวจสอบข้อมูล ชื่อผู้ใช้ หรือ รหัสผ่าน ให้ถูกต้อง"
-          alert('ไม่สามารถเข้าสู่ระบบได้กรุณาตรวจสอบข้อมูลให้ถูกต้อง')
+        } else {
+            await Web.switchLoad(false)
+            this.errorLogin = "กรุณาตรวจสอบข้อมูล ชื่อผู้ใช้ หรือ รหัสผ่าน ให้ถูกต้อง"
+            alert('ไม่สามารถเข้าสู่ระบบได้กรุณาตรวจสอบข้อมูลให้ถูกต้อง')
         }
     }
 

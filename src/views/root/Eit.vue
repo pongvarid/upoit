@@ -9,19 +9,20 @@
                             <img class="w-auto  h-auto" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
                         </div>
                         <div class="w-4/5 pl-3">
-                            <h2 class="text-2xl">UP ITA </h2>
-                            <p>เปิดประตูสู่ความโปร่งใส</p>
+                              <h2 class="text- xl font-semibold"> ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย มหาวิทยาลัยะเยา </h2>
+                            <p>Integrity & Transparency Assessment: ITA University Of Phayao</p>
                             <br />
                         </div>
                     </div>
                     <div class="hidden md:block">
                         <center>
                             <img class="w-auto  h-32" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
-                            <h2 class="text-2xl">UP ITA </h2>
-                            <p>เปิดประตูสู่ความโปร่งใส</p>
+                              <h2 class="text- xl font-semibold"> ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย มหาวิทยาลัยะเยา </h2>
+                            <p>Integrity & Transparency Assessment: ITA University Of Phayao (UP-ITA)</p>
                             <br />
                         </center>
                     </div>
+                <bin-card3 class="m-2" c="rgb(255, 102, 0)" t="External Integrity and Transparency Assessment : EIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card3>
 
                     <hr class="border-gray-400 w-full"><br />
                     <button style="color:white;" @click="microsoft" :class="`bg-orange-700   f-white ${$btn} `" type="button">
@@ -294,6 +295,8 @@ export default class Test extends Vue {
         let key = await Core.postHttp(`/rest-auth/login/`, this.form)
         if (key.key) {
             await this.keyCall(key.key)
+            await localStorage.setItem('page','eit')
+           
         }else{
              await Web.switchLoad(false)
           this.errorLogin = "กรุณาตรวจสอบข้อมูล ชื่อผู้ใช้ หรือ รหัสผ่าน ให้ถูกต้อง"
@@ -304,6 +307,7 @@ export default class Test extends Vue {
     async keyCall(Key: string) {
         await Auth.storeToken(Key)
         await Auth.storeTokenToStorage(Key)
+        await localStorage.setItem('page','eit') 
         await User.loadUser()
         await window.location.replace("/eit/year/");
 

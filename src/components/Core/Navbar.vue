@@ -71,7 +71,7 @@
                 <v-list-item v-if="user.is_superuser">
                     <v-list-item-title>
                         <v-icon style="font-size:18px; color:green;">em-building_construction </v-icon>
-                        <a class="pl-4  text-base" href="https://ita.up.ac.th/admin/login/?next=/admin/">Super Admin</a>
+                        <a class="pl-4  text-base" href="https://ita.up.ac.th/super-up-plan-admin/login/?next=/admin/">Super Admin</a>
                     </v-list-item-title>
                 </v-list-item>
               <v-list-item v-if="user.is_superuser">
