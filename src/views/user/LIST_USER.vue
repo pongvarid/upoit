@@ -109,6 +109,7 @@ export default class Home extends Vue {
 
   private async getAgency(){
     this.agencies = await Core.getHttp(`/api/ita/v1/agency/`)
+    this.agencies = _.sortBy(this.agencies,'number')
     if(this.agencies.length > 0){
       for (let i =0 ; i< this.agencies.length; i++ ){
         this.agencies[i]['oit'] = this.OIT_COUNT

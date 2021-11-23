@@ -17,6 +17,8 @@
           <h2 class="text-2xl">{{all.rate}}</h2>
         </center>
       </div>
+      
+     
       <div class="w-full md:w-1/2 mt-6" >
 
 
@@ -26,7 +28,12 @@
         </v-card>
       </div>
 
-      <br><br><br><br>
+      <div class="w-full mt-2">
+          <span>ข้อเสนอแนะ/หมายเหตุ</span>
+          <v-textarea  outlined v-model="ect" rows="6"></v-textarea>
+      </div>
+       
+      <br><br><br><br><br><br>
       <h2 class="text-2xl"   >รายละเอียดการประเมิน</h2>
       <v-tabs v-model="tab" v-if="responseDetail">
         <v-tab>IIT</v-tab>
@@ -48,8 +55,7 @@
           <h2 class="p-4">ไม่มีข้้อมูลรายระเอียดการประเมิน</h2>
         </center>
       </div>
-
-
+     
     </div>
     <div v-else>
       <center>
@@ -57,6 +63,7 @@
       <h2>ไม่พบข้อมูลการประเมิน</h2>
       </center>
     </div>
+
   </div>
 </template>
 
@@ -112,11 +119,19 @@ export default class Home extends Vue {
       categories:[]
      }
   }
+  ect:string = ''
   async created() {
     await this.loadAll();
     await this.loadLists();
     await this.generateGraph();
+    await this.getYear()
     this.response = true
+  }
+
+  async getYear(){  
+    let years = await Core.getHttp(`/api/ita/v1/year/`)
+    let current = _.find(years,{year:this.year}) 
+    this.ect = current.result_ppch
   }
 
   async loadAll(){

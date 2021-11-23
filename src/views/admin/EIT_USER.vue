@@ -8,12 +8,12 @@
         <v-tab-item>
                <AgencyEitUser />
         </v-tab-item>
-      <v-tab>
+      <!-- <v-tab>
        จำนวนผู้ประเมิน
       </v-tab>
       <v-tab-item>
 <Result />
-      </v-tab-item>
+      </v-tab-item> -->
 
     </v-tabs>
 </div>

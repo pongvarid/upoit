@@ -13,18 +13,21 @@
         <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
         <center>
           <h2 class="text-xl">คะแนน {{base}} </h2>
-          <h2 class="text-5xl font-bold">    {{rate}}</h2>
+          <h2 class="text-5xl font-bold"> {{rate}}</h2>
+          <span class="text-base">ระดับผลประเมิน</span>  <br> <br>
           <v-btn @click="onExport(raw,'มหาวิทยาลัยพะเยา.xlsx')">ส่งออกข้อมูล</v-btn>
         </center>
       </div>
       <div class="w-1/2">
 
-
+        <h2 class="text-xl font-semibold">คะแนนรายตัวชี้วัด</h2>
         <bin-card2 class="m-2 " v-for="(r,i) in raw" :key="raw"  c="purple" :i="r.order" :t="r.value" :h="r.score" />
 <!--        <v-toolbar class="m-2 " v-for="(r,i) in raw" :key="raw">{{r.order}}. {{r.value}} <v-spacer></v-spacer> <span class="font-bold">{{r.score}}% </span></v-toolbar>-->
 <!--    -->
       </div>
     </div>
+
+
 
   </div>
 </template>
@@ -66,11 +69,14 @@ export default class TestDevClass extends Vue {
   }]
   chartOptions: any = {
     chart: {
-      height: 350,
+      height: '100%',
       type: 'radar',
     },
     title: {},
     xaxis: {
+       labels:{
+         style:{fontSize:'14px'}
+       },
       categories:[]
     }
   }

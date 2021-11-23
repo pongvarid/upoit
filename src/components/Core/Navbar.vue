@@ -55,7 +55,7 @@
                 </v-list-item>
                 <v-list-item v-if="user.ext_link.oit" @click="$router.push('/eit/user')">
                     <v-list-item-title>
-                        <v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base">ข้อมูลหน่วยงาน </span>
+                        <v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base">จัดการข้อมูล EIT </span>
                     </v-list-item-title>
                 </v-list-item>
                  <v-list-item v-if="user.ext_link.oit" @click="$router.push('/agency/count')">
@@ -77,7 +77,7 @@
               <v-list-item v-if="user.is_superuser">
                 <v-list-item-title  @click="$router.push('/list-user')">
                   <v-icon style="font-size:18px; color:green;">em-lower_left_fountain_pen </v-icon>
-                  <span class="pl-4  text-base">ข้อมูลการประเมิน</span>
+                  <span class="pl-4  text-base">ข้อมูลการประเมินแต่ล่ะหน่วยงาน</span>
                 </v-list-item-title>
               </v-list-item>
               <v-list-item v-if="user.is_superuser">

@@ -18,7 +18,7 @@
       <AllUp></AllUp>
     </v-tab-item>
     <v-tab>
-      ผลประเมินระดับหน่วยงาน
+      ผลประเมินรายหน่วยงาน
     </v-tab>
     <v-tab-item>
       <AgencyUp></AgencyUp>
