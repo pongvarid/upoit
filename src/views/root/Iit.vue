@@ -309,7 +309,7 @@ export default class Test extends Vue {
         await Auth.storeToken(Key)
         await Auth.storeTokenToStorage(Key)
         await User.loadUser()
-        await window.location.replace("/iit/year/");
+        await window.location.replace("/iit/year/?auto=1");
 
     }
 }

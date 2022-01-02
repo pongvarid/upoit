@@ -5,9 +5,9 @@
     <div class="relative  flex flex-col min-w-0 break-words w-full mb-6   " v-if="response">
         <div class="rounded-t mb-0 px-4 py-3 border-0 ">
             <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
-                <h3 class="  text-2xl text-gray-800  ">
-                    <v-icon>mdi-newspaper</v-icon> แบบประเมิน IIT
-                </h3>
+                    <bin-card3    c="rgb(51, 102, 204)" :t="`ปีงบประมาณ : ${year.year}`" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card3>
+                
+                
             </div>
 
             <v-app class="rounded-lg shadow-xl">
@@ -149,6 +149,7 @@ export default class Home extends Vue {
     private dashboard: any = null
     private user: any = {}
     private years: any = 0
+    private year:any = {}
     private data: any = null
     private nullData: boolean = false
     private loadNum: number = 1
@@ -258,6 +259,7 @@ await this.$router.go(-1)
         await Web.switchLoad(true);
         this.user = await User.getUser();
         this.years = this.$route.query.year
+        this.year = await Core.getHttp(`/api/iit/v2/year/${this.years}/`)
         this.data = await Core.getHttp(`/api/iit/v1/issue?year=${this.years}`)
         if (this.data.length == 0) {
             this.nullData = true

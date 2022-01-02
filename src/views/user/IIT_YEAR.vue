@@ -62,7 +62,16 @@ $vs:any
         this.user = await User.getUser();
         this.dashboard = await Core.getHttp(`/api/ita/v2/dashboard/${this.user.ext_link.id}/`)
         this.years = await Core.getHttp(`/api/iit/v1/year`)
+        await this.autoGoToCheck()
         this.response = true
+    }
+
+    private async autoGoToCheck(){
+        console.log(this.years);
+        let currentYears = this.years[(this.years.length)-1]
+        if(this.$route.query.auto){ 
+            await this.getIssue(currentYears.id,currentYears.status)
+        }
     }
 
     public async getIssue(yearId: number, status: boolean) {

@@ -309,7 +309,7 @@ export default class Test extends Vue {
         await Auth.storeTokenToStorage(Key)
         await localStorage.setItem('page','eit') 
         await User.loadUser()
-        await window.location.replace("/eit/year/");
+        await window.location.replace("/eit/year/?auto=1");
 
     }
 }

@@ -3,19 +3,19 @@
     <div class="relative  flex flex-col min-w-0 break-words w-full mb-6  " v-if="response">
         <div class="rounded-t mb-0 px-4 py-3 border-0 ">
             <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
-                <h3 class="  text-2xl text-gray-800  ">
-                    <v-icon>mdi-newspaper</v-icon> แบบประเมิน EIT
-                </h3>
+               <bin-card3 class="m-2" c="rgb(255, 102, 0)" :t="`ปีงบประมาณ : ${year.year}`" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card3>
+            
             </div>
 
             <v-app>
 
                 <vs-dialog prevent-close not-close blur v-model="dialog">
-                    <template #header>
+                    <bin-card3 class="m-2" c="rgb(255, 102, 0)" :t="`ปีงบประมาณ : ${year.year}`" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card3>
+                        
                         <h4 class="not-margin">
                             เลือกหน่วยงานที่ต้องการประเมิน
                         </h4>
-                    </template> 
+                       
 
                         <v-alert type="error" v-if="chooseAgency && lockUser" >
                             คุณได้ประเมินให้หน่วยงานนี้แล้ว ไม่สามารถทำการประเมินได้
@@ -57,7 +57,7 @@
                 <v-stepper v-model="e1" v-if="chooseAgency">
                     <v-stepper-header style=" overflow-x: scroll; overflow-y:hidden;  display:flex; flex-wrap: nowrap; padding:4px;">
                         <v-stepper-step :complete="e1 > tab.order" :step="tab.order" v-for="tab,i in data" :key="i">
-                            <span class="font-bold" style="font-size:16px;"> {{tab.name}}</span>
+                            <span class="font-bold"  style=" font-size:16px;">  {{tab.name}}</span>
                         </v-stepper-step>
 
                     </v-stepper-header>
@@ -182,6 +182,7 @@ export default class Home extends Vue {
     private dashboard: any = null
     private user: any = {}
     private years: any = 0
+    private year:any ={}
     private data: any = null
     private lockUser: boolean = true
     $vs: any
@@ -300,6 +301,7 @@ export default class Home extends Vue {
 
         this.user = await User.getUser();
         this.years = this.$route.query.year
+        this.year = await Core.getHttp(`/api/eit/v2/year/${this.years}/`)
         this.data = await Core.getHttp(`/api/eit/v1/issue?year=${this.years}`)
         await Web.switchLoad(false);
         this.myAgency = this.user.ext_link.agency

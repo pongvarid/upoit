@@ -219,6 +219,10 @@ const userRouter:any  = [
         name: 'analysis',
         component: () =>import(`@/views/dev/Analysis.vue`)
     },
+    {    path: '/creator',
+    name: 'creator',
+    component: () =>import(`@/views/admin/CREATOR.vue`)
+    },
 ]
 
 export  {

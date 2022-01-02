@@ -5,17 +5,24 @@
   <h2 class="text-2xl">   <v-btn x-large @click="$router.push('/')" text><v-icon>mdi-arrow-left</v-icon></v-btn>โหมดผู้พัฒนา</h2>
      <v-alert type="error">การเปลี่ยนแปลงแก้แก้ไขในโหมดนี้จะมีผลกระทบต่อระบบโดยตรง หากเกิดข้อผิดพลาดจะมีผลกระทบต่อระบบอย่างร้ายแรง ดังนั้นห่อนแก้ไขทุกครั้งควรตรวจสอบข้อมูลให้ถูกต้อง</v-alert>
      <v-tabs v-model="tabs">
+        <v-tab>คัดลอกหัวข้อการประเมิน IIT</v-tab>
+       <v-tab-item>
+         <CloneIIT v-if="tabs == 0" />
+       </v-tab-item>
+
+
+
        <v-tab>สร้างรายงาน IIT</v-tab>
        <v-tab-item>
-         <GenIIT v-if="tabs == 0" />
+         <GenIIT v-if="tabs == 1" />
        </v-tab-item>
        <v-tab>สร้างรายงาน EIT</v-tab>
        <v-tab-item>
-         <GenEIT v-if="tabs == 1" />
+         <GenEIT v-if="tabs == 2" />
        </v-tab-item>
        <v-tab>โอนข้อมูลการประเมิน EIT</v-tab>
        <v-tab-item>
-          <ChangeEIT v-if="tabs == 2" />
+          <ChangeEIT v-if="tabs == 3" />
        </v-tab-item>
 
      </v-tabs>
@@ -60,9 +67,12 @@ import
 import
   GenEIT
   from '@/components/Dev/GenEIT.vue'
+import
+  CloneIIT
+  from '@/components/Dev/CloneIIT.vue'
 @Component({
   components: {
-    ChangeEIT,GenIIT,GenEIT
+    ChangeEIT,GenIIT,GenEIT,CloneIIT
   },
 })
 export default class HomeDev extends Vue {

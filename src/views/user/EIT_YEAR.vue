@@ -70,8 +70,17 @@ export default class Home extends Vue {
   public async created() {
     this.user = await User.getUser(); 
     this.years = await Core.getHttp(`/api/eit/v1/year`) 
+    await this.autoGoToCheck()
     this.response = true
   }
+
+    private async autoGoToCheck(){
+        console.log(this.years);
+        let currentYears = this.years[(this.years.length)-1]
+        if(this.$route.query.auto){ 
+            await this.openEit(currentYears.id,currentYears.status)
+        }
+    }
 
   public async openEit(yearId:any,status:boolean){
 
