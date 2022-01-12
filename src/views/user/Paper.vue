@@ -1,5 +1,5 @@
 <template>
-<div class="relative md:pt-32 pb-32 pt-12">
+<div class="relative md:pt-32 pb-32 pt-12" v-if="user.ext_link.oit">
     <div class="relative  flex flex-col min-w-0 break-words w-full mb-6  bg-white rounded shadow-lg ">
         <div class="rounded-t mb-0 px-4 py-3 border-0 ">
             <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2">
@@ -254,6 +254,12 @@
     </v-app>
 
 </div>
+ <div class="pt-20" v-else>
+    <v-alert type="error" :value="true">
+      คุณไม่สามารถใช้งานข้อมูลส่วนนี้ได้ เนื่องจากสิทธิ์ในการเข้า
+      ถึงไม่ได้ถูกกำหนดไว้ กรุณาติดต่อผุู้ดูแลระบบ
+    </v-alert>
+  </div>
 </template>
 
 <script lang="ts">

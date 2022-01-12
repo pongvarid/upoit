@@ -39,7 +39,7 @@
                                     </h2>
 
                                     <div v-for="ans,j in issue.issueDetail"> <br>
-                                        <h3 class="font-bold" v-if="tab.name != 'ข้อเสนอเเนะ'"> {{ans.sub_name}}</h3>
+                                        <h3 class="font-bold" v-if="tab.name != 'ข้อเสนอเเนะ' || tab.name != 'ข้อเสนอแนะ'"> {{ans.sub_name}}</h3>
                                         <div v-if="ans.choice">
                                             <div v-if="ans.choice.resourcetype === 'Ascend'">
                                                 <!-- <v-alert>{{index}},{{j}}</v-alert> -->
@@ -75,7 +75,7 @@
                                     <v-btn x-large style="width:100%;" v-if=" tmp >= tab.issueCount && i < data.length" color="primary" @click="toTop() && (e1 = (tab.order+1)) && (tmp =0)  ">
                                         ดำเนินการต่อ
                                     </v-btn>
-                                    <v-btn x-large style="width:100%;" v-if="tab.name == 'ข้อเสนอเเนะ'" color="success" @click="saveAnswer()">
+                                    <v-btn x-large style="width:100%;" v-if="tab.name == 'ข้อเสนอเเนะ'|| tab.name == 'ข้อเสนอแนะ'" color="success" @click="saveAnswer()">
                                         บันทึกข้อมูลการประเมิน
                                     </v-btn>
                                 </v-card-actions>

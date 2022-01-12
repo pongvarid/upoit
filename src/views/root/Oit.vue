@@ -1,29 +1,5 @@
 <template>
 <div>
-    <vs-dialog prevent-close blur v-model="activeSelect">
-
-        <div class="con-form">
-            <h4 class="not-margin text-xl font-semibold text-blue-600">
-                ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย
-            </h4>
-            <h2 class=" text-gray-600">Integrity & Transparency Assessment: ITA</h2>
-            <br>
-            <div @click="$router.push('/iit')">
-                <bin-card class="m-2" c="rgb(51, 102, 204)" t="Internal Integrity and Transparency Assessment : IIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card>
-
-            </div>
-            <div @click="$router.push('/eit')">
-                <bin-card class="m-2" c="rgb(255, 102, 0)" t="External Integrity and Transparency Assessment : EIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card>
-
-            </div>
-             <div @click="$router.push('/oit')">
-                <bin-card class="m-2" c="rgb(77, 153, 0)" t="Open Data Integrity and Transparency Assessment : OIT" h="การเปิดเผยข้อมูลสาธารณะ " i="OIT"></bin-card>
-
-            </div>
-
-        </div>
-
-    </vs-dialog>
     <div :class="`containerR ${switchc}`" ref="main">
         <div class="forms-containerR">
             <div class="signin-signup">
@@ -33,19 +9,22 @@
                             <img class="w-auto  h-auto" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
                         </div>
                         <div class="w-4/5 pl-3">
-                            <h2 class="text-2xl">UP ITA </h2>
-                            <p>เปิดประตูสู่ความโปร่งใส</p>
+                            <h2 class="text- xl font-semibold"> ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย มหาวิทยาลัยะเยา </h2>
+                            <p>Integrity & Transparency Assessment: ITA University Of Phayao</p>
                             <br />
                         </div>
                     </div>
                     <div class="hidden md:block">
                         <center>
                             <img class="w-auto  h-32" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
-                            <h2 class="text-2xl">UP ITA </h2>
-                            <p>เปิดประตูสู่ความโปร่งใส</p>
+                           <h2 class="text- xl font-semibold"> ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย มหาวิทยาลัยะเยา </h2>
+                            <p>Integrity & Transparency Assessment: ITA University Of Phayao (UP-ITA)</p>
                             <br />
                         </center>
                     </div>
+                     <bin-card3    c="rgb(77, 153, 0)" t="Open Data Integrity and Transparency Assessment  : OIT" h="การเปิดเผยข้อมูลสาธารณะ" i="OIT"></bin-card3>
+
+                 
 
                     <hr class="border-gray-400 w-full"><br />
                     <button style="color:white;" @click="microsoft" :class="`bg-orange-700   f-white ${$btn} `" type="button">
@@ -114,6 +93,7 @@
                     </div>
 
                 </div>
+         
                 <img src="@/assets/ss.png" class="image p-24" alt="" />
             </div>
             <div class="panel right-panel">
@@ -228,7 +208,6 @@ export default class Test extends Vue {
     formReg: any = {}
     errorReg: any = null
     errorLogin: any = null
-    activeSelect: boolean = true
 
     async closeRegDialog() {
         this.formReg = {};
@@ -255,7 +234,6 @@ export default class Test extends Vue {
     }
 
     async created() {
-        await this.checkLogined();
         await Web.switchLoad(true)
         try {
             await Auth.run();
@@ -331,18 +309,9 @@ export default class Test extends Vue {
         await Auth.storeToken(Key)
         await Auth.storeTokenToStorage(Key)
         await User.loadUser()
-        await window.location.replace("/user/");
+        await window.location.replace("/user/oit-home?auto=1");
 
     }
-
-    async checkLogined() {
-        await Auth.storeToken(localStorage.getItem('token'))
-        let user: any = await User.getProfile()
-        if (user.pk) {
-            await this.$router.push('/user/')
-        }
-    }
-
 }
 </script>
 

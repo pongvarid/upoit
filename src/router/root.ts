@@ -21,7 +21,13 @@ const rootRouter:any  = [
         path: 'iit',
         name: 'iit-homes',
         component: getView('Iit')
-    },{
+    },
+    {
+        path: 'oit',
+        name: 'oit-homes',
+        component: getView('Oit')
+    },
+    {
         path: 'eit',
         name: 'eit-homes',
         component: getView('Eit')
