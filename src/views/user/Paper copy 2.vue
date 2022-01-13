@@ -22,12 +22,15 @@
                                     </th>
                                     <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                                         ข้อมูล /องค์ประกอบ
-                                    </th> 
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                                        สถานะ
                                     </th>
                                     <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                                         บันทึกข้อมูล
+                                    </th>
+                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                                        สถานะ
+                                    </th>
+                                    <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                                        จัดการ
                                     </th>
 
                                 </tr>
@@ -44,8 +47,8 @@
                                         <p class="text-sm font-thin" v-html="rate.detail"></p>
 
                                     </td>
-
-                                    <td style="width:300px;" class="p-2">
+                                    
+                                        <td style="width:300px;" class="p-2">
                                         <h2 class="text-sm">
                                             <v-icon v-if="rate.result.length > 0" style="color:green;">mdi-check-circle</v-icon>
                                             <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
@@ -63,8 +66,8 @@
                                         </h2>
 
                                     </td>
-
-                                    <td class="font-bold text-gray-700 pt-6 pb-2" style="width:1050px;">
+                                    
+                                    <td class="font-bold text-gray-700 pt-2 pb-2" style="width:1050px;">
                                         <form @submit.prevent="storeResult(formResult[index],index)">
                                             <div class="m-1 flex flex-row">
                                                 <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[index].register_type" label="สถานะ"></v-select>
@@ -76,7 +79,7 @@
                                         </form>
                                         <v-divider></v-divider><br>
 
-                                        <div class="p-4 rounded-xl bg-green-200">
+                                        <div>
                                             <form @submit.prevent="updateData(res,index)" v-for="res,res_index in rate.result" :key="res_index">
                                                 <div class="m-1 flex flex-row">
                                                     <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="res.register_type" label="สถานะ"></v-select>
@@ -92,13 +95,15 @@
                                                         <v-icon>mdi-delete</v-icon>
                                                     </v-btn>
                                                 </div>
-                                            </form>
+                                            </form> 
 
-                                            <v-btn class="w-full" v-if="user.passing &&  passingAllCheck(rate.result)" @click="passingAllStore(rate.result)" x-large outlined color="deep-purple accent-4" dark>
+                                            <v-btn class="w-full"  v-if="user.passing &&  passingAllCheck(rate.result)" @click="passingAllStore(rate.result)" x-large outlined color="deep-purple accent-4" dark>
                                                 <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
                                             </v-btn>
                                         </div>
                                     </td>
+
+                                
 
                                     <!-- <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                                         <div class="flex items-center">
