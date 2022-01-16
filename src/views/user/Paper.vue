@@ -41,7 +41,7 @@
                                     <td class="font-bold text-gray-700 pt-2 pb-2" style="width:450px;">
 
                                         {{ rate.name }}
-                                        <p class="text-sm font-thin" v-html="rate.detail"></p>
+                                        <p class="text-sm font-thin" style="white-space: pre-wrap;" v-html="rate.detail"></p>
 
                                     </td>
 
@@ -69,8 +69,11 @@
                                             <div class="m-1 flex flex-row">
                                                 <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[index].register_type" label="สถานะ"></v-select>
                                                 <v-text-field class="ml-1" v-model="formResult[index].urls" dense outlined name="name" label="Url" id="id"></v-text-field>
-                                                <v-text-field required v-model="formResult[index].ref" class="ml-2" dense outlined name="name" label="รายละเอียด" id="id"></v-text-field>
-                                                <v-btn type="submit" class="ml-1" color="info">+ เพิ่ม</v-btn>
+                                                <v-text-field required v-model="formResult[index].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
+                                                <v-btn type="submit" class="ml-1" color="info">
+                                                    <span v-if="(rate.result).length ==0"><v-icon>mdi-content-save</v-icon> บันทึกข้อมูล</span>
+                                                    <span v-else><v-icon>mdi-plus</v-icon> เพิ่มข้อมูล</span>
+                                                </v-btn>
                                             </div>
 
                                         </form>
@@ -84,7 +87,7 @@
                                                     <v-btn x-small class="ml-1" fab v-if="res.urls" color="#49bcff" @click="openLink(res.urls)" dark>
                                                         <v-icon>mdi-play</v-icon>
                                                     </v-btn>
-                                                    <v-text-field required v-model="res.ref" class="ml-2" dense outlined name="name" label="รายละเอียด" id="id"></v-text-field>
+                                                    <v-text-field required v-model="res.ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
                                                     <v-btn v-if="passingAllCheck(rate.result)" x-small type="submit" fab class="ml-1" color="warning">
                                                         <v-icon>mdi-pencil</v-icon>
                                                     </v-btn>
