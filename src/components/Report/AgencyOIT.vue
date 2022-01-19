@@ -1,14 +1,16 @@
 <template>
-<div class="relative md:pt-32 pb-32 pt-12" style="z-index:1;" v-if="response">
-    <div class="flex">
+<div class="relative md:pt-32 pb-32 pt-12" style="z-index:1;" >
+ 
+    <div class="flex" >
         <h2 class="text-xl font-bold m-2">
+     
             <v-icon>mdi-calendar</v-icon> ปีงบประมาณ {{year.year}}
         </h2>
         <v-spacer></v-spacer>
         <ExportOIT :data="rates" />
     </div>
 
-    <v-toolbar color="bg-purple-x" dark>
+    <v-toolbar color="bg-purple-x"   dark>
         <h2 class="text-xl font-bold">ผลการประเมิน OIT ({{agency.name}})</h2>
 
         <v-spacer></v-spacer>
@@ -17,7 +19,7 @@
     </v-toolbar>
 
     <br>
-    <v-expansion-panels multiple v-model="panel">
+    <v-expansion-panels multiple  v-model="panel">
         <v-expansion-panel>
             <v-expansion-panel-header>
                 <v-toolbar flat>
@@ -704,7 +706,7 @@ export default class Home extends Vue {
     @Prop({ default: { oit: 0 } })
     all: any;
 
-    @Prop({ default: '2563' })
+    @Prop({ default: '2565' })
     yearData: any;
 
     @Prop({ default: '2563' })
@@ -733,7 +735,7 @@ export default class Home extends Vue {
         await Web.switchLoad(true)
         this.appSetting = await Core.getHttp(`/setting/app/`)
         this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.agencyData}/`)
-        this.year = await Core.getHttp(`/api/ita/v2/year/`)
+        this.year = await Core.getHttp(`/api/ita/v1/year/`)
         this.year = await _.find(this.year, { year: this.yearData })
         if (this.year) {
             this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.year.id}/`)

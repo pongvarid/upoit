@@ -71,7 +71,8 @@
                                     <h2>
                                         <v-avatar color="teal" size="36">
                                             <span class="white--text headline">e{{issue.order}} </span>
-                                        </v-avatar> &nbsp;{{issue.name}}
+                                        </v-avatar> &nbsp; 
+                                          <span v-html="issue.name"></span>
                                     </h2>
 
                                     <div v-for="ans,j in issue.issueDetail"> <br>
@@ -298,6 +299,7 @@ export default class Home extends Vue {
     public async created() {
         await Web.switchLoad(true);
         this.agencyType = await Core.getHttp(`/api/ita/v1/agencytype/`)
+        this.agencyType = await _.filter(this.agencyType ,(r:any)=>{return r.id != 3})
 
         this.user = await User.getUser();
         this.years = this.$route.query.year

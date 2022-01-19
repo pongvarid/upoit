@@ -45,7 +45,7 @@
           <AgencyEIT v-if="tab==1"  :yearData="year" :agencyData="agency" :all="all" ></AgencyEIT>
         </v-tab-item>
         <v-tab>OIT</v-tab>
-        <v-tab-item>
+        <v-tab-item> 
           <AgencyOIT v-if="tab==2"  :yearData="year" :agencyData="agency" :all="all" :lists="lists" ></AgencyOIT>
         </v-tab-item>
       </v-tabs>

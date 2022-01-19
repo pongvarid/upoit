@@ -1,4 +1,4 @@
-<template>
+แ<template>
 <div class="relative md:pt-32 pb-32 pt-12  ">
   
 
@@ -34,8 +34,8 @@
                                     <h2>
                                         <v-avatar color="teal" size="36">
                                             <span class="white--text headline">i{{issue.order}} </span>
-                                        </v-avatar> &nbsp;{{issue.name}}
-
+                                        </v-avatar> &nbsp;
+                                            <span v-html="issue.name"></span>
                                     </h2>
 
                                     <div v-for="ans,j in issue.issueDetail"> <br>

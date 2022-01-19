@@ -13,109 +13,117 @@
                 <div class="flex flex-wrap">
 
                     <div class="block w-full overflow-x-auto">
+                        <div v-for="g,gindex in group" :key="gindex">
+                            <h2 class="text-xl m-4 font-semibold text-purple-500">ตัวชี้วัดที่ {{(gindex == 0)?9:10}} : {{g.type_base}}</h2>
+                            <div v-for="type_g,type_gindex in g.base_data" :key="type_gindex">
 
-                        <table class="items-center w-full bg-transparent border-collapse">
-                            <thead>
-                                <tr>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                                        ข้อ
-                                    </th>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                                        ข้อมูล /องค์ประกอบ
-                                    </th> 
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                                        สถานะ
-                                    </th>
-                                    <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                                        บันทึกข้อมูล
-                                    </th>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'ข้อมูลพื้นฐาน'">ตัวชี้วัดที่ 9.1 ข้อมูลพื้นฐาน</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การดำเนินงาน'">ตัวชี้วัดที่ 9.2 การบริหารงาน</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'แผนการใช้จ่ายงบประมาณประจำปี'">ตัวชี้วัดที่ 9.3 การบริหารเงินงบประมาณ</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การบริหารและพัฒนาทรัพยากรบุคคล'">ตัวชี้วัดที่ 9.4 การบริหารและพัฒนาทรัพยากรบุคคล</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การจัดการเรืองร้องเรียนการทุจริตและประพฤติมิชอบ'">ตัวชี้วัดที่ 9.5 การส่งเสริมความโปร่งใสและ การจัดการเรืองร้องเรียนการทุจริตและประพฤติมิชอบ</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'เจตจำนงสุจริตของผู้บริหาร'">ตัวชี้วัดที่ 10.1 การดำเนินการเพื่อป้องกันการทุจริต</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'มาตรการส่งเสริมความโปร่งใสและป้องกันการทุจริตภายในหน่วยงาน'">ตัวชี้วัดที่ 10.2 มาตรการภายในเพื่อป้องกันการทุจริต</h2> 
+                                <h2 class="text-base  m-4   text-red-400">{{type_g.type}}</h2>
+                                <table class="items-center w-full bg-transparent border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                                                ข้อ
+                                            </th>
+                                            <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                                                ข้อมูล /องค์ประกอบ
+                                            </th>
+                                            <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                                                สถานะ
+                                            </th>
+                                            <th class="px-6  align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                                                บันทึกข้อมูล
+                                            </th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="rate,index in rates" :key="index" :class="(index%2 != 0)?`bg-gray-200`:``">
-                                    <th class="font-bold text-gray-700" style="width:20px!important;">
-                                        O{{ rate.number }}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="rate,index in type_g.data" :key="index" :class="(index%2 != 0)?`bg-gray-200`:``">
+                                            <th class="font-bold text-gray-700" style="width:20px!important;">
+                                                O{{ rate.number }} 
 
-                                    </th>
-                                    <td class="font-bold text-gray-700 pt-2 pb-2" style="width:450px;">
+                                            </th>
+                                            <td class="font-bold text-gray-700 pt-2 pb-2" style="width:450px;">
 
-                                        {{ rate.name }}
-                                        <p class="text-sm font-thin" style="white-space: pre-wrap;" v-html="rate.detail"></p>
+                                                {{ rate.name }}
+                                                <p class="text-sm font-thin" style="white-space: pre-wrap;" v-html="rate.detail"></p>
 
-                                    </td>
+                                            </td>
 
-                                    <td style="width:300px;" class="p-2">
-                                        <h2 class="text-sm">
-                                            <v-icon v-if="rate.result.length > 0" style="color:green;">mdi-check-circle</v-icon>
-                                            <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
-                                            การบันทึกข้อมูล (จำนวน Url {{rate.result.length}} )
-                                        </h2>
+                                            <td style="width:300px;" class="p-2">
+                                                <h2 class="text-sm">
+                                                    <v-icon v-if="rate.result.length > 0" style="color:green;">mdi-check-circle</v-icon>
+                                                    <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
+                                                    การบันทึกข้อมูล (จำนวน Url {{rate.result.length}} )
+                                                </h2>
 
-                                        <h2 class="text-sm">
-                                            <v-icon v-if="passingAllCheckTrue(rate.result)" style="color:green;">mdi-check-circle</v-icon>
-                                            <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
-                                            การยืนยันจากหัวหน้าหน่วยงาน
-                                        </h2>
-                                        <hr class="mt-2 mb-2">
-                                        <h2 class="text-sm">
-                                            <v-icon style="color:red;">mdi-clock-time-eight</v-icon> การตรวจและการให้คะแนน
-                                        </h2>
+                                                <h2 class="text-sm">
+                                                    <v-icon v-if="passingAllCheckTrue(rate.result)" style="color:green;">mdi-check-circle</v-icon>
+                                                    <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
+                                                    การยืนยันจากหัวหน้าหน่วยงาน
+                                                </h2>
+                                                <hr class="mt-2 mb-2">
+                                                <h2 class="text-sm">
+                                                    <v-icon style="color:red;">mdi-clock-time-eight</v-icon> การตรวจและการให้คะแนน
+                                                </h2>
 
-                                    </td>
+                                            </td>
 
-                                    <td class="font-bold text-gray-700 pt-6 pb-2" style="width:1050px;">
-                                        <form @submit.prevent="storeResult(formResult[index],index)">
-                                            <div class="m-1 flex flex-row">
-                                                <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[index].register_type" label="สถานะ"></v-select>
-                                                <v-text-field class="ml-1" v-model="formResult[index].urls" dense outlined name="name" label="Url" id="id"></v-text-field>
-                                                <v-text-field required v-model="formResult[index].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
-                                                <v-btn type="submit" class="ml-1" color="info">
-                                                    <span v-if="(rate.result).length ==0"><v-icon>mdi-content-save</v-icon> บันทึกข้อมูล</span>
-                                                    <span v-else><v-icon>mdi-plus</v-icon> เพิ่มข้อมูล</span>
-                                                </v-btn>
-                                            </div>
+                                            <td class="font-bold text-gray-700 pt-6 pb-2" style="width:1050px;">
+                                                <form @submit.prevent="storeResult(formResult[index],index)">
+                                                    <div class="m-1 flex flex-row">
+                                                        <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[index].register_type" label="สถานะ"></v-select>
+                                                        <v-text-field class="ml-1" v-model="formResult[index].urls" dense outlined name="name" label="Url" id="id"></v-text-field>
+                                                        <v-text-field required v-model="formResult[index].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
+                                                        <v-btn type="submit" class="ml-1" color="info">
+                                                            <span v-if="(rate.result).length ==0">
+                                                                <v-icon>mdi-content-save</v-icon> บันทึกข้อมูล
+                                                            </span>
+                                                            <span v-else>
+                                                                <v-icon>mdi-plus</v-icon> เพิ่มข้อมูล
+                                                            </span>
+                                                        </v-btn>
+                                                    </div>
 
-                                        </form>
-                                        <v-divider></v-divider><br>
+                                                </form>
+                                                <v-divider></v-divider><br>
 
-                                        <div class="p-4 rounded-xl bg-green-200">
-                                            <form @submit.prevent="updateData(res,index)" v-for="res,res_index in rate.result" :key="res_index">
-                                                <div class="m-1 flex flex-row">
-                                                    <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="res.register_type" label="สถานะ"></v-select>
-                                                    <v-text-field class="ml-1" v-model="res.urls" dense outlined name="name" label="Url" id="id"></v-text-field>
-                                                    <v-btn x-small class="ml-1" fab v-if="res.urls" color="#49bcff" @click="openLink(res.urls)" dark>
-                                                        <v-icon>mdi-play</v-icon>
-                                                    </v-btn>
-                                                    <v-text-field required v-model="res.ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
-                                                    <v-btn v-if="passingAllCheck(rate.result)" x-small type="submit" fab class="ml-1" color="warning">
-                                                        <v-icon>mdi-pencil</v-icon>
-                                                    </v-btn>
-                                                    <v-btn v-if="passingAllCheck(rate.result)" @click="removeData(res,index)" x-small class="ml-3 mr-3" fab color="red" dark>
-                                                        <v-icon>mdi-delete</v-icon>
+                                                <div class="p-4 rounded-xl bg-green-200">
+                                                    <form @submit.prevent="updateData(res,index)" v-for="res,res_index in rate.result" :key="res_index">
+                                                        <div class="m-1 flex flex-row">
+                                                            <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="res.register_type" label="สถานะ"></v-select>
+                                                            <v-text-field class="ml-1" v-model="res.urls" dense outlined name="name" label="Url" id="id"></v-text-field>
+                                                            <v-btn x-small class="ml-1" fab v-if="res.urls" color="#49bcff" @click="openLink(res.urls)" dark>
+                                                                <v-icon>mdi-play</v-icon>
+                                                            </v-btn>
+                                                            <v-text-field required v-model="res.ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
+                                                            <v-btn v-if="passingAllCheck(rate.result)" x-small type="submit" fab class="ml-1" color="warning">
+                                                                <v-icon>mdi-pencil</v-icon>
+                                                            </v-btn>
+                                                            <v-btn v-if="passingAllCheck(rate.result)" @click="removeData(res,index)" x-small class="ml-3 mr-3" fab color="red" dark>
+                                                                <v-icon>mdi-delete</v-icon>
+                                                            </v-btn>
+                                                        </div>
+                                                    </form>
+
+                                                    <v-btn class="w-full" v-if="user.passing &&  passingAllCheck(rate.result)" @click="passingAllStore(rate.result)" x-large outlined color="deep-purple accent-4" dark>
+                                                        <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
                                                     </v-btn>
                                                 </div>
-                                            </form>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                                            <v-btn class="w-full" v-if="user.passing &&  passingAllCheck(rate.result)" @click="passingAllStore(rate.result)" x-large outlined color="deep-purple accent-4" dark>
-                                                <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
-                                            </v-btn>
-                                        </div>
-                                    </td>
+                            </div>
+                        </div>
 
-                                    <!-- <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                                        <div class="flex items-center">
-                                            <v-btn @click="openDialog(rate)" color="#5e5a98" dark v-if="(rate.result).length <= 0">
-                                                <v-icon>mdi-book-plus</v-icon>เพิ่มข้อมูล
-                                            </v-btn>
-                                            <v-btn @click="openDialog(rate)" color="#2e9837" dark v-else>
-                                                <v-icon>mdi-eye</v-icon>ดูข้อมูล
-                                            </v-btn>
-                                        </div>
-                                    </td> -->
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
@@ -124,138 +132,6 @@
         </div>
 
     </div>
-
-    <v-app v-if="dialog" style="z-index:9999;">
-        <v-dialog v-model="dialog" persistent max-width="1000px">
-            <v-card>
-                <v-card-title>
-                    <b>{{ rate.number }}. {{ rate.name }}</b>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="closeDialog" icon text>
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                </v-card-title>
-                <v-card-text>
-                    <p v-html="rate.detail"></p>
-                    <div class="block w-full overflow-x-auto">
-
-                        <v-expansion-panels>
-                            <v-expansion-panel v-if="passingDisableAdd(rateDatas)">
-                                <v-expansion-panel-header>
-                                    <h2>
-                                        <v-icon>mdi-plus-box</v-icon> เพิ่มข้อมูล
-                                    </h2>
-
-                                </v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                    <form @submit.prevent="saveData()">
-                                        <v-text-field required v-model="form.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
-                                        <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="form.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-
-                                        <v-text-field v-model="form.urls" placeholder="Url" label="Url" filled></v-text-field>
-                                        <v-textarea v-model="form.ref" placeholder="ระบุคำอธิบาย" label="คำอธิบายเพิ่มเติม" filled></v-textarea>
-                                        <center v-if="!form.passing">
-
-                                            <v-btn v-if="form.urls" color="#49bcff" @click="openLink(form.urls)" dark>
-                                                <v-icon>mdi-play</v-icon> เปิดลิ้ง
-                                            </v-btn> &nbsp;
-                                            <v-btn v-if="!form.id" type="submit" color="#2cb830" dark click="saveData()">
-                                                <v-icon>mdi-content-save</v-icon>
-                                                บันทึก
-                                            </v-btn>&nbsp;
-                                            <v-btn v-else type="submit" color="#ff9f32" dark>
-                                                <v-icon>mdi-pen</v-icon> แก้ไข
-                                            </v-btn>&nbsp;
-                                            <v-btn v-if="form.id" color="red" dark @click="removeData(form)">
-                                                <v-icon>mdi-delete</v-icon> ลบ
-                                            </v-btn>
-
-                                        </center>
-                                    </form>
-
-                                </v-expansion-panel-content>
-                            </v-expansion-panel><br>
-                            <v-divider></v-divider><br>
-                            <v-expansion-panel v-if="resultResponse" v-for="result,index in rateDatas" :key="index">
-
-                                <v-expansion-panel-header>
-                                    <v-toolbar flat color="transparent">
-                                        <h2>{{result.name}}</h2>
-                                        <v-spacer></v-spacer>
-                                        <span v-if="!result.passing" class="bg-orange-400 p-2 rounded">
-                                            <v-icon>mdi-information</v-icon>ยังไม่ได้ยืนยันจากหัวหน้าหน่วยงาน
-                                        </span>
-                                        <span v-if="result.passing" class="bg-green-400 p-2 rounded ">
-                                            <v-icon>mdi-check</v-icon>ยืนยันจากหัวหน้าหน่วยงานแล้ว
-                                        </span>
-                                        <span v-if="result.tester" class="m-2 bg-blue-200 p-2 rounded">
-                                            <v-icon>mdi-account-check</v-icon> มีการตรวจแล้ว
-                                        </span>
-                                        <span v-if="result.rate_status == 4" class="m-2 bg-green-600 text-white p-2 rounded">
-                                            <v-icon>mdi-check</v-icon> ข้อมูลครบถ้วนแล้ว ( {{result.score}} คะแนน )
-                                        </span>
-                                    </v-toolbar>
-
-                                </v-expansion-panel-header>
-                                <v-expansion-panel-content>
-                                    <v-alert v-if="result.passing" type="success">
-                                        ได้รับการยืนยันจากหัวหน้าหน่วยงานแล้ว
-                                    </v-alert>
-                                    <v-alert v-if="!result.passing && form.id" type="info">
-                                        เนื้อหานี้จะยังไม่สามารถให้ผู้ตรวจ ตรวจได้เนื่องจากยังไม่ได้รับการยืนยัน จากหัวหน้าหน่วยงาน
-                                    </v-alert>
-                                    <form @submit.prevent="updateData(result)">
-                                        <v-text-field required v-model="result.name" placeholder="ข้อความ" label="หัวข้อ" filled></v-text-field>
-                                        <v-select required :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="result.register_type" filled placeholder="ยังไม่มีข้อมูล" label="สถานะ	"></v-select>
-
-                                        <v-text-field v-model="result.urls" placeholder="Url" label="Url" filled></v-text-field>
-                                        <v-textarea v-model="result.ref" placeholder="ระบุคำอธิบาย" label="คำอธิบายเพิ่มเติม" filled></v-textarea>
-                                        <center>
-                                            <v-btn v-if="result.urls" color="#49bcff" @click="openLink(result.urls)" dark>
-                                                <v-icon>mdi-play</v-icon> เปิดลิ้ง
-                                            </v-btn> &nbsp;
-                                            <v-btn v-if="!result.id && !result.passing" type="submit" color="#2cb830" dark click="saveData()">
-                                                <v-icon>mdi-content-save</v-icon>
-                                                บันทึก
-                                            </v-btn>&nbsp;
-                                            <v-btn v-if="result.id && !result.passing" type="submit" color="#ff9f32" dark>
-                                                <v-icon>mdi-pen</v-icon> แก้ไข
-                                            </v-btn>&nbsp;
-                                            <v-btn v-if="result.id && !result.passing" color="red" dark @click="removeData(result)">
-                                                <v-icon>mdi-delete</v-icon> ลบ
-                                            </v-btn>
-                                        </center>
-                                    </form>
-
-                                    <div v-if="result.tester" class="mt-4">
-                                        <h2 class="text-xl">สถานะการตรวจสอบ</h2>
-                                        <br>
-                                        <v-alert v-if="result.rate_status == 4" type="success" outlined>
-                                            ข้อมูลครบถ้วนแล้ว
-                                        </v-alert>
-                                        <v-alert v-else type="warning" outlined>
-                                            ยังไม่สมบูรณ์
-                                        </v-alert>
-
-                                        <v-select readonly v-model="result.rate_status" label="สถานะการตรวจสอบ" placeholder="ระบุสถานะ" :items="rateStatus" item-text="name" item-value="id" filled></v-select>
-                                        <v-text-field readonly v-model="result.score" label="คะแนน" placeholder="ระบุตัวเลข" filled type="number"></v-text-field>
-                                        <v-textarea readonly v-model="result.comment" placeholder="ข้อความ" label="ความคิดเห็น" filled></v-textarea>
-                                    </div>
-
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
-                        <br> <br>
-                        <v-btn class="w-full" v-if="user.passing && passingAllCheck(rateDatas)" @click="passingAllStore(rateDatas)" x-large outlined color="deep-purple accent-4" dark>
-                            <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
-                        </v-btn>
-                        <!--                      <v-btn @click="removePassingAllStore(rateDatas)">ยกเลิก</v-btn>-->
-
-                    </div>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-    </v-app>
 
 </div>
 <div class="pt-20" v-else>
@@ -318,6 +194,7 @@ export default class Home extends Vue {
     private rateDatas: any = []
     private response: boolean = false
     resultResponse: boolean = false
+    group: any = []
     scroll: number = 0
     public async created() {
 
@@ -339,9 +216,38 @@ export default class Home extends Vue {
         this.result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.CURRNT_AGENGY}&rate__year=${this.$route.query.year}`)
         this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
         await this.generateTable();
+        await this.genGroup()
         this.response = true;
         await loader.hide()
 
+    }
+    i: any = 1
+    dataIndex(index: any) {
+        return index
+    }
+
+    private async genGroup() {
+        this.group = await _.chain(this.rates)
+            // Group the elements of Array based on `color` property
+            .groupBy("type_base")
+            // `key` is group's name (color), `value` is the array of objects
+            .map((value, key) => ({
+                type_base: key,
+                base_data: _.chain(value)
+                    // Group the elements of Array based on `color` property
+                    .groupBy("type")
+                    // `key` is group's name (color), `value` is the array of objects
+                    .map((value, key) => ({
+                        type: key,
+                        data: value
+                    }))
+                    .value()
+
+            }))
+            .value()
+
+        //await _.groupBy(this.rates, function(b) { return b.type})
+        console.log('[TESTTTT]', this.group)
     }
 
     private async generateTable() {
