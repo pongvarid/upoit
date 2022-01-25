@@ -23,7 +23,7 @@
                                 <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การบริหารและพัฒนาทรัพยากรบุคคล'">ตัวชี้วัดที่ 9.4 การบริหารและพัฒนาทรัพยากรบุคคล</h2>
                                 <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การจัดการเรืองร้องเรียนการทุจริตและประพฤติมิชอบ'">ตัวชี้วัดที่ 9.5 การส่งเสริมความโปร่งใสและ การจัดการเรืองร้องเรียนการทุจริตและประพฤติมิชอบ</h2>
                                 <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'เจตจำนงสุจริตของผู้บริหาร'">ตัวชี้วัดที่ 10.1 การดำเนินการเพื่อป้องกันการทุจริต</h2>
-                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'มาตรการส่งเสริมความโปร่งใสและป้องกันการทุจริตภายในหน่วยงาน'">ตัวชี้วัดที่ 10.2 มาตรการภายในเพื่อป้องกันการทุจริต</h2> 
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'มาตรการส่งเสริมความโปร่งใสและป้องกันการทุจริตภายในหน่วยงาน'">ตัวชี้วัดที่ 10.2 มาตรการภายในเพื่อป้องกันการทุจริต</h2>
                                 <h2 class="text-base  m-4   text-red-400">{{type_g.type}}</h2>
                                 <table class="items-center w-full bg-transparent border-collapse">
                                     <thead>
@@ -46,21 +46,21 @@
                                     <tbody>
                                         <tr v-for="rate,index in type_g.data" :key="index" :class="(index%2 != 0)?`bg-gray-200`:``">
                                             <th class="font-bold text-gray-700" style="width:20px!important;">
-                                                O{{ rate.number }} 
+                                                O{{ rate.number }}
 
                                             </th>
-                                            <td class="font-bold text-gray-700 pt-2 pb-2" style="width:450px;">
-
-                                                {{ rate.name }}
+                                            <td class="font-bold text-gray-700 pt-2 pb-2" style="width:600px;">
+                                                <br><br>
+                                                {{ rate.name }}<br><br>
                                                 <p class="text-sm font-thin" style="white-space: pre-wrap;" v-html="rate.detail"></p>
-
+                                                <br><br>
                                             </td>
 
                                             <td style="width:300px;" class="p-2">
                                                 <h2 class="text-sm">
                                                     <v-icon v-if="rate.result.length > 0" style="color:green;">mdi-check-circle</v-icon>
                                                     <v-icon v-else style="color:red;">mdi-clock-time-eight</v-icon>
-                                                    การบันทึกข้อมูล (จำนวน Url {{rate.result.length}} )
+                                                    การบันทึกข้อมูล<br> <b class="ml-4 " :class="(rate.result.length > 0)?`text-green-600`:`text-red-600`">(จำนวน Url {{rate.result.length}} )</b>
                                                 </h2>
 
                                                 <h2 class="text-sm">
@@ -76,11 +76,11 @@
                                             </td>
 
                                             <td class="font-bold text-gray-700 pt-6 pb-2" style="width:1050px;">
-                                                <form @submit.prevent="storeResult(formResult[index],index)">
+                                                <form @submit.prevent="storeResult(formResult[rate.number -1],rate.number -1)">
                                                     <div class="m-1 flex flex-row">
-                                                        <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[index].register_type" label="สถานะ"></v-select>
-                                                        <v-text-field class="ml-1" v-model="formResult[index].urls" dense outlined name="name" label="Url" id="id"></v-text-field>
-                                                        <v-text-field required v-model="formResult[index].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
+                                                        <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[rate.number -1].register_type" label="สถานะ"></v-select>
+                                                        <v-text-field class="ml-1" v-model="formResult[rate.number -1].urls" dense outlined name="name" label="Url" id="id"></v-text-field>
+                                                        <v-text-field required v-model="formResult[rate.number -1].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
                                                         <v-btn type="submit" class="ml-1" color="info">
                                                             <span v-if="(rate.result).length ==0">
                                                                 <v-icon>mdi-content-save</v-icon> บันทึกข้อมูล
@@ -95,7 +95,7 @@
                                                 <v-divider></v-divider><br>
 
                                                 <div class="p-4 rounded-xl bg-green-200">
-                                                    <form @submit.prevent="updateData(res,index)" v-for="res,res_index in rate.result" :key="res_index">
+                                                    <form @submit.prevent="updateData(res,rate.number -1)" v-for="res,res_index in rate.result" :key="res_index">
                                                         <div class="m-1 flex flex-row">
                                                             <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="res.register_type" label="สถานะ"></v-select>
                                                             <v-text-field class="ml-1" v-model="res.urls" dense outlined name="name" label="Url" id="id"></v-text-field>
@@ -106,7 +106,7 @@
                                                             <v-btn v-if="passingAllCheck(rate.result)" x-small type="submit" fab class="ml-1" color="warning">
                                                                 <v-icon>mdi-pencil</v-icon>
                                                             </v-btn>
-                                                            <v-btn v-if="passingAllCheck(rate.result)" @click="removeData(res,index)" x-small class="ml-3 mr-3" fab color="red" dark>
+                                                            <v-btn v-if="passingAllCheck(rate.result)" @click="removeData(res,rate.number -1)" x-small class="ml-3 mr-3" fab color="red" dark>
                                                                 <v-icon>mdi-delete</v-icon>
                                                             </v-btn>
                                                         </div>
@@ -228,26 +228,19 @@ export default class Home extends Vue {
 
     private async genGroup() {
         this.group = await _.chain(this.rates)
-            // Group the elements of Array based on `color` property
             .groupBy("type_base")
-            // `key` is group's name (color), `value` is the array of objects
             .map((value, key) => ({
                 type_base: key,
                 base_data: _.chain(value)
-                    // Group the elements of Array based on `color` property
                     .groupBy("type")
-                    // `key` is group's name (color), `value` is the array of objects
                     .map((value, key) => ({
                         type: key,
                         data: value
                     }))
                     .value()
-
             }))
             .value()
 
-        //await _.groupBy(this.rates, function(b) { return b.type})
-        console.log('[TESTTTT]', this.group)
     }
 
     private async generateTable() {
@@ -316,6 +309,7 @@ export default class Home extends Vue {
     private async loadResult(id: number, index: number) {
         this.response = false;
         this.rates[index].result = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.CURRNT_AGENGY}&rate__year=${this.$route.query.year}&rate=${id}`)
+
         this.response = true;
     }
 
