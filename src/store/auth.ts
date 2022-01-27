@@ -78,8 +78,7 @@ class AuthClass extends VuexModule {
     }
 
     public async loginGoogle() {
-        var provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        var provider = new firebase.auth.GoogleAuthProvider(); 
         firebase.auth().signInWithRedirect(provider);
     }
 
