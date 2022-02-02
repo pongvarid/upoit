@@ -30,7 +30,7 @@
             <v-icon v-if="(item.data.oit_passing)">mdi-checkbox-marked-circle</v-icon>
             <v-icon v-else>mdi-close-circle</v-icon>
 
-            {{ (item.data.oit_passing)?'ยืนยันครบทุกหัวข้อแล้ว' : 'ยังยืนยันไม่ครบทุกหัวข้อ' }}
+            {{ (item.data.oit_passing)?'อนุมัติครบทุกประด็นแล้ว' : 'ยังอนุมัติไม่ครบทุกประด็น' }}
           </v-chip>
         </template>
 
@@ -95,8 +95,8 @@ export default class Home extends Vue {
     { text: 'IIT', value: 'data.iit' },
     { text: 'EIT', value: 'data.eit' },
     { text: 'OIT', value: 'data.oit' },
-    { text: 'ยืนยันการส่งข้อมูล OIT จากหัวหน้าหน่วยงาน', value: 'data.oit_passing' },
-    { text: 'ผลการประเมินคะแนนรวม', value: 'data.rate' }
+    { text: 'อนุมัติจากหัวหน้าหน่วยงาน (OIT)', value: 'data.oit_passing' },
+    { text: 'ข้อมูลครบถ้วนตามเกณฑ์', value: 'data.rate' }
   ]
 
   public async created() {
