@@ -11,7 +11,8 @@
                 <!-- <v-spacer></v-spacer>
                 <v-btn color="success" @click="search()"><i class="em em-mag" aria-role="presentation" aria-label="LEFT-POINTING MAGNIFYING GLASS"></i> ค้นหา</v-btn> -->
             </v-toolbar>
-            <div style="overflow-x:auto;">
+            <div style="overflow-x:auto;"> 
+             
                 <table style="width:1000px; ">
                     <tr>
                         <th>ชื่อองค์กร/ชื่อ - นามสกุล * (ไม่ใส่คำนำหน้า)</th>
@@ -35,7 +36,8 @@
                             <v-text-field filled dense label="การติดต่อ" v-model="form.other"></v-text-field>
                         </td>
                         <td>
-                            <v-text-field filled dense label="ประเภทการติดต่อ" v-model="form.type"></v-text-field>
+                            <v-text-field v-if="chooseYear < 3" filled dense label="ประเภทการติดต่อ" v-model="form.type"></v-text-field>
+                            <v-autocomplete v-else filled dense multiple :items="['งานหลักของหน่วยงาน','งานจัดซื้อจัดจ้างหรือการจัดหาพัสดุ','งานสนับสนุน','อื่นๆ']" v-model="form.type" label="ประเภทการติดต่อ"></v-autocomplete>
                         </td>
                         <td>
                             <v-btn color="primary" @click="addEit()">เพิ่ม</v-btn>
@@ -55,7 +57,10 @@
                             <v-text-field filled dense label="การติดต่อ" v-model="item.other"></v-text-field>
                         </td>
                         <td>
-                            <v-text-field filled dense label="ประเภทการติดต่อ" v-model="item.type"></v-text-field>
+                            <v-text-field v-if="chooseYear < 3" filled dense label="ประเภทการติดต่อ" v-model="item.type"></v-text-field>
+                           <v-autocomplete v-else filled dense multiple :items="['งานหลักของหน่วยงาน','งานจัดซื้อจัดจ้างหรือการจัดหาพัสดุ','งานสนับสนุน','อื่นๆ']" v-model="item.type" label="ประเภทการติดต่อ"></v-autocomplete>
+
+
                         </td>
                         <td>
                             <v-btn small @click="editEit(item)" color="warning">แก้ไข</v-btn><br><br>
@@ -112,9 +117,9 @@ export default class Home extends Vue {
         this.top = _.orderBy(this.agency, ['count'], ['desc']);
         this.down = _.orderBy(this.agency, ['count'], ['asc']);
 
-        this.chooseYear = this.years[0].id
-        this.lists = await Core.getHttp(`/api/ita/v1/eituser/?year=${this.chooseYear}&agency=${this.user.ext_link.agency}`)
-
+        this.chooseYear = this.years[this.years.length-1].id
+       
+         await this.search();
     }
 
     prePrint() {
@@ -123,24 +128,42 @@ export default class Home extends Vue {
 
     async search() {
         this.lists = await Core.getHttp(`/api/ita/v1/eituser/?year=${this.chooseYear}&agency=${this.user.ext_link.agency}`)
+        if(this.chooseYear > 2){
+              this.lists =  _.map(this.lists,  (element)=> { 
+                    return _.extend({}, element, {type: JSON.parse(element.type)});
+                });
+        }
+         
+
     }
 
     async addEit() {
         this.form.year = this.chooseYear
         this.form.agency = this.user.ext_link.agency
+        if(this.chooseYear > 2){
+                this.form.type = JSON.stringify(this.form.type);
+        }
+
         let save = await Core.postHttp(`/api/ita/v1/eituser/`, this.form)
         if (save.id) {
             alert('เพิ่มข้อมูลสำเร็จแล้ว')
-            this.lists = await Core.getHttp(`/api/ita/v1/eituser/?year=${this.chooseYear}&agency=${this.user.ext_link.agency}`)
+         //   this.lists = await Core.getHttp(`/api/ita/v1/eituser/?year=${this.chooseYear}&agency=${this.user.ext_link.agency}`)
+            await this.search();
             this.form = {}
         }
     }
 
     async editEit(item: any) {
-        let save = await Core.putHttp(`/api/ita/v1/eituser/${item.id}/`, item)
+        let form = item
+          if(this.chooseYear > 2){
+               form.type = JSON.stringify(item.type);
+        }
+        let save = await Core.putHttp(`/api/ita/v1/eituser/${form.id}/`, form)
+       
         if (save.id) {
             alert('แก้ไขข้อมูลสำเร็จแล้ว')
-            this.lists = await Core.getHttp(`/api/ita/v1/eituser/?year=${this.chooseYear}&agency=${this.user.ext_link.agency}`)
+         //   this.lists = await Core.getHttp(`/api/ita/v1/eituser/?year=${this.chooseYear}&agency=${this.user.ext_link.agency}`)
+              await this.search();
         }
     }
     async deleteEit(item: any) {

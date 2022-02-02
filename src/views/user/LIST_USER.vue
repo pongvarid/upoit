@@ -30,7 +30,7 @@
             <v-icon v-if="(item.data.oit_passing)">mdi-checkbox-marked-circle</v-icon>
             <v-icon v-else>mdi-close-circle</v-icon>
 
-            {{ (item.data.oit_passing)?'ครบแล้ว' : 'ยังไม่ครบ' }}
+            {{ (item.data.oit_passing)?'ยืนยันครบทุกหัวข้อแล้ว' : 'ยังยืนยันไม่ครบทุกหัวข้อ' }}
           </v-chip>
         </template>
 
@@ -43,7 +43,8 @@
             <v-icon v-else>mdi-close-circle</v-icon>
 
             {{ (item.data.rate)?'ผ่านเกณฑ์' : 'ไม่ผ่านเกณฑ์' }}
-          </v-chip>
+         
+          </v-chip>   
         </template>
 
       </v-data-table>
@@ -94,8 +95,8 @@ export default class Home extends Vue {
     { text: 'IIT', value: 'data.iit' },
     { text: 'EIT', value: 'data.eit' },
     { text: 'OIT', value: 'data.oit' },
-    { text: 'การยืนยัน', value: 'data.oit_passing' },
-    { text: 'rate', value: 'data.rate' }
+    { text: 'ยืนยันการส่งข้อมูล OIT จากหัวหน้าหน่วยงาน', value: 'data.oit_passing' },
+    { text: 'ผลการประเมินคะแนนรวม', value: 'data.rate' }
   ]
 
   public async created() {
@@ -173,7 +174,7 @@ export default class Home extends Vue {
     }
   }
   async getOITYear(){
-    let years = await Core.getHttp(`/api/ita/v2/year/`)
+    let years = await Core.getHttp(`/api/ita/v1/year/`)
     let year:any = await _.filter(years,{"year":this.chooseYear})
     if(year.length > 0){
       this.OITYEAR = year[0]

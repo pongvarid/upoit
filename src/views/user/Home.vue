@@ -27,7 +27,7 @@
         <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
             <bin-card c="#1d8998" i="mdi-home-city" t="หน่วยงาน" :h="dashboard.agency" />
             <bin-card c="#e47434" i="mdi-account-child-circle" t="หัวหน้าหน่วยงาน" :h="dashboard.agency_passing" />
-            <bin-card c="#8080ff" i="mdi-account-circle" t="ผู้ใช้งาน" :h="dashboard.agency_user" />
+            <bin-card c="#8080ff" i="mdi-account-circle" t="บุคลากรภายในหน่วยงาน" :h="dashboard.agency_user" />
         </div>
         <br>
 
@@ -35,7 +35,7 @@
 
         <div class="relative w-full mt-4 mb-4 max-w-full flex-grow flex-1 px-2 py-2" v-if="myAgency != publicAgency">
             <h3 class=" text-2xl text-gray-800">
-                <i class="em em-computer " aria-role="presentation" aria-label=""></i> ตารางผู้ใช้งาน
+                <i class="em em-computer " aria-role="presentation" aria-label=""></i> ตารางรายชื่อบุคลากรภายในหน่วยงาน
             </h3>
         </div>
 
@@ -65,7 +65,7 @@
                         <p class="text-xs text-gray-600">{{user.register_type}}</p>
                     </div>
                     <div class="w-auto text-right">
-                        <v-chip color="#e0b3ff">ผู้ใช้งานทั่วไป</v-chip>
+                        <v-chip color="#e0b3ff">บุคลากรภายในหน่วยงาน</v-chip>
                     </div>
                 </div>
             </div>

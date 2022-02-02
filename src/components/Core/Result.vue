@@ -70,7 +70,7 @@
             <h2 class="m-2"> {{index+1}}. {{list.fullname}}</h2>
           </div>
       </v-tab-item>
-       <v-tab>
+       <!-- <v-tab>
         รายชื่อผู้ประเมิน EIT แล้ว
       </v-tab>
        <v-tab-item>
@@ -78,7 +78,7 @@
           <div v-for="list,index in listEIT" :key="index" > 
             <h2 class="m-2"> {{index+1}}. {{list.fullname}}</h2>
           </div>
-      </v-tab-item>
+      </v-tab-item> -->
     </v-tabs>
 
 </div>
