@@ -80,7 +80,7 @@
                                                     <div class="m-1 flex flex-row">
                                                         <v-select style="width:60px;" dense outlined :items="['เสร็จสิ้น','อยู่ระหว่างการปรับปรุง','ไม่มีข้อมูล']" v-model="formResult[rate.number -1].register_type" label="สถานะ"></v-select>
                                                         <v-text-field class="ml-1" v-model="formResult[rate.number -1].urls" dense outlined name="name" label="Url" id="id"></v-text-field>
-                                                        <v-text-field required v-model="formResult[rate.number -1].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
+                                                        <v-textarea rows="2" required v-model="formResult[rate.number -1].ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-textarea>
                                                         <v-btn type="submit" class="ml-1" color="info">
                                                             <span v-if="(rate.result).length ==0">
                                                                 <v-icon>mdi-content-save</v-icon> บันทึกข้อมูล
@@ -102,7 +102,7 @@
                                                             <v-btn x-small class="ml-1" fab v-if="res.urls" color="#49bcff" @click="openLink(res.urls)" dark>
                                                                 <v-icon>mdi-play</v-icon>
                                                             </v-btn>
-                                                            <v-text-field required v-model="res.ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-text-field>
+                                                            <v-textarea rows="2" required v-model="res.ref" class="ml-2" dense outlined name="name" label="คำอธิบาย Url" id="id"></v-textarea>
                                                             <v-btn v-if="passingAllCheck(rate.result)" x-small type="submit" fab class="ml-1" color="warning">
                                                                 <v-icon>mdi-pencil</v-icon>
                                                             </v-btn>

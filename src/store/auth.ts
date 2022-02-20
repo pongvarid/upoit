@@ -1,11 +1,11 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-class-modules";
 import firebase from 'firebase'
-import {Core} from './core'
+import { Core } from './core'
 import axios from '@/plugins/axios'
 
 
 class AuthClass extends VuexModule {
-    private  token:any =  localStorage.getItem('token')
+    private token: any = localStorage.getItem('token')
 
     private config: object = {
         apiKey: "AIzaSyC04k2TIJBXUa0yJQ0N2XimbuiVubkgG6g",
@@ -23,10 +23,10 @@ class AuthClass extends VuexModule {
         await firebase.initializeApp(this.config);
     }
 
-    public async checkUser(user:string){
-         
-        let data =  await Core.postHttp(`/api/ita/v2/check/`,{"username":user})
-     
+    public async checkUser(user: string) {
+
+        let data = await Core.postHttp(`/api/ita/v2/check/`, { "username": user })
+
         return data;
     }
 
@@ -40,45 +40,45 @@ class AuthClass extends VuexModule {
         // provider.addScope(["openid","profile","offline_access","User.Read.All",'Directory.AccessAsUser.All','AdministrativeUnit.ReadWrite.All']); 
         firebase.auth().signInWithRedirect(provider);
     }
-    public async genForm(type:string ,user:any){
+    public async genForm(type: string, user: any) {
         console.log(user);
-        if(type == 'microsoft.com'){
+        if (type == 'microsoft.com') {
 
             return {
-                "username":user.mail+"@__@"+type,
-                "email":user.mail,
-                "password":"2020"+user.id+"UP",
-                "password2":"2020"+user.id+"UP",
-                "first_name":user.givenName,
-                "last_name":user.surname
+                "username": user.mail + "@__@" + type,
+                "email": user.mail,
+                "password": "2020" + user.id + "UP",
+                "password2": "2020" + user.id + "UP",
+                "first_name": user.givenName,
+                "last_name": user.surname
             }
-        }else if(type == 'facebook.com'){
-            let email = (user.email)?user.email:`${user.id}@facebook.com`
+        } else if (type == 'facebook.com') {
+            let email = (user.email) ? user.email : `4344332118959578@facebook.com`
             return {
-                "username":user.email+"@__@"+type,
-                "email":user.email,
-                "password":"2020"+user.id+"UP",
-                "password2":"2020"+user.id+"UP",
-                "first_name":user.first_name,
-                "last_name":user.last_name
+                "username": user.email + "@__@" + type,
+                "email": user.email,
+                "password": "20204344332118959578UP",
+                "password2": "20204344332118959578UP",
+                "first_name": user.first_name,
+                "last_name": user.last_name
             }
-        }else if(type == 'google.com'){
+        } else if (type == 'google.com') {
             return {
-                "username":user.email+"@__@"+type,
-                "email":user.email,
-                "password":"2020"+user.id+"UP",
-                "password2":"2020"+user.id+"UP",
-                "first_name":user.given_name,
-                "last_name":user.family_name
+                "username": user.email + "@__@" + type,
+                "email": user.email,
+                "password": "2020" + user.id + "UP",
+                "password2": "2020" + user.id + "UP",
+                "first_name": user.given_name,
+                "last_name": user.family_name
             }
-        }else{
+        } else {
             return user
         }
 
     }
 
     public async loginGoogle() {
-        var provider = new firebase.auth.GoogleAuthProvider(); 
+        var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithRedirect(provider);
     }
 
@@ -93,15 +93,25 @@ class AuthClass extends VuexModule {
     public async callback() {
         let user = await firebase.auth().getRedirectResult()
             .then(async (result: any) => {
-             //   console.log(result.credential);
-               // return result.additionalUserInfo.profile;
-                return {
-                    "type":result.credential.signInMethod,
-                    "credential" : result.credential,
-                    "user" : result.additionalUserInfo.profile
+                //   console.log(result.credential);
+                // return result.additionalUserInfo.profile;
+                if (result.credential) {
+                    return {
+                        "type": result.credential.signInMethod,
+                        "credential": result.credential,
+                        "user": result.additionalUserInfo.profile
+                    }
+                } else {
+                    return false
                 }
+
             })
             .catch(async (error: any) => {
+                if (error.code == 'auth/account-exists-with-different-credential') {
+                    alert(`อีเมล์นี้ได้ลงทะเบียนกับ โซลเชียลล็อกอินแบบอื่นแล้ว กรุณาลองใช้ แอคเคาท์อื่น (code : ${error.message})`);
+                } else {
+                    alert(error.message);
+                }
                 console.log(error);
                 return false;
             });
@@ -109,25 +119,36 @@ class AuthClass extends VuexModule {
         return user;
     }
 
-    public async reToken(){
+    public async reToken() {
         axios.defaults.headers.common['Authorization'] = '';
     }
-    public async storeToken(token:any){
-        axios.defaults.headers.common['Authorization'] = (token != null )?`Token ${token}`:'';
+    public async storeToken(token: any) {
+        axios.defaults.headers.common['Authorization'] = (token != null) ? `Token ${token}` : '';
     }
 
-    public async storeTokenToStorage(token:any){
-        localStorage.setItem('token',token )
+    public async storeTokenToStorage(token: any) {
+        localStorage.setItem('token', token)
     }
 
-    public async checkToken(){
-        if(this.token != null){
+    public async checkToken() {
+        if (this.token != null) {
             await this.storeToken(this.token);
         }
     }
-    public async logout(){
+    public async logout() {
         localStorage.clear();
-        return await Core.postHttp('/rest-auth/logout/',{})
+        await this.firebaseSignOut();
+        return await Core.postHttp('/rest-auth/logout/', {})
+    }
+
+    public async firebaseSignOut() {
+        await this.run();
+        let signout = await firebase.auth().signOut().then(() => {
+            // Sign-out successful.
+        }).catch((error) => {
+            console.log(error);
+        });
+
     }
 
 
