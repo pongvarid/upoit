@@ -279,12 +279,12 @@ export default class Test extends Vue {
             await Auth.reToken();
             form = await Auth.genForm(logined.type, logined.user)
             if ((await Auth.checkUser(form.username)).user) {
-                let key = await Core.postHttp(`/rest-auth/login/`, form)
+                let key = await Core.postHttp(`/api/ita/v2/accounts/`, form)
                 await this.keyCall(key.key)
             } else {
                 let user = await Core.postHttp(`/api/ita/v1/register/`, form)
                 if (user.id) {
-                    let key = await Core.postHttp(`/rest-auth/login/`, form)
+                    let key = await Core.postHttp(`/api/ita/v2/accounts/`, form)
                     await this.keyCall(key.key)
                 }
             }

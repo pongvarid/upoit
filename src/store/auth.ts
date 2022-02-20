@@ -53,12 +53,12 @@ class AuthClass extends VuexModule {
                 "last_name": user.surname
             }
         } else if (type == 'facebook.com') {
-            let email = (user.email) ? user.email : `4344332118959578@facebook.com`
+            //let email = (user.email) ? user.email : `${user.email}@facebook.com`
             return {
                 "username": user.email + "@__@" + type,
                 "email": user.email,
-                "password": "20204344332118959578UP",
-                "password2": "20204344332118959578UP",
+                "password": "2020" + user.email + "UP",
+                "password2": "2020" + user.email + "UP",
                 "first_name": user.first_name,
                 "last_name": user.last_name
             }
