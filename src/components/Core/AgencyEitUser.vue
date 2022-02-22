@@ -21,7 +21,7 @@
                 <v-btn color="success" @click="search()"><i class="em em-mag" aria-role="presentation" aria-label="LEFT-POINTING MAGNIFYING GLASS"></i> ค้นหา</v-btn> -->
             </v-toolbar>
             <div style="overflow-x: auto">
-                <table style="width: 1000px">
+                <table style="width: 100%">
                     <tr>
                         <th>ชื่อองค์กร/ชื่อ - นามสกุล * (ไม่ใส่คำนำหน้า)</th>
                         <th>เบอร์โทรศัพท์</th>
@@ -50,6 +50,7 @@
                                 <v-btn class="m-1" @click="addItem(`งานหลักของหน่วยงาน`)" x-small color="info">งานหลักของหน่วยงาน</v-btn>
                                 <v-btn class="m-1" @click="addItem(`งานจัดซื้อจัดจ้างหรือการจัดหาพัสดุ`)" x-small color="info">งานจัดซื้อจัดจ้างหรือการจัดหาพัสดุ</v-btn>
                                 <v-btn class="m-1" @click="addItem(`งานสนับสนุน`)" x-small color="info">งานสนับสนุน</v-btn>
+                                 <v-btn class="m-1" @click="addItem(`อื่นๆ`, index)" x-small color="info">อื่นๆ (โปรดระบุ)</v-btn>
                             </div>
                         </td>
                         <td>
@@ -76,6 +77,7 @@
                                 <v-btn class="m-1" @click="addItemArray(`งานหลักของหน่วยงาน`, index)" x-small color="info">งานหลักของหน่วยงาน</v-btn>
                                 <v-btn class="m-1" @click="addItemArray(`งานจัดซื้อจัดจ้างหรือการจัดหาพัสดุ`, index)" x-small color="info">งานจัดซื้อจัดจ้างหรือการจัดหาพัสดุ</v-btn>
                                 <v-btn class="m-1" @click="addItemArray(`งานสนับสนุน`, index)" x-small color="info">งานสนับสนุน</v-btn>
+                                <v-btn class="m-1" @click="addItemArray(`อื่นๆ`, index)" x-small color="info">อื่นๆ (โปรดระบุ)</v-btn>
                             </div>
                         </td>
                         <td>
