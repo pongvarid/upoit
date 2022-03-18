@@ -42,7 +42,7 @@
               </v-tabs>
             </div>
           </div>
-          <div>
+          <div v-else>
             <h2 class="text-xl"><i class="em em-disappointed_relieved" aria-role="presentation" aria-label="DISAPPOINTED BUT RELIEVED FACE"></i> ยังไม่เปิดให้ดูข้อมูล</h2>
           </div>
         </div>
