@@ -68,6 +68,7 @@ import {
   User
 } from '@/store/user'
 import _ from "lodash";
+import moment from 'moment'
 @Component({
   components: {
      
@@ -78,9 +79,12 @@ export default class Home extends Vue {
   private user:any = {}
   private years:any = []
   private response:boolean = false
-  public async created(){
+  public async created(){ 
+    let year =  Number(moment().format('YYYY'))+543
+ 
     this.user = await User.getUser();
-    this.years = await Core.getHttp(`/api/ita/v2/year/`)
+    this.years = await Core.getHttp(`/api/ita/v1/year/`)
+    this.years = _.filter(this.years,{year:String(year)}) 
     for (let i =0 ;i < this.years.length;i++){
       let res = await Core.getHttp(`/api/ita/v1/rateresult/?rate__year=${this.years[i].id}&agency=${this.$route.query.id}`)
       let rate = await Core.getHttp(`/api/ita/v2/rate/${this.years[i].id}/`)
