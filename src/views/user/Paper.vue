@@ -115,6 +115,11 @@
                                                     <v-btn class="w-full" v-if="user.passing &&  passingAllCheck(rate.result)" @click="passingAllStore(rate.result)" x-large outlined color="deep-purple accent-4" dark>
                                                         <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
                                                     </v-btn>
+                                                    <br><br>
+                                                    <v-btn class="w-full" v-if="user.passing &&  passingAllCheckTrue(rate.result)" @click="removePassingAllStore(rate.result)" x-large outlined color="red accent-4" dark>
+                                                        <v-icon>mdi-remove</v-icon><b> ยกเลิกการส่ง</b>
+                                                    </v-btn>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -402,7 +407,9 @@ export default class Home extends Vue {
             for (let i = 0; i < datas.length; i++) {
                 await this.removePassingStore(datas[i])
             }
+             await this.run()
             await this.loadRateData(this.rate)
+            
         }
     }
 
