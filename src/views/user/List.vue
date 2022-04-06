@@ -75,9 +75,9 @@ export default class Home extends Vue {
   private user:any = {}
   private years:any = []
   private response:boolean = false
-  public async created(){
+  public async created(){ 
     this.user = await User.getUser();
-    this.years = await Core.getHttp(`/api/ita/v2/year/`)
+    this.years = await Core.getHttp(`/api/ita/v1/year/`)
     for (let i =0 ;i < this.years.length;i++){
       let res = await Core.getHttp(`/api/ita/v1/rateresult/?rate__year=${this.years[i].id}&agency=${this.$route.query.id}`)
       let rate = await Core.getHttp(`/api/ita/v2/rate/${this.years[i].id}/`)
