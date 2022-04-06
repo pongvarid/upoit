@@ -10,7 +10,7 @@
        <ExportIIT class="ml-2" :data="issues" />
     </v-toolbar>
     <div class="flex mt-4">
-      <bin-card class="m-2"  c="#8A2BE2" i="mdi-account-group" t="บุคลากร (ที่ประเมิน/ทั้งหมด)" :h="`${allUser}/${allAgency}`" />
+      <bin-card class="m-2"  c="#8A2BE2" i="mdi-account-group" t="บุคลากรที่ประเมิน" :h="`${allUser}`" />
       <bin-card class="m-2"  c="#ff8040" i="mdi-scoreboard" t="ผลคะแนนรวม (100%)" :h="score" />
       <bin-card class="m-2"  c="#1088B2" i="30%" t="ผลคะแนนรวม (30%)" :h="score30" />
       <bin-card class="m-2"  :c="(score >= 79)?'#16B77D':'#FF5733'" i="mdi-newspaper-variant-multiple-outline" t="ผลการประเมิน" :h="result" />

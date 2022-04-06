@@ -24,7 +24,7 @@
       </div >
     </div>
 
-    <div class="flex flex-col justify-center items-center">
+     <!-- <div class="flex flex-col justify-center items-center"> 
         <h2 class="text-2xl font-semibold">ผลคะแนนและระดับผลการประเมินของคณะ/วิทยาลัย/ระดับกองหรือเทียบเท่า และหน่วยงาน </h2>
         <table class="mt-4" style="border: none;width:100%;border-collapse:collapse;">
     <thead>
@@ -312,7 +312,7 @@
         </tr>
     </tbody>
 </table><br><br>
-    </div>
+    </div>  -->
   </div>
 </template>
 
