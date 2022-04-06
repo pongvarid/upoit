@@ -111,6 +111,8 @@
                                                             </v-btn>
                                                         </div>
                                                     </form>
+  
+                                                        
 
                                                     <v-btn class="w-full" v-if="user.passing &&  passingAllCheck(rate.result)" @click="passingAllStore(rate.result)" x-large outlined color="deep-purple accent-4" dark>
                                                         <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>

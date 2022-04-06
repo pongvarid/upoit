@@ -20,7 +20,7 @@
 
       <div class="flex justify-center items-center">
         <v-btn large :color="(chooseAssignId == assign.id)?`info`:`primary`" @click="chooseAssignId = assign.id" class="m-2"
-               v-for="(assign,i) in assignments" :key="i" v-if="assign.id != 9">{{assign.name}}</v-btn>
+               v-for="(assign,i) in assignments" :key="i" v-if="(assign.name !='ข้อเสนอแนะ') && assign.name !='ข้อเสนอเเนะ'">{{assign.name}}</v-btn>
       </div>
 
 
@@ -123,15 +123,17 @@ export default class TestDevClass extends Vue {
   result:any = ''
 
   async getIssue(){
+    let years =  await Core.getHttp(`/api/iit/v1/year`)
+    let thisYear = _.find(years,{year:this.yearData}) 
     this.agency = await Core.getHttp(`/api/ita/v1/agency/${this.agencyData}/`)
     let raw = await Core.getHttp(`/api/report/v1/reportrawiit/?agency=${this.agencyData}&year=${this.yearData}`)
     if(raw.length > 0){
       let data = raw[0]
       this.allUser = data.user_do
       this.allAgency = data.user_set
-      this.assignments = JSON.parse(data.rawType)
+      this.assignments = _.filter(JSON.parse(data.rawType),{year:thisYear.id})
       this.year = data.year
-      this.chooseAssignId = 1
+      this.chooseAssignId = (this.assignments[0])?this.assignments[0].id:1
       this.issues  = JSON.parse(data.rawDone)
       this.score = data.score
       this.score30 = data.score30

@@ -68,7 +68,7 @@ export default class TestDevClass extends Vue {
         let data = await _.filter(this.issues,{assessment:this.assignments[i].id})
         let score = await _.sumBy(data,function(res:any) { return res.score; }) / data.length
         let result  = {
-          "year": "2564",
+          "year": "2565",
           "name": this.assignments[i].name,
           "score": Number(score.toFixed(2)) ,
           "order": ++this.num,
@@ -98,7 +98,7 @@ export default class TestDevClass extends Vue {
         let score = await (_.sumBy(data,function(res:any) { return res.score; }) ) / data.length
         let num = this.results.length;
         let result  = {
-          "year": "2564",
+          "year": "2565",
           "name": assignments[i].name,
           "score": Number(score.toFixed(2)) ,
           "order": ++this.num,
@@ -125,6 +125,7 @@ export default class TestDevClass extends Vue {
 
     let rates = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${agency}&rate__year=${year}`)
     let rates_data = await _.filter(rates,{"rate_status": 1})
+   
     if(rates.length ==43 && rates_data.length == 0){
 
       let typeBase = ["การเปิดเผยข้อมูล","การป้องกันการทุจริต"]
@@ -134,7 +135,7 @@ export default class TestDevClass extends Vue {
         let inScore:any = (await _.sumBy(inOit,function(res:any) { return res.score; }))/inOit.length
         inScore = Number((inScore*100).toFixed(2))
         let result  = {
-          "year": "2564",
+          "year": "2565",
           "name": typeBase[i] ,
           "score": Number(inScore.toFixed(2)) ,
           "order": ++this.num,
@@ -161,6 +162,8 @@ export default class TestDevClass extends Vue {
       return yscore
 
     }else{
+      console.log('[AGENCY ERROR LOG]',agency)
+       alert(agency );
       return 0
     }
 
@@ -173,7 +176,10 @@ export default class TestDevClass extends Vue {
 
 
   async created(){
-    this.agency = await Core.getHttp(`/api/ita/v1/agency/`)
+    this.agency = await Core.getHttp(`/api/ita/v2/agency/`)
+    this.agency = _.filter(this.agency,(r)=>{
+      return (r.id != 102)&&(r.id != 98)&&(r.id != 41)&&(r.id != 21)&&(r.id != 99)&&(r.id != 62)
+    })
 
     this.response = true;
 
@@ -184,22 +190,22 @@ export default class TestDevClass extends Vue {
     let agency = 7
     for (let i=0; i< this.agency.length; i++){
       agency = this.agency[i].id;
-      let iit = await this.getIssueIIT(2,agency);
-      let eit = await this.getIssueEit(2,agency);
-      let oit = await this.getOIT(3,agency);
+      let iit = await this.getIssueIIT(3,agency);
+      let eit = await this.getIssueEit(3,agency);
+      let oit = await this.getOIT(4,agency);
 
       let result = Number(oit)+Number(iit)+Number(eit)
       let rate = this.getRate(result)
-      if(this.agency[i].name == 'กองกฎหมายและทรัพย์สิน' ||
-          this.agency[i].name == 'กองอาคารสถานที่' ||
-          this.agency[i].name == 'คณะวิทยาการจัดการและสารสนเทศศาสตร์' ||
-          this.agency[i].name == 'ศูนย์บริการเทคโนโลยีสารสนเทศและการสื่อสาร' ||
-          this.agency[i].name == 'สภาพนักงาน' ){
-        rate =  'ไม่ผ่านเกณฑ์' + `(${rate})`
-      }
+      // if(this.agency[i].name == 'กองกฎหมายและทรัพย์สิน' ||
+      //     this.agency[i].name == 'กองอาคารสถานที่' ||
+      //     this.agency[i].name == 'คณะวิทยาการจัดการและสารสนเทศศาสตร์' ||
+      //     this.agency[i].name == 'ศูนย์บริการเทคโนโลยีสารสนเทศและการสื่อสาร' ||
+      //     this.agency[i].name == 'สภาพนักงาน' ){
+      //   rate =  'ไม่ผ่านเกณฑ์' + `(${rate})`
+      // }
 
       let data = {
-        "year": "2564",
+        "year": "2565",
         "iit": Number(iit),
         "eit": Number(eit),
         "oit": Number(oit),
@@ -213,6 +219,10 @@ export default class TestDevClass extends Vue {
       this.data++;
 
       // if(i > 4){
+      //   break;
+      // }
+
+      // if(this.agency[i].id ==46){
       //   break;
       // }
 

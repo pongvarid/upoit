@@ -23,7 +23,7 @@
 
 
         <v-card class="m-2 p-4 elevation-5" v-for="item,index in lists" :key="index">
-          <b>{{item.order}}.{{item.name}}</b> ({{item.score}})
+          <b>{{index+1}}.{{item.name}}</b> ({{item.score}}%)
           <v-progress-linear striped height="10" :color="getColor(item.score)" :value="item.score" :buffer-value="100"></v-progress-linear>
         </v-card>
       </div>
