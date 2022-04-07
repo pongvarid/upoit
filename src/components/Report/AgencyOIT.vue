@@ -14,7 +14,9 @@
         <h2 class="text-xl font-bold">ผลการประเมิน OIT ({{agency.name}})</h2>
 
         <v-spacer></v-spacer>
-        <h2><span class="font-bold">ผลรวม</span> {{ ((oitA.score + oitB.score) / 2).toFixed(2)}} คะแนน | <v-btn x-small fab color="blue">40%</v-btn> {{all.oit}} คะแนน</h2>
+ 
+        <!-- <h2><span class="font-bold">ผลรวม</span> {{ ((oitA.score + oitB.score) / 2).toFixed(2)}} คะแนน | <v-btn x-small fab color="blue">40%</v-btn> {{all.oit}} คะแนน</h2> -->
+        <h2><span class="font-bold">ผลรวม</span> {{ ((isScore43/43)*100).toFixed(2)}} คะแนน | <v-btn x-small fab color="blue">40%</v-btn> {{all.oit}} คะแนน</h2>
 
     </v-toolbar>
 
@@ -25,7 +27,7 @@
                 <v-toolbar flat>
                     <h2 class="text-xl text-purple-600 font-bold"><i class="em em-card_index_dividers" aria-role="presentation" aria-label=""></i> การเปิดเผยข้อมูล </h2>
                     <v-spacer></v-spacer>
-                    <h2 class="text-purple-600 font-bold"> {{oitA.score}} คะแนน</h2>
+                    <!-- <h2 class="text-purple-600 font-bold"> {{oitA.score}} คะแนน</h2> -->
                 </v-toolbar>
 
             </v-expansion-panel-header>
@@ -451,7 +453,7 @@
                 <v-toolbar flat>
                     <h2 class="text-xl text-purple-600 font-bold"><i class="em em-card_index_dividers" aria-role="presentation" aria-label=""></i> การป้องกันการทุจริต </h2>
                     <v-spacer></v-spacer>
-                    <h2 class="text-purple-600 font-bold">{{oitB.score}} คะแนน</h2>
+                    <!-- <h2 class="text-purple-600 font-bold">{{oitB.score}} คะแนน</h2> -->
                 </v-toolbar>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -719,6 +721,7 @@ export default class Home extends Vue {
     private agency: any = {};
     private oitA: any = ''
     private oitB: any = ''
+    isScore43:any = 0
 
     private data: any = [];
 
@@ -739,10 +742,13 @@ export default class Home extends Vue {
         this.year = await _.find(this.year, { year: this.yearData })
         if (this.year) {
             this.rates = await Core.getHttp(`/api/ita/v2/rate/${this.year.id}/`)
-            this.result = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${this.agencyData}`)
+            this.result = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${this.agencyData}&rate__year=${this.year.id}`)
+            let data  = _.sumBy(this.result,(r:any)=>{return r.score}) 
+            this.isScore43 = data
             this.data = await Core.getHttp(`/api/ita/v1/rateresult/?rate__year=${this.year.id}&agency=${this.agencyData}`)
             this.status = await Core.getHttp(`/api/ita/v1/ratestatus/`)
-            console.log(this.data);
+        
+           
             this.oitA = await _.find(this.lists, { name: 'การเปิดเผยข้อมูล' })
             this.oitB = await _.find(this.lists, { name: 'การป้องกันการทุจริต' })
             await this.generateTable()

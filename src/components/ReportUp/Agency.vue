@@ -221,6 +221,8 @@ export default class TestDevClass extends Vue {
           obj.index = i++
           return obj;
         })
+        let data = _.meanBy(this.fullData,(r:any)=>{return r.all})
+       // alert(data);
         this.response = true;
     }
 
