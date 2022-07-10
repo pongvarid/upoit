@@ -8,13 +8,12 @@
                 </h3>
                 <div class="mt-8">
                     <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4"> 
-                        <div class="flex items-center cursor-pointer	 " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="$router.push(`/user/mo-exercise/?year=${year.id}`)"  >
+                        <div class="flex items-center cursor-pointer	 " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="checkYear(year.id)"  >
 
                             <bin-card c="#800080" i='mdi-calendar' t="ปีงบประมาณ" :h="year.name"></bin-card>
 
                         </div> 
-                    </div>
-
+                    </div> 
                 </div>
             </div>
 
@@ -40,7 +39,8 @@ export default {
     data: () => {
         return ({
             response: false,
-            years: []
+            years: [],
+              agency: null,
         })
     },
     async created() {
@@ -50,6 +50,19 @@ export default {
     methods: {
         async init() {
             this.years = await Core.getHttp(`/api/moral_organization/year/`)
+        },
+        async checkYear(id){
+            let check = await Core.getHttp(`/api/moral_organization/main_exercise/?agency=${this.user.ext_link.agency}&year=${id}`)
+            if(check.length == 0){
+                await this.$router.push(`/user/mo-exercise/?year=${id}`)
+            }else{
+                alert('คุณได้ทำการประเมินเรียบร้อยแล้ว')
+            }
+        }
+    },
+       computed: {
+        user() {
+            return User.user
         }
     }
 }

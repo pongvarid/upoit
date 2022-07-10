@@ -36,14 +36,14 @@
                     </v-list-item-title>
                 </v-list-item>
             </v-list-item-group>
-          <br>
-          <v-list-item :class="($route.name=='profile')?'bg-purple-600 ':''"  @click="$router.push('/profile')" >
-              <v-list-item-title>
-                <v-icon style="font-size:18px; color:#8080ff;">em em-female-teacher</v-icon>
-                <span :class="($route.name=='profile')?'text-white ':''"  class="pl-4  text-base">ข้อมูลผู้ใช้</span>
-              </v-list-item-title>
-          </v-list-item>
-          <br>
+            <br>
+            <v-list-item :class="($route.name=='profile')?'bg-purple-600 ':''" @click="$router.push('/profile')">
+                <v-list-item-title>
+                    <v-icon style="font-size:18px; color:#8080ff;">em em-female-teacher</v-icon>
+                    <span :class="($route.name=='profile')?'text-white ':''" class="pl-4  text-base">ข้อมูลผู้ใช้</span>
+                </v-list-item-title>
+            </v-list-item>
+            <br>
 
             <h2 v-if="user.is_superuser || user.is_staff  || user.is_staff  || user.passing || user.ext_link.oit  && myAgency != publicAgency" class="text-sm font-bold text-purple-800">ผู้ดูแลระบบ</h2>
             <hr v-if="user.is_superuser || user.is_staff  || user.passing || user.ext_link.oit && myAgency != publicAgency">
@@ -58,34 +58,34 @@
                         <v-icon style="font-size:28px; color:#ff8000;">mdi-account-tie </v-icon> <span class="pl-4  text-base">จัดการข้อมูล EIT </span>
                     </v-list-item-title>
                 </v-list-item>
-                 <v-list-item v-if="user.ext_link.oit" @click="$router.push('/agency/count')">
+                <v-list-item v-if="user.ext_link.oit" @click="$router.push('/agency/count')">
                     <v-list-item-title>
                         <v-icon style="font-size:28px; color:purple;">mdi-file-document-multiple</v-icon> <span class="pl-4  text-base">จำนวนผู้ประเมิน </span>
                     </v-list-item-title>
                 </v-list-item>
-<!--                <v-list-item v-if="user.is_superuser" @click="$router.push('/report/home')">-->
-<!--                    <v-list-item-title>-->
-<!--                        <v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base">ข้อมูลผลการประเมิน </span>-->
-<!--                    </v-list-item-title>-->
-<!--                </v-list-item>-->
+                <!--                <v-list-item v-if="user.is_superuser" @click="$router.push('/report/home')">-->
+                <!--                    <v-list-item-title>-->
+                <!--                        <v-icon style="font-size:28px; color:green;">mdi-chart-areaspline </v-icon> <span class="pl-4  text-base">ข้อมูลผลการประเมิน </span>-->
+                <!--                    </v-list-item-title>-->
+                <!--                </v-list-item>-->
                 <v-list-item v-if="user.is_superuser">
                     <v-list-item-title>
                         <v-icon style="font-size:18px; color:green;">em-building_construction </v-icon>
                         <a class="pl-4  text-base" href="https://ita.up.ac.th/super-up-plan-admin/login/?next=/admin/">Super Admin</a>
                     </v-list-item-title>
                 </v-list-item>
-              <v-list-item v-if="user.is_superuser">
-                <v-list-item-title  @click="$router.push('/list-user')">
-                  <v-icon style="font-size:18px; color:green;">em-lower_left_fountain_pen </v-icon>
-                  <span class="pl-4  text-base">ข้อมูลการประเมินแต่ล่ะหน่วยงาน</span>
-                </v-list-item-title>
-              </v-list-item>
-              <v-list-item v-if="user.is_superuser">
-                <v-list-item-title  @click="$router.push('/data-analysis-before-show-end-user')">
-                  <v-icon style="font-size:18px; color:green;">em em-apple </v-icon>
-                  <span class="pl-4  text-base">ผลประเมิน (Preview)</span>
-                </v-list-item-title>
-              </v-list-item>
+                <v-list-item v-if="user.is_superuser">
+                    <v-list-item-title @click="$router.push('/list-user')">
+                        <v-icon style="font-size:18px; color:green;">em-lower_left_fountain_pen </v-icon>
+                        <span class="pl-4  text-base">ข้อมูลการประเมินแต่ล่ะหน่วยงาน</span>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item v-if="user.is_superuser">
+                    <v-list-item-title @click="$router.push('/data-analysis-before-show-end-user')">
+                        <v-icon style="font-size:18px; color:green;">em em-apple </v-icon>
+                        <span class="pl-4  text-base">ผลประเมิน (Preview)</span>
+                    </v-list-item-title>
+                </v-list-item>
 
             </v-list-item-group>
             <br v-if="user.is_superuser || user.passing ">
@@ -124,7 +124,16 @@
                     </v-list-item-title>
                 </v-list-item>
             </v-list-item-group>
-
+            <br>
+            <h2 class="text-sm font-bold text-purple-800">การประเมิน คุณธรรม</h2>
+            <hr>
+            <v-list-item-group  class="mt-2">
+                <v-list-item @click="$router.push('/user/mo-home/')"  >
+                    <v-list-item-title>
+                        <v-icon style="font-size:18px;">em em-writing_hand </v-icon> <span class="text-base"  > ทำแบบประเมิน</span>
+                    </v-list-item-title>
+                </v-list-item>
+            </v-list-item-group>
             <br>
             <hr>
             <v-list-item-group><br>
@@ -146,11 +155,23 @@
 </template>
 
 <script lang="ts">
-import { User } from "@/store/user";
-import { Auth } from "@/store/auth";
-import { Core } from "@/store/core";
-import { userRouter } from '@/router/user'
-import { Component, Vue, Watch } from "vue-property-decorator";
+import {
+    User
+} from "@/store/user";
+import {
+    Auth
+} from "@/store/auth";
+import {
+    Core
+} from "@/store/core";
+import {
+    userRouter
+} from '@/router/user'
+import {
+    Component,
+    Vue,
+    Watch
+} from "vue-property-decorator";
 import _ from 'lodash'
 @Component({
     components: {
@@ -182,11 +203,21 @@ export default class UserClass extends Vue {
         this.user = await User.getUser();
         this.myAgency = (this.user.ext_link) ? this.user.ext_link.agency : 0
         console.log(this.user)
-        let routerAll: any = _.filter(userRouter, { enabled: true })
-        this.homeList = _.filter(routerAll, { group: 'home' })
-        this.oitList = _.filter(routerAll, { group: 'oit' })
-        this.iitList = _.filter(routerAll, { group: 'iit' })
-        this.eitList = _.filter(routerAll, { group: 'eit' })
+        let routerAll: any = _.filter(userRouter, {
+            enabled: true
+        })
+        this.homeList = _.filter(routerAll, {
+            group: 'home'
+        })
+        this.oitList = _.filter(routerAll, {
+            group: 'oit'
+        })
+        this.iitList = _.filter(routerAll, {
+            group: 'iit'
+        })
+        this.eitList = _.filter(routerAll, {
+            group: 'eit'
+        })
         this.items = routerAll
         console.log(routerAll);
     }
