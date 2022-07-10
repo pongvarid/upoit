@@ -31,6 +31,10 @@ const rootRouter:any  = [
         path: 'eit',
         name: 'eit-homes',
         component: getView('Eit')
+    }, {
+        path: 'mo',
+        name: 'mo-homes',
+        component: getView('MO')
     },
     {    path: '/report/',
         name: 'report',

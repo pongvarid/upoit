@@ -45,6 +45,18 @@ const userRouter:any  = [
         group : 'oit'
     },
     {
+        path: 'mo-home',
+        name: 'mo-home',
+        component: getView('MO_MAIN'),
+        group : 'oit'
+    },
+    {
+        path: 'mo-exercise',
+        name: 'mo-exercise',
+        component: getView('MO_EXERCISE'),
+        group : 'oit'
+    },
+    {
         path: 'paper',
         name: 'paper',
         component: getView('Paper'),
