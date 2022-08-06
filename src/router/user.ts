@@ -57,6 +57,12 @@ const userRouter:any  = [
         group : 'oit'
     },
     {
+        path: 'mo-result',
+        name: 'mo-result',
+        component: getView('MO_RESULT'),
+        group : 'oit'
+    },
+    {
         path: 'paper',
         name: 'paper',
         component: getView('Paper'),

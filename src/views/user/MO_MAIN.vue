@@ -7,19 +7,26 @@
                     แบบประเมินตนเองตามกระบวนการส่งเสริมและพัฒนา “องค์กรคุณธรรม”
                 </h3>
                 <div class="mt-8">
-                    <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4"> 
-                        <div class="flex items-center cursor-pointer	 " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="checkYear(year.id)"  >
-
+                    <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+                        <div class="flex items-center cursor-pointer	 " style="border-color:#7837B1; " v-for="year,index in years" :key="index" @click="(currentYearId = year.id) && (menu = true)">
                             <bin-card c="#800080" i='mdi-calendar' t="ปีงบประมาณ" :h="year.name"></bin-card>
-
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-        </div>
-
+            </div> 
+        </div> 
     </div>
+
+    <v-bottom-sheet v-model="menu">
+        <v-list dense>
+            <v-list-item @click="checkYear(currentYearId)">
+                <v-list-item-title v-if="currentYearId != null">ประเมินองค์กรคุณธรรม</v-list-item-title>
+            </v-list-item> 
+            <v-list-item @click="$router.push(`/user/mo-result/?year=${currentYearId}`)">
+                <v-list-item-title>แผนส่งเสริมคุณธรรม</v-list-item-title>
+            </v-list-item>
+        </v-list>
+    </v-bottom-sheet>
 
 </div>
 </template>
@@ -40,7 +47,9 @@ export default {
         return ({
             response: false,
             years: [],
-              agency: null,
+            agency: null,
+            menu: false,
+            currentYearId: null,
         })
     },
     async created() {
@@ -51,16 +60,25 @@ export default {
         async init() {
             this.years = await Core.getHttp(`/api/moral_organization/year/`)
         },
-        async checkYear(id){
+        async checkYear(id) {
             let check = await Core.getHttp(`/api/moral_organization/main_exercise/?agency=${this.user.ext_link.agency}&year=${id}`)
-            if(check.length == 0){
+            if (check.length == 0) {
                 await this.$router.push(`/user/mo-exercise/?year=${id}`)
-            }else{
+            } else {
                 alert('คุณได้ทำการประเมินเรียบร้อยแล้ว')
             }
+        },
+        async openLinkDjango() {
+            let url = `${this.$backend}/baseplan?agency=${this.user.ext_link.agency}&year=${this.currentYearId}`
+            let newwindow = window.open(url, 'testWindow', 'height=800,width=600');
+            if (window.focus) {
+                newwindow.focus()
+            }
+            return false;
         }
+
     },
-       computed: {
+    computed: {
         user() {
             return User.user
         }
