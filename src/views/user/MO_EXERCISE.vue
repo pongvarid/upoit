@@ -38,6 +38,14 @@
             <v-btn @click="checking()" x-large color="success">ส่งแบบประเมิน</v-btn>
         </v-toolbar> <br><br>
     </div>
+
+    <div v-if="user.ext_link.passing"> 
+        <center><v-btn x-large class="m-6" @click="passingMainDjango()" color="success">ยืนยันข้อมูล</v-btn></center>
+    </div>
+    <div v-if="user.ext_link.oit">
+           <center><v-btn x-large class="m-6" @click="adminMainDjango()" color="success">ยืนยันข้อมูล</v-btn></center>
+    </div>
+
 </div>
 </template>
 
@@ -71,6 +79,22 @@ export default {
         this.response = true;
     },
     methods: {
+        async passingMainDjango() {
+            let url = `${this.$backend}/passingmainexercise?id=1`
+            let newwindow = window.open(url, 'testWindow', 'height=800,width=600');
+            if (window.focus) {
+                newwindow.focus()
+            }
+            return false;
+        },
+        async adminMainDjango() {
+            let url = `${this.$backend}/adminmainexercise?id=1`
+            let newwindow = window.open(url, 'testWindow', 'height=800,width=600');
+            if (window.focus) {
+                newwindow.focus()
+            }
+            return false;
+        },
         async init() {
             this.datas = await Core.getHttp(`/api/moral_organization/category/?year=${this.$route.query.year}`)
             for (let i = 0; i < this.datas.length; i++) {
