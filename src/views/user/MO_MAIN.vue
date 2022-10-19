@@ -75,7 +75,7 @@ export default {
             }
         },
         async openLinkDjango() {
-            let url = `${this.$backend}/baseplan?agency=${this.user.ext_link.agency}&year=${this.currentYearId}`
+            let url = `${this.$backend}/baseplan/?agency=${this.user.ext_link.agency}&year=${this.currentYearId}`
             let newwindow = window.open(url, 'testWindow', 'height=800,width=600');
             if (window.focus) {
                 newwindow.focus()
