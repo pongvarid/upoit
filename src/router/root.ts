@@ -5,6 +5,11 @@ const getView = function(page:any){
     return () => import(`@/views/root/${page}.vue`)
 }
 
+const getViewFolder = function(page:any,folder:any){
+    return () => import(`@/views/${folder}/${page}.vue`)
+}
+
+
 
 const rootRouter:any  = [
     {
@@ -49,6 +54,16 @@ const rootRouter:any  = [
     component: getView('ExportAgency')
 },
 
+
+{    path: '/public/eit/year',
+    name: 'publiceit-agenyearcy',
+    component: getViewFolder('Year','eit')
+},
+
+{    path: '/public/eit/detail',
+    name: 'publiceit-detail',
+    component: getViewFolder('Detail','eit')
+},
 
 
     // {    path: '/dev/change-agency-eit',
