@@ -14,7 +14,7 @@ class AuthClass extends VuexModule {
         projectId: "learn-84c01",
         storageBucket: "learn-84c01.appspot.com",
         messagingSenderId: "18400144378",
-        appId: "1:18400144378:web:90ab8a2f1a9a64edbd5243"
+        appId: "1:18400144378:web:90ab8a2f1a9a64edbd5243",
     };
 
     private msTanent: string = `d7cbbb08-47a3-4bd7-8347-5018f2744cfb`
@@ -37,9 +37,44 @@ class AuthClass extends VuexModule {
         // provider.addScope('profile');
         provider.addScope('User.Read');
         provider.addScope('profile')
+        var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
+        console.log(navigator.platform, iOS);
+        if(!iOS){
+            firebase.auth().signInWithRedirect(provider);
+            return true;
+        }else{ 
+            return await this.loginPopUp(provider);
+        }
         // provider.addScope(["openid","profile","offline_access","User.Read.All",'Directory.AccessAsUser.All','AdministrativeUnit.ReadWrite.All']); 
-        firebase.auth().signInWithRedirect(provider);
+       
     }
+    private async loginPopUp(provider:any){
+        let user = await firebase.auth()
+        .signInWithPopup(provider)
+        .then((result:any) => {
+            if (result.credential) {
+                return {
+                    "type": result.credential.signInMethod,
+                    "credential": result.credential,
+                    "user": result.additionalUserInfo.profile
+                }
+            } else {
+                return false
+            }
+        }).catch(async (error: any) => {
+            console.log('error',error);
+            if (error.code == 'auth/account-exists-with-different-credential') {
+                alert(`อีเมล์นี้ได้ลงทะเบียนกับ โซลเชียลล็อกอินแบบอื่นแล้ว กรุณาลองใช้ แอคเคาท์อื่น (code : ${error.message})`);
+            } else {
+                alert(error.message);
+            }
+            
+            return false;
+        }); 
+        console.log(user);
+        return user;
+    }
+
     public async genForm(type: string, user: any) {
         console.log(user);
         if (type == 'microsoft.com') {
@@ -78,8 +113,15 @@ class AuthClass extends VuexModule {
     }
 
     public async loginGoogle() {
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithRedirect(provider);
+        var provider = new firebase.auth.GoogleAuthProvider(); 
+        var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
+        console.log(navigator.platform, iOS);
+        if(!iOS){
+            firebase.auth().signInWithRedirect(provider);
+            return true;
+        }else{ 
+            return await this.loginPopUp(provider);
+        }
     }
 
     public async loginFacebook() {
@@ -91,10 +133,12 @@ class AuthClass extends VuexModule {
     }
 
     public async callback() {
+ 
         let user = await firebase.auth().getRedirectResult()
-            .then(async (result: any) => {
+            .then( (result: any) => {
                 //   console.log(result.credential);
                 // return result.additionalUserInfo.profile;
+                console.log('xxx',result);
                 if (result.credential) {
                     return {
                         "type": result.credential.signInMethod,
@@ -107,12 +151,13 @@ class AuthClass extends VuexModule {
 
             })
             .catch(async (error: any) => {
+                console.log('error',error);
                 if (error.code == 'auth/account-exists-with-different-credential') {
                     alert(`อีเมล์นี้ได้ลงทะเบียนกับ โซลเชียลล็อกอินแบบอื่นแล้ว กรุณาลองใช้ แอคเคาท์อื่น (code : ${error.message})`);
                 } else {
                     alert(error.message);
                 }
-                console.log(error);
+                
                 return false;
             });
         console.log(user);

@@ -253,17 +253,57 @@ export default class Test extends Vue {
 
     async microsoft() {
         await Auth.reToken();
-        await Auth.loginMicrosoft365();
+        let user:any = await Auth.loginMicrosoft365();
+        var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
+        if(iOS){
+            await Web.switchLoad(true)
+            console.log(user)
+            await this.callbackPopUp(user)
+            await Web.switchLoad(false)
+        }
     }
-
     async facebook() {
         await Auth.reToken();
-        await Auth.loginFacebook();
+        let user:any = await Auth.loginFacebook();
+        var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
+        if(iOS){
+            await Web.switchLoad(true)
+            console.log(user)
+            await this.callbackPopUp(user)
+            await Web.switchLoad(false)
+        }
     }
-
     async google() {
         await Auth.reToken();
-        await Auth.loginGoogle();
+        let user:any = await Auth.loginGoogle();
+        var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
+        if(iOS){
+            await Web.switchLoad(true)
+            console.log(user)
+            await this.callbackPopUp(user)
+            await Web.switchLoad(false)
+        }
+    }
+    async callbackPopUp(user:any) {
+        this.page = this.$route.query.web
+
+        let logined: any = user
+        let form: any | null = null
+        if (logined.type) {
+            console.log(logined.user)
+            await Auth.reToken();
+            form = await Auth.genForm(logined.type, logined.user)
+            if ((await Auth.checkUser(form.username)).user) {
+                let key = await Core.postHttp(`/rest-auth/login/`, form)
+                await this.keyCall(key.key)
+            } else {
+                let user = await Core.postHttp(`/api/ita/v1/register/`, form)
+                if (user.id) {
+                    let key = await Core.postHttp(`/rest-auth/login/`, form)
+                    await this.keyCall(key.key)
+                }
+            }
+        }
     }
 
     async callback() {
