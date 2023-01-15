@@ -12,7 +12,7 @@
                 <bin-card class="m-2" c="rgb(51, 102, 204)" t="Internal Integrity and Transparency Assessment : IIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card>
 
             </div>
-            <div @click="$router.push('/eit')">
+            <div @click="$router.push('/public/eit/year')">
                 <bin-card class="m-2" c="rgb(255, 102, 0)" t="External Integrity and Transparency Assessment : EIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card>
 
             </div>
@@ -57,10 +57,10 @@
                         <span class="mdi mdi-microsoft text-xl text-white mr-2"></span>
                         Microsotft 365 ของมหาวิทยาลัยพะเยา ในการเข้าใช้งานระบบ
                     </button>
-                    <button style="color:white;" @click="facebook" :class="`bg-blue-700 f-white ${$btn} mt-2`" type="button">
+                    <!-- <button style="color:white;" @click="facebook" :class="`bg-blue-700 f-white ${$btn} mt-2`" type="button">
                         <span class="mdi mdi-facebook text-xl text-white mr-2"></span>
                         Facebook
-                    </button>
+                    </button> -->
                     <button @click="google" style="background-color: #dd4b39!important; color: white!important; " :class="`   ${$btn} mt-2`" type="button">
                         <span class="mdi mdi-google-plus text-xl mr-2"></span>
                         Google
