@@ -228,19 +228,22 @@ export default class Result extends Vue {
         await this.getEITYear();
         await this.getIITRes();
         await this.getEITRes();
+
+        await this.getOITYear();
+        await this.getOITResult();
     }
 
     private async getOITYear() {
        try {
-        let years = await Core.getHttp(`/api/ita/v2/year/`)
-        let year: any = await _.filter(years, {
+        let years = await Core.getHttp(`/api/ita/v1/year/`)
+        console.log(years)
+        let year: any = await _.find(years, {
             "year": this.chooseYear
         })
-        if (year.length > 0) {
-            this.OITYEAR = year[0]
-        }
+        this.OITYEAR = year
+        console.log('getOITYear',year)
        } catch (error) {
-        
+            console.log(error);
        }
     }
 
@@ -248,7 +251,7 @@ export default class Result extends Vue {
        try {
         //console.log('getOIT', this.OITYEAR)
         let oit = await Core.getHttp(`/api/ita/v2/rate/${this.OITYEAR.id}/`)
-        //console.log(oit.length);
+        console.log('getOIT',oit.length);
         this.countAllOIT = oit.length;
        } catch (error) {
         
@@ -265,7 +268,7 @@ export default class Result extends Vue {
                     data: data,
                 };
             }).value();
-         
+            console.log('getOIT',this.OITYEAR.id,result.length);
         this.countOIT = result.length;
         } catch (error) {
             
