@@ -9,8 +9,8 @@
             </svg>
             <div class="relative  mt-10 md:mt-2" style="z-index:1;">
                 <div class="px-4 md:px-10 mx-auto w-full  -m-24">
-                    <router-view v-if="!userDialog" />
-                    <footer-admin />
+                    <router-view  />
+                     
                 </div>
             </div>
         </v-main>

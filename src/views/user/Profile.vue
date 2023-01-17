@@ -1,6 +1,6 @@
 <template>
   <div  class="relative md:pt-32 pb-32 pt-12  " >
-    <v-tabs class="mt-12">
+    <v-tabs class="mt-12" v-if="response">
       <v-tab>ข้อมูลส่วนตัว</v-tab>
       <v-tab-item>
         <div class="p-4">
@@ -94,14 +94,17 @@ export default class Profile extends Vue {
   chooseAgencyType:any = null
   iProfile:any = {}
   formAg:any = null
+  response:boolean = false
 
   async created() {
+    this.response = false
     await Web.switchLoad(true)
     await this.loadEnv()
     await this.loadMyAgency()
     await this.loadAgencyType()
     await this.loadProfile()
     await Web.offLoad()
+    this.response = true
   }
   async loadAgencyType(){
     let typeAg = await Core.getHttp(`/api/ita/v1/agencytype/`)

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-app-bar app class="bg-nav" dark>
+    <v-app-bar app class="bg-nav" dark v-if="response">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>{{user.first_name}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -18,7 +18,7 @@
         </div>
 
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" app fixed class="bg-list"> <br>
+    <v-navigation-drawer v-model="drawer" app fixed class="bg-list" v-if="response"> <br>
         <center>
             <div class="bg-white shadow-xl rounded-full w-4 h-4 md:w-32 md:h-32 p-2 border-8 border-yellow-600 flex justify-center items-center">
                 <img class="w-auto  h-24 " src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
@@ -29,7 +29,7 @@
         <v-list nav dense>
             <h2 class="text-sm font-bold text-purple-800">ทั่วไป</h2>
             <hr>
-            <v-list-item-group v-for="item,windex in homeList" :key="windex" class="mt-2">
+            <v-list-item-group v-for="item,windex in homeList" :key="'A'+windex" class="mt-2">
                 <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600 ':''">
                     <v-list-item-title>
                         <v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="pl-4 text-base" :class="(item.name == $route.name)?'text-white':''">{{item.text}} </span>
@@ -97,7 +97,7 @@
                     <v-icon style="font-size:18px; color:#8080ff;">em em-clipboard</v-icon> <span class="pl-4  text-base">บันทึกข้อมูล OIT </span>
                 </v-list-item-title>
             </v-list-item>
-            <v-list-item-group v-for="item,uindex in oitList" :key="uindex" class="mt-2" v-if="myAgency != publicAgency">
+            <v-list-item-group v-for="item,uindex in oitList" :key="'B'+uindex" class="mt-2" v-if="myAgency != publicAgency">
                 <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600':''">
                     <v-list-item-title>
                         <v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="pl-4  text-base" :class="(item.name == $route.name)?'text-white':''">{{item.text}}</span>
@@ -107,7 +107,7 @@
 
             <h2 v-if="myAgency != publicAgency" class="text-sm font-bold text-purple-800">การประเมิน IIT</h2>
             <hr v-if="myAgency != publicAgency">
-            <v-list-item-group v-for="item,xindex in iitList" :key="xindex" class="mt-2" v-if="myAgency != publicAgency">
+            <v-list-item-group v-for="item,xindex in iitList" :key="'C'+xindex" class="mt-2" v-if="myAgency != publicAgency">
                 <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600':''">
                     <v-list-item-title>
                         <v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="text-base " :class="(item.name == $route.name)?'text-white':''">{{item.text}} </span>
@@ -117,7 +117,7 @@
 
             <h2 class="text-sm font-bold text-purple-800">การประเมิน EIT</h2>
             <hr>
-            <v-list-item-group v-for="item,iindex in eitList" :key="iindex" class="mt-2">
+            <v-list-item-group v-for="item,iindex in eitList" :key="'D'+iindex" class="mt-2">
                 <v-list-item @click="$router.push(item.path)" :class="(item.name == $route.name)?'bg-purple-600':''">
                     <v-list-item-title>
                         <v-icon style="font-size:18px;">{{item.icon}}</v-icon> <span class="text-base" :class="(item.name == $route.name)?'text-white':''">{{item.text}}</span>
@@ -172,6 +172,7 @@ import {
     Vue,
     Watch
 } from "vue-property-decorator";
+import moment from 'moment'
 import _ from 'lodash'
 @Component({
     components: {
@@ -191,18 +192,19 @@ export default class UserClass extends Vue {
     iitList: any = []
     eitList: any = []
     myAgency: any = 0
+    response:boolean = false
 
     async created() {
-
+        this.response = false
         await this.loadRouter();
-        console.log(this.$route)
+        //console.log(this.$route)
         this.drawer = !this.$vuetify.breakpoint.mobile
+          this.response = true
     }
 
     async loadRouter() {
         this.user = await User.getUser();
-        this.myAgency = (this.user.ext_link) ? this.user.ext_link.agency : 0
-        console.log(this.user)
+        this.myAgency = (this.user.ext_link) ? this.user.ext_link.agency : 0 
         let routerAll: any = _.filter(userRouter, {
             enabled: true
         })
@@ -219,12 +221,12 @@ export default class UserClass extends Vue {
             group: 'eit'
         })
         this.items = routerAll
-        console.log(routerAll);
+        //console.log(routerAll);
     }
 
     async logout() {
         let user = await User.getUser();
-        console.log(user)
+        //console.log(user)
         await Auth.logout();
         if (user.register_type == 'microsoft.com') {
             window.open('https://login.microsoftonline.com/logout.srf', '_blank');
@@ -232,6 +234,8 @@ export default class UserClass extends Vue {
         await this.$router.replace('/')
         await location.reload()
     }
+
+  
 
 }
 </script>

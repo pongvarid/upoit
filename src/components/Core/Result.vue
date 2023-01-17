@@ -59,26 +59,24 @@
         </div>
 
     </div>
-  <br>
+    <br>
     <v-tabs color="primary" slider-color="primary">
-      <v-tab>
-        รายชื่อผู้ประเมิน IIT แล้ว
-      </v-tab>
-      <v-tab-item class="p-2">
-           <h2 class="text-xl font-semibold">รายชื่อผู้ประเมิน IIT แล้ว</h2>
-          <div v-for="list,index in listIIT" :key="index" > 
-            <h2 class="m-2"> {{index+1}}. {{list.fullname}}</h2>
-          </div>
-      </v-tab-item>
-       <!-- <v-tab>
-        รายชื่อผู้ประเมิน EIT แล้ว
-      </v-tab>
-       <v-tab-item>
-          <h2 class="text-xl font-semibold">รายชื่อผู้ประเมิน EIT แล้ว</h2>
-          <div v-for="list,index in listEIT" :key="index" > 
-            <h2 class="m-2"> {{index+1}}. {{list.fullname}}</h2>
-          </div>
-      </v-tab-item> -->
+        <v-tab>
+            รายชื่อผู้ประเมิน IIT แล้ว
+        </v-tab>
+        <v-tab-item class="p-2">
+            <h2 class="text-xl font-semibold">รายชื่อผู้ประเมิน IIT แล้ว</h2>
+            <!-- <div v-for="list,index in listIIT" :key="index">
+                <h2 class="m-2"> {{index+1}}. {{list.fullname}}</h2>
+            </div> -->
+            <v-card outlined class="mt-4">
+                            <v-card-text>
+                                <v-text-field filled dense v-model="search" append-icon="mdi-magnify" label="ค้นหา" single-line hide-details></v-text-field>
+                                <v-data-table class="mt-4" :headers="headers" :items="listIIT" :search="search"> 
+                                </v-data-table>
+                            </v-card-text>
+            </v-card>
+        </v-tab-item> 
     </v-tabs>
 
 </div>
@@ -102,11 +100,13 @@ import _ from 'lodash'
 import {
     Web
 } from '@/store/web'
+import moment from 'moment'
 @Component({
     components: {
 
     },
 })
+
 export default class Result extends Vue {
     user: any = null;
     response: boolean = false
@@ -123,13 +123,32 @@ export default class Result extends Vue {
     countEIT: any = 0;
     listIIT: any = [];
     listEIT: any = [];
+    search: any = ''
+    headers: any = [{
+            text: 'ที่',
+            value: 'index'
+        },
+        {
+            text: 'บัญชีผู้ใช้งาน',
+            value: 'fullname'
+        }, 
+    ] 
+    async getCurrentYear(){
+        try {
+            this.chooseYear = (Number(moment().format('YYYY')) + 543).toString() 
+        } catch (error) {
+            this.chooseYear = '2566'
+        }
+    }
     async created() {
-        await Web.switchLoad(true)
+      try {
+          await Web.switchLoad(true)
+        await this.getCurrentYear();
         this.user = await User.getUser();
+        console.log('panel agen number : ',this.user.ext_link.agency);
         this.myAgency = this.user.ext_link.agency
         this.years = await Core.getHttp(`/api/ita/v1/year/`)
         this.myAgencyData = await Core.getHttp(`/api/ita/v1/agency/${this.myAgency}/`)
-
         await this.getIITYear()
         await this.getEITYear()
         await this.getOITYear()
@@ -138,12 +157,17 @@ export default class Result extends Vue {
         await this.getIITRes();
         await this.getEITRes();
         await Web.switchLoad(false)
-        this.response = true;
+       this.response = true;
+      } catch (error) {
+           await Web.switchLoad(false)
+           alert('ระบบยังไม่เปิดให้บริการ กรุณาติดต่อผู้ดูแลระบบ')
+      }
     }
 
     iitResponse: boolean = false;
     async getIITYear() {
-        let yearIIT = await Core.getHttp(`/api/iit/v2/year/?year=${this.chooseYear}`)
+        try {
+            let yearIIT = await Core.getHttp(`/api/iit/v2/year/?year=${this.chooseYear}`)
         if (yearIIT.length > 0) {
             this.IITYEAR = yearIIT[0]
             this.iitResponse = true
@@ -151,11 +175,15 @@ export default class Result extends Vue {
             this.IITYEAR = null
             this.iitResponse = false
         }
+        } catch (error) {
+            
+        }
     }
 
     eitResponse: boolean = false;
     async getEITYear() {
-        let yearEIT = await Core.getHttp(`/api/eit/v2/year/?year=${this.chooseYear}`)
+        try {
+            let yearEIT = await Core.getHttp(`/api/eit/v2/year/?year=${this.chooseYear}`)
 
         if (yearEIT.length > 0) {
             this.EITYEAR = yearEIT[0]
@@ -164,20 +192,35 @@ export default class Result extends Vue {
             this.EITYEAR = null
             this.eitResponse = false
         }
+        } catch (error) {
+            
+        }
     }
 
     async getIITRes() {
-        let data = await Core.getHttp(`/api/iit/v2/ansewer/user/?agency=${this.myAgency}&year=${this.IITYEAR.id}`)
-        console.log(data);
+        try {
+            let data = await Core.getHttp(`/api/iit/v2/ansewer/user/?agency=${this.myAgency}&year=${this.IITYEAR.id}`)
+        //console.log(data);
         this.listIIT = data;
+        this.listIIT = _.map(this.listIIT, (item, index) => {
+            item.index = index + 1
+            return item
+        })
         this.countIIT = data.length
+        } catch (error) {
+            
+        }
     }
 
     async getEITRes() {
-        let data = await Core.getHttp(`/api/eit/v2/answersuggestioneit/?agency=${this.myAgency}&year=${this.EITYEAR.id}`)
+        try {
+            let data = await Core.getHttp(`/api/eit/v2/answersuggestioneit/?agency=${this.myAgency}&year=${this.EITYEAR.id}`)
         this.listEIT = data;
-        console.log(data);
-        this.countEIT = data.length
+        //console.log(data);
+        this.countEIT = data.length 
+        } catch (error) {
+            
+        }
     }
 
     async loadData() {
@@ -188,6 +231,7 @@ export default class Result extends Vue {
     }
 
     private async getOITYear() {
+       try {
         let years = await Core.getHttp(`/api/ita/v2/year/`)
         let year: any = await _.filter(years, {
             "year": this.chooseYear
@@ -195,16 +239,25 @@ export default class Result extends Vue {
         if (year.length > 0) {
             this.OITYEAR = year[0]
         }
+       } catch (error) {
+        
+       }
     }
 
     private async getOIT() {
+       try {
+        //console.log('getOIT', this.OITYEAR)
         let oit = await Core.getHttp(`/api/ita/v2/rate/${this.OITYEAR.id}/`)
-        console.log(oit.length);
+        //console.log(oit.length);
         this.countAllOIT = oit.length;
+       } catch (error) {
+        
+       }
     }
     private async getOITResult() {
-        let raw = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.myAgency}`);
-
+        try {
+            let raw = await Core.getHttp(`/api/ita/v1/rateresult/?agency=${this.myAgency}&rate__year=${this.OITYEAR.id}`);
+          
         let result = await _(raw)
             .groupBy('rate')
             .map(function (items, data) {
@@ -212,7 +265,11 @@ export default class Result extends Vue {
                     data: data,
                 };
             }).value();
+         
         this.countOIT = result.length;
+        } catch (error) {
+            
+        }
 
     }
 }

@@ -16,7 +16,7 @@
             <div class="relative  mt-10 md:mt-2" style="z-index:1;">
                 <div class="px-4 md:px-10 mx-auto w-full  -m-24">
                     <router-view v-if="!userDialog" />
-                    <footer-admin />
+       
                 </div>
             </div>
         </v-main>
@@ -84,7 +84,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 })
 
 export default class UserClass extends Vue {
-
+    
     drawer: any = true
     group: any = null
 
