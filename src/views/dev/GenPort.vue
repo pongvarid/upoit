@@ -1,9 +1,13 @@
 <template>
   <div class="md:pt-24 pb-32 pt-44" v-if="response">
     <h2 class="text-2xl">ผลประเมินมหาวิทยาลัยพะเยา (Developer Preview)</h2>
-    <v-select @change="loadEnv()" label="ปีงบประมาณ" :items="years" v-model="year"></v-select>
+    <!-- <v-select @change="loadEnv()" label="ปีงบประมาณ" :items="years" v-model="year"></v-select> -->
+    <div class="flex">
+      <v-text-field dense outlined label="ปีงบประมาณ" v-model="year"  ></v-text-field>
+      <v-btn @click="loadEnv()" class="ml-4" color="success">สร้างรายงาน</v-btn> 
+     </div> 
     <v-btn @click="onExport(report,'ss.xlsx')">Export</v-btn>
-
+ 
 <pre>{{report}}</pre>
 
   </div>
@@ -85,22 +89,22 @@ export default class TestDevClass extends Vue {
 
   async onExport(data:any, name:string) {
 
-   //let  dataWS = XLSX.utils.aoa_to_sheet([["ปีงบประมาณ", this.year]]);
+   let  dataWS = XLSX.utils.aoa_to_sheet([["ปีงบประมาณ", this.year]]);
     // let  dataWS:any =   XLSX.utils.json_to_sheet(data,{
     //   origin: 3,  // append to bottom of worksheet starting on first column
     // })
    
-    // let wb:any = XLSX.utils.book_new()
-    // console.log(dataWS);
+    let wb:any = XLSX.utils.book_new()
+    console.log(dataWS);
    
-    // XLSX.utils.sheet_add_aoa(dataWS, [
-    //   ["ปีงบประมาณ", this.year,'',''],
-    //   ["คะแนนรวม", this.base,'',''],
-    //   ["ผล", this.rate,'','']
-    // ], {origin: 0})
-    // XLSX.utils.book_append_sheet(wb, dataWS)
-    // // XLSX.utils.book_append_sheet(wb, [1,2,3])
-    // XLSX.writeFile(wb,name)
+    XLSX.utils.sheet_add_aoa(dataWS, [
+      ["ปีงบประมาณ", this.year,'',''],
+      ["คะแนนรวม", this.base,'',''],
+      ["ผล", this.rate,'','']
+    ], {origin: 0})
+    XLSX.utils.book_append_sheet(wb, dataWS)
+    // XLSX.utils.book_append_sheet(wb, [1,2,3])
+    XLSX.writeFile(wb,name)
   }
 
 

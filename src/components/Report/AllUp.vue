@@ -351,15 +351,17 @@ export default class Home extends Vue {
   private debug:any;
 
   appSetting:any = {}
-  year: any = '2565'
+  year: any = '2566'
   response:boolean = false
   private years:any = []
-
+ private xyeard = {"year":"2565","iit":false,"oit":true,"eit":false,"oit_link":false,"year_result":[{"year":"2563","open":true},{"year":"2564","open":true},{"year":"2565","open":true},{"year":"2566","open":true}]}
   async created() {
-
-    this.appSetting = await Core.getHttp(`/setting/app/`)
+    this.debug = true
+   
+    this.appSetting = this.xyeard //await Core.getHttp(`/setting/app/`)
+    console.log('setting',this.appSetting);
     if(!this.debug){
-      this.years = await _.filter(this.appSetting.year_result,{open:true})
+      this.years =  await _.filter(this.appSetting.year_result,{open:true})
     }else{
       this.years = this.appSetting.year_result
     }

@@ -68,7 +68,7 @@ export default class TestDevClass extends Vue {
         let data = await _.filter(this.issues,{assessment:this.assignments[i].id})
         let score = await _.sumBy(data,function(res:any) { return res.score; }) / data.length
         let result  = {
-          "year": "2565",
+          "year": "2566",
           "name": this.assignments[i].name,
           "score": Number(score.toFixed(2)) ,
           "order": ++this.num,
@@ -98,7 +98,7 @@ export default class TestDevClass extends Vue {
         let score = await (_.sumBy(data,function(res:any) { return res.score; }) ) / data.length
         let num = this.results.length;
         let result  = {
-          "year": "2565",
+          "year": "2566",
           "name": assignments[i].name,
           "score": Number(score.toFixed(2)) ,
           "order": ++this.num,
@@ -135,7 +135,7 @@ export default class TestDevClass extends Vue {
         let inScore:any = (await _.sumBy(inOit,function(res:any) { return res.score; }))/inOit.length
         inScore = Number((inScore*100).toFixed(2))
         let result  = {
-          "year": "2565",
+          "year": "2566",
           "name": typeBase[i] ,
           "score": Number(inScore.toFixed(2)) ,
           "order": ++this.num,
@@ -176,23 +176,26 @@ export default class TestDevClass extends Vue {
 
 
   async created(){
+  
     this.agency = await Core.getHttp(`/api/ita/v2/agency/`)
     this.agency = _.filter(this.agency,(r)=>{
       return (r.id != 102)&&(r.id != 98)&&(r.id != 41)&&(r.id != 21)&&(r.id != 99)&&(r.id != 62)
     })
-
+    // this.agency = _.filter(this.agency,(r)=>{
+    //   return (r.id == 102) 
+    // })
     this.response = true;
 
   }
 
   async genReport(){
-
+    
     let agency = 7
     for (let i=0; i< this.agency.length; i++){
       agency = this.agency[i].id;
-      let iit = await this.getIssueIIT(3,agency);
-      let eit = await this.getIssueEit(3,agency);
-      let oit = await this.getOIT(4,agency);
+      let iit = await this.getIssueIIT(4,agency);
+      let eit = await this.getIssueEit(4,agency);
+      let oit = await this.getOIT(5,agency);
 
       let result = Number(oit)+Number(iit)+Number(eit)
       let rate = this.getRate(result)
@@ -205,7 +208,7 @@ export default class TestDevClass extends Vue {
       // }
 
       let data = {
-        "year": "2565",
+        "year": "2566",
         "iit": Number(iit),
         "eit": Number(eit),
         "oit": Number(oit),
@@ -217,7 +220,12 @@ export default class TestDevClass extends Vue {
        await Core.postHttp(`/api/report/v1/reportall/`,data)
       this.num = 0;
       this.data++;
-
+      // setTimeout(this.$vs.notification({
+      //       color:"success", 
+      //       title: this.agency[i].name,
+      //       text: JSON.stringify(data),
+      //     }), 1000);
+    
       // if(i > 4){
       //   break;
       // }
