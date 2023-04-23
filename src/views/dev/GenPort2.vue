@@ -6,7 +6,7 @@
     <h2>{{data}}</h2><h2>{{agency.length}}</h2>
     <v-progress-linear striped height="10" color="#32CD32" :value="data" :buffer-value="agency.length"></v-progress-linear>
 
-
+     
 
   </div>
 </template>
@@ -48,7 +48,7 @@ export default class TestDevClass extends Vue {
   num:number = 0;
 
 
-
+  rawOIT:any = []
 
 
 
@@ -126,12 +126,30 @@ export default class TestDevClass extends Vue {
     let rates = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${agency}&rate__year=${year}`)
     let rates_data = await _.filter(rates,{"rate_status": 1})
    
+    // console.log(rates.length,rates_data.length);
+    let d:any = _.sortBy(rates, ['rate_no']);
+    
+    let data:any = []
+    for (let index = 0; index <= 43; index++) {
+      let filter = _.filter(d,{'rate_no':index+1})
+      if(filter.length == 1){
+        data.push(filter[0])
+      }else if(filter.length > 1){
+         let sortScore = _.sortBy(filter, ['score']);
+          data.push(sortScore[0])
+      }  
+    } 
+   rates = data
+    
+    
     if(rates.length ==43 && rates_data.length == 0){
 
       let typeBase = ["การเปิดเผยข้อมูล","การป้องกันการทุจริต"]
       let scores = []
       for (let i = 0; i < typeBase.length; i++) {
-        let inOit = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${agency}&rate__year=${year}&rate__type_base=${typeBase[i]}`)
+        let inOit = _.filter(rates,{
+          rate_type: typeBase[i]
+        }) //await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${agency}&rate__year=${year}&rate__type_base=${typeBase[i]}`)
         let inScore:any = (await _.sumBy(inOit,function(res:any) { return res.score; }))/inOit.length
         inScore = Number((inScore*100).toFixed(2))
         let result  = {
@@ -169,21 +187,16 @@ export default class TestDevClass extends Vue {
 
 
 
-  }
-
-
-
-
-
+  } 
   async created(){
   
     this.agency = await Core.getHttp(`/api/ita/v2/agency/`)
-    this.agency = _.filter(this.agency,(r)=>{
-      return (r.id != 102)&&(r.id != 98)&&(r.id != 41)&&(r.id != 21)&&(r.id != 99)&&(r.id != 62)
-    })
     // this.agency = _.filter(this.agency,(r)=>{
-    //   return (r.id == 102) 
+    //   return  (r.id != 98)&&(r.id != 41)&&(r.id != 21)&&(r.id != 99)&&(r.id != 62)
     // })
+    this.agency = _.filter(this.agency,(r)=>{
+      return (r.id == 102) 
+    })
     this.response = true;
 
   }
@@ -193,9 +206,11 @@ export default class TestDevClass extends Vue {
     let agency = 7
     for (let i=0; i< this.agency.length; i++){
       agency = this.agency[i].id;
-      let iit = await this.getIssueIIT(4,agency);
-      let eit = await this.getIssueEit(4,agency);
-      let oit = await this.getOIT(5,agency);
+      let iit =   await this.getIssueIIT(4,agency);
+      let eit =   await this.getIssueEit(4,agency);
+      let oit =   await this.getOIT(5,agency);
+      console.log(oit);
+     
 
       let result = Number(oit)+Number(iit)+Number(eit)
       let rate = this.getRate(result)
@@ -220,11 +235,11 @@ export default class TestDevClass extends Vue {
        await Core.postHttp(`/api/report/v1/reportall/`,data)
       this.num = 0;
       this.data++;
-      // setTimeout(this.$vs.notification({
-      //       color:"success", 
-      //       title: this.agency[i].name,
-      //       text: JSON.stringify(data),
-      //     }), 1000);
+      setTimeout(this.$vs.notification({
+            color:"success", 
+            title: this.agency[i].name,
+            text: JSON.stringify(data),
+          }), 1000);
     
       // if(i > 4){
       //   break;
