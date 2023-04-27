@@ -235,11 +235,11 @@ export default class TestDevClass extends Vue {
        await Core.postHttp(`/api/report/v1/reportall/`,data)
       this.num = 0;
       this.data++;
-      setTimeout(this.$vs.notification({
-            color:"success", 
-            title: this.agency[i].name,
-            text: JSON.stringify(data),
-          }), 1000);
+      // setTimeout(this.$vs.notification({
+      //       color:"success", 
+      //       title: this.agency[i].name,
+      //       text: JSON.stringify(data),
+      //     }), 1000);
     
       // if(i > 4){
       //   break;

@@ -113,7 +113,13 @@ export default class Home extends Vue {
     chart: {
       height: 350,
       type: 'radar',
-    },
+    },dataLabels: {
+  enabled: true,
+  background: {
+    enabled: true,
+    borderRadius:2,
+  }
+},
     title: {},
     xaxis: {
       categories:[]

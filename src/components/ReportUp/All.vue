@@ -9,7 +9,7 @@
 
             </v-toolbar>
         <h2 class="pl-24 text-purple-600 font-bold">มหาวิทยาลัยพะเยา</h2>
-
+ 
         <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
         <center>
           <h2 class="text-xl">คะแนน {{base}} </h2>
@@ -125,6 +125,13 @@ base2565:any = 0
     chart: {
       height: '100%',
       type: 'radar',
+    },
+    dataLabels: {
+      enabled: true,
+      background: {
+        enabled: true,
+        borderRadius:2,
+      }
     },
     title: {},
     xaxis: {

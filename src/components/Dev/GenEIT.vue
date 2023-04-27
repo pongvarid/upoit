@@ -75,8 +75,8 @@ export default class TestDevClass extends Vue {
   }
   agencyCount:any = 0;
   async storeData(agency:any){
-    console.log(agency,this.allUser,this.score,this.score30,(this.score >= 79)?'ผ่านการประเมิน':'ไม่ผ่านการประเมิน',this.assignments)
-    let result = (this.score >= 79)?'ผ่านการประเมิน':'ไม่ผ่านการประเมิน'
+    console.log(agency,this.allUser,this.score,this.score30,(this.allUser >= agency.iit)?'ผ่านการประเมิน':'ไม่ผ่านการประเมิน',this.assignments)
+    let result = (this.allUser >= agency.iit)?'ผ่านการประเมิน':'ไม่ผ่านการประเมิน'
     let store = await Core.postHttp(`/api/report/v1/reportraweit/`,{
       "year": this.yearData,
       "score": this.score,
