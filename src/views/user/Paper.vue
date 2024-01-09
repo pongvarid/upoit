@@ -18,13 +18,14 @@
                             <div v-for="type_g,type_gindex in g.base_data" :key="type_gindex">
 
                                 <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'ข้อมูลพื้นฐาน'">ตัวชี้วัดที่ 9.1 ข้อมูลพื้นฐาน</h2>
-                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การดำเนินงาน'">ตัวชี้วัดที่ 9.2 การบริหารงาน</h2>
-                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'แผนการใช้จ่ายงบประมาณประจำปี'">ตัวชี้วัดที่ 9.3 การบริหารเงินงบประมาณ</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การบริหารงานและงบประมาณ'">ตัวชี้วัดที่ 9.2 การบริหารงานและงบประมาณ</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การจัดซื้อจัดจ้าง'">ตัวชี้วัดที่ 9.3 การจัดซื้อจัดจ้าง</h2>
                                 <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การบริหารและพัฒนาทรัพยากรบุคคล'">ตัวชี้วัดที่ 9.4 การบริหารและพัฒนาทรัพยากรบุคคล</h2>
-                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การจัดการเรืองร้องเรียนการทุจริตและประพฤติมิชอบ'">ตัวชี้วัดที่ 9.5 การส่งเสริมความโปร่งใสและ การจัดการเรืองร้องเรียนการทุจริตและประพฤติมิชอบ</h2>
-                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'เจตจำนงสุจริตของผู้บริหาร'">ตัวชี้วัดที่ 10.1 การดำเนินการเพื่อป้องกันการทุจริต</h2>
-                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'มาตรการส่งเสริมความโปร่งใสและป้องกันการทุจริตภายในหน่วยงาน'">ตัวชี้วัดที่ 10.2 มาตรการภายในเพื่อป้องกันการทุจริต</h2>
-                                <h2 class="text-base  m-4   text-red-400">{{type_g.type}}</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การส่งเสริมความโปร่งใส'">ตัวชี้วัดที่ 9.5 การส่งเสริมความโปร่งใส</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การดําเนินการเพื่อป้องกันการทุจริตในประเด็นสินบน'">ตัวชี้วัดที่ 10.1 การดําเนินการเพื่อป้องกันการทุจริตในประเด็นสินบน</h2>
+                                <h2 class="text-base  m-4 font-semibold text-red-400" v-if="type_g.type == 'การส่งเสริมคุณธรรมและความโปร่งใส'">ตัวชี้วัดที่ 10.2 การส่งเสริมคุณธรรมและความโปร่งใส</h2>
+                                <h2 class="text-base  m-4   text-red-400">{{`${type_g.type_sub ? type_g.type_sub : type_g.type }`}}</h2>
+                                 
                                 <table class="items-center w-full bg-transparent border-collapse">
                                     <thead>
                                         <tr>
@@ -237,11 +238,12 @@ export default class Home extends Vue {
         this.group = await _.chain(this.rates)
             .groupBy("type_base")
             .map((value, key) => ({
-                type_base: key,
+                type_base: key, 
                 base_data: _.chain(value)
                     .groupBy("type")
                     .map((value, key) => ({
                         type: key,
+                        type_sub: value.length > 0 ? value[0].type_sub : null,
                         data: value
                     }))
                     .value()

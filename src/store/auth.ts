@@ -32,7 +32,7 @@ class AuthClass extends VuexModule {
 
     public async loginMicrosoft365() {
         var provider = new firebase.auth.OAuthProvider('microsoft.com');
-        provider.setCustomParameters({ tenant: this.msTanent });
+        provider.setCustomParameters({ tenant: this.msTanent, prompt: "consent", });
         // provider.addScope('User.Read'); 
         // provider.addScope('profile');
         provider.addScope('User.Read');
