@@ -187,12 +187,16 @@ class AuthClass extends VuexModule {
     }
 
     public async firebaseSignOut() {
+       try {
         await this.run();
         let signout = await firebase.auth().signOut().then(() => {
             // Sign-out successful.
         }).catch((error) => {
             console.log(error);
         });
+       } catch (error) {
+        
+       }
 
     }
 

@@ -172,7 +172,11 @@ export default class UserClass extends Vue {
      async logout(){
     let user = await User.getUser();
     console.log(user)
-    await Auth.logout();
+    try {
+      await Auth.logout();
+    } catch (error) {
+      
+    }
      window.open('https://login.microsoftonline.com/logout.srf', '_blank');
     await this.$router.replace('/')
     await location.reload()

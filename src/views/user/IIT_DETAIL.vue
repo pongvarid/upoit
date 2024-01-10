@@ -45,10 +45,13 @@
                                                 <!-- <v-alert>{{index}},{{j}}</v-alert> -->
                                                 <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`,index,j)" :class="`${$input} `">
                                                     <option :value="null">เลือกคำตอบ</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">น้อยที่สุดหรือไม่มีเลย</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.low, 'value_by':'น้อย', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">น้อย</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.very, 'value_by':'มาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">มาก</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.many, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">มากที่สุด</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.nottingest,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">ไม่เป็นไปตามวัตถุประสงค์</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยมาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">เป็นไปตามวัตถุประสงค์ น้อยมาก</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.low, 'value_by':'น้อย', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">เป็นไปตามวัตถุประสงค์ น้อย</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.very, 'value_by':'มาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">เป็นไปตามวัตถุประสงค์ ค่อนข้างมาก</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.many, 'value_by':'มากพอสมควร', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">เป็นไปตามวัตถุประสงค์ มาก</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.manyest, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">เป็นไปตามวัตถุประสงค์ มากที่สุด</option>
+
                                                 </select>
                                             </div>
                                             <div v-else-if="ans.choice.resourcetype === 'Exist'">
