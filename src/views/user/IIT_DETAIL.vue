@@ -1,4 +1,4 @@
-แ<template>
+<template>
 <div class="relative md:pt-32 pb-32 pt-12  ">
   
 
@@ -43,22 +43,39 @@
                                         <div v-if="ans.choice">
                                             <div v-if="ans.choice.resourcetype === 'Ascend'">
                                                 <!-- <v-alert>{{index}},{{j}}</v-alert> -->
+                                                <!-- {{ appSetting }} -->
                                                 <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`,index,j)" :class="`${$input} `">
                                                     <option :value="null">เลือกคำตอบ</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.nottingest,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">ไม่เป็นไปตามวัตถุประสงค์</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยมาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">เป็นไปตามวัตถุประสงค์ น้อยมาก</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.low, 'value_by':'น้อย', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">เป็นไปตามวัตถุประสงค์ น้อย</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.very, 'value_by':'มาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">เป็นไปตามวัตถุประสงค์ ค่อนข้างมาก</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.many, 'value_by':'มากพอสมควร', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">เป็นไปตามวัตถุประสงค์ มาก</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.manyest, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">เป็นไปตามวัตถุประสงค์ มากที่สุด</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.nottingest,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">
+                                                        {{ getChoice(issue.order, 0, "ไม่เป็นไปตามวัตถุประสงค์") }}
+                                                    </option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยมาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">
+                                                        {{ getChoice(issue.order, 1, "เป็นไปตามวัตถุประสงค์ น้อยมาก") }}
+                                                    </option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.low, 'value_by':'น้อย', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">
+                                                        {{ getChoice(issue.order, 2, "เป็นไปตามวัตถุประสงค์ น้อย") }}
+                                                    </option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.very, 'value_by':'มาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">
+                                                        {{ getChoice(issue.order, 3, "เป็นไปตามวัตถุประสงค์ ค่อนข้างมาก") }}
+                                                    </option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.many, 'value_by':'มากพอสมควร', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">
+                                                        {{ getChoice(issue.order, 4, "เป็นไปตามวัตถุประสงค์ มาก") }}
+                                                    </option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.manyest, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">
+                                                        {{ getChoice(issue.order, 5, "เป็นไปตามวัตถุประสงค์ มากที่สุด") }}
+                                                    </option>
 
                                                 </select>
                                             </div>
                                             <div v-else-if="ans.choice.resourcetype === 'Exist'">
                                                 <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`,index,j)" :class="$input">
                                                     <option :value="null">เลือกคำตอบ</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.notting, 'value_by':'มี', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">มี</option>
-                                                    <option :value="JSON.stringify({'value' :ans.choice.have,'value_by':'ไม่มี', 'value_type':ans.choice.id ,  id:ans.id , group:issue.id, assessment:tab.id  })">ไม่มี</option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.notting, 'value_by':'มี', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">
+                                                        {{ getChoice(issue.order, 0, "มี") }}
+                                                    </option>
+                                                    <option :value="JSON.stringify({'value' :ans.choice.have,'value_by':'ไม่มี', 'value_type':ans.choice.id ,  id:ans.id , group:issue.id, assessment:tab.id  })">
+                                                        {{ getChoice(issue.order, 1, "ไม่มี") }}
+                                                    </option>
                                                 </select>
 
                                             </div>
@@ -164,7 +181,8 @@ export default class Home extends Vue {
     private ansIndex: number = 0;
     private resultAll: any = [];
     private tmp: any = 0
-
+    appSetting: any = {}
+   
     private tmpChoice: any = [];
     $vs: any
     private async addValue(val: any, indexIssue: number, index: number) {
@@ -267,6 +285,11 @@ await this.$router.go(-1)
         if (this.data.length == 0) {
             this.nullData = true
         }
+        try {
+            this.appSetting = await Core.getSetting(this.year.year)
+        } catch (error) {
+            this.appSetting = null
+        }
         await Web.switchLoad(false);
         this.response = true
     }
@@ -303,6 +326,20 @@ await this.$router.go(-1)
             title: title,
             text: text
         })
+    }
+
+    getChoice(choice:any, index:any, defChoices:any){
+        try {
+            let choices = this.appSetting.iit_choices
+        let result = _.find(choices, item => _.includes(item.index, choice));
+        if (result) {
+            return result.choices[index]
+        } else {
+            return defChoices
+        } 
+        } catch (error) {
+            return defChoices
+        }
     }
 }
 </script>

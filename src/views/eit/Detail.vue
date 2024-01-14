@@ -95,17 +95,46 @@
                                                 <div v-if="ans.choice.resourcetype === 'Ascend'">
                                                     <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`)" :class="$input">
                                                         <option :value="null">เลือกคำตอบ</option>
-                                                        <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">น้อยที่สุดหรือไม่มีเลย</option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.nottingest,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">
+                                                        
+                                                            {{ getChoice(issue.order, 0, 'ไม่เห็นด้วยอย่างยิ่ง') }}
+                                                        </option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">
+                                                            {{ getChoice(issue.order, 1, 'ไม่เห็นด้วย') }}
+                                                        </option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.low, 'value_by':'น้อย', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">
+                                                            {{ getChoice(issue.order, 2, 'ค่อนข้าง ไม่เห็นด้วย') }}
+                                                        </option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.very, 'value_by':'มาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">
+                                                            {{ getChoice(issue.order, 3, 'ค่อนข้าง เห็นด้วย') }}
+                                                        </option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.many, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">
+                                                            {{ getChoice(issue.order, 4, 'เห็นด้วย') }}
+                                                        </option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.manyest, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">
+                                                            {{ getChoice(issue.order, 5, 'เห็นด้วย อย่างยิ่ง') }}
+                                                        </option>
+
+                                                        <!-- <option :value="JSON.stringify({'value' :ans.choice.notting,'value_by':'น้อยที่สุดหรือไม่มีเลย', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id })">น้อยที่สุดหรือไม่มีเลย</option>
                                                         <option :value="JSON.stringify({'value' :ans.choice.low, 'value_by':'น้อย', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">น้อย</option>
                                                         <option :value="JSON.stringify({'value' :ans.choice.very, 'value_by':'มาก', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">มาก</option>
                                                         <option :value="JSON.stringify({'value' :ans.choice.many, 'value_by':'มากที่สุด', 'value_type':ans.choice.id , id:ans.id , group:issue.id, assessment:tab.id  })">มากที่สุด</option>
+                                                    -->
                                                     </select>
                                                 </div>
                                                 <div v-else-if="ans.choice.resourcetype === 'Exist'">
                                                     <select :id="`choice${index}_${ans.id}`" @change="addValue(`choice${index}_${ans.id}`)" :class="$input">
                                                         <option :value="null">เลือกคำตอบ</option>
-                                                        <option :value="JSON.stringify({'value' :ans.choice.notting, 'value_by':'มี', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">มี</option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.notting, 'value_by':'มี', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">
+                                                            {{ getChoice(issue.order, 0, 'มี') }}
+                                                        </option>
+                                                        <option :value="JSON.stringify({'value' :ans.choice.have,'value_by':'ไม่มี', 'value_type':ans.choice.id ,  id:ans.id , group:issue.id, assessment:tab.id  })">
+                                                            {{ getChoice(issue.order, 1, 'ไม่มี') }}
+                                                        </option>
+
+                                                        <!-- <option :value="JSON.stringify({'value' :ans.choice.notting, 'value_by':'มี', 'value_type':ans.choice.id , id:ans.id , group:issue.id , assessment:tab.id })">มี</option>
                                                         <option :value="JSON.stringify({'value' :ans.choice.have,'value_by':'ไม่มี', 'value_type':ans.choice.id ,  id:ans.id , group:issue.id, assessment:tab.id  })">ไม่มี</option>
+                                                  -->
                                                     </select>
     
                                                 </div>
@@ -221,7 +250,8 @@
         private dialogUser: boolean = false;
         private formUser: any = {};
         private myAgency :any = 0
-        
+        public appSetting: any = {}
+
     
         private async getStart() {
             this.dialog = false;
@@ -327,6 +357,11 @@
             this.years = this.$route.query.year
             this.year = await Core.getHttp(`/api/eit/v2/year/${this.years}/`)
             this.data = await Core.getHttp(`/api/eit/v1/issue?year=${this.years}`)
+            try {
+             this.appSetting = await Core.getSetting(this.year.year)
+                } catch (error) {
+                    this.appSetting = null
+                }
             await Web.switchLoad(false);
             // this.myAgency = this.user.ext_link.agency
             this.response = true
@@ -342,7 +377,19 @@
                 text: text
             })
         }
-    
+        getChoice(choice:any, index:any, defChoices:any){
+        try {
+            let choices = this.appSetting.eit_choices
+        let result = _.find(choices, item => _.includes(item.index, choice));
+        if (result) {
+            return result.choices[index]
+        } else {
+            return defChoices
+        } 
+        } catch (error) {
+            return defChoices
+        }
+    }
         async sleep(ms: any) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }

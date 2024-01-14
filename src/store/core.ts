@@ -60,6 +60,16 @@ class CoreModule extends VuexModule {
        return await  _.sumBy(raw, 'n');  
     }
 
+    public async getSetting(year:any){
+        try {
+            let years = await this.getHttp(`/setting/app/`) 
+            return years 
+        } catch (error) {
+            return {}
+        }
+
+    }
+
 }
 
 import store from "@/store"
