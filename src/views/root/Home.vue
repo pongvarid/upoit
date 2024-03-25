@@ -26,6 +26,11 @@
 
             </div>
 
+
+             <div class="mt-4">
+                <a href="https://forms.office.com/r/cQfzgTuxbq?origin=lprLink" target="blank"><center><img style="height:auto; width:50%;" src="https://img5.pic.in.th/file/secure-sv1/new33027ea3605a9e53.jpeg" alt=""></center></a>
+             </div>
+
         </div>
 
     </vs-dialog>
