@@ -2,7 +2,7 @@
   <div>
     <v-overlay z-index="99" :value="loading">
      <center>  <v-btn style="height:108px; width:108px;" color="white" fab     class=" animate__animated animate__pulse animate__infinite	infinite" >
-        <img class="w-auto  h-24 " src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+        <img class="w-auto  h-24 " src="https://upload.wikimedia.org/wikipedia/th/thumb/0/00/University_of_Phayao_Logo.svg/1200px-University_of_Phayao_Logo.svg.png" alt="">
       </v-btn></center>
      <center> <h2 class="text-xl animate__animated animate__swing animate__infinite	infinite">{{loadTxt}}..</h2></center>
     </v-overlay>

@@ -40,7 +40,7 @@
                 <div class="sign-in-form forms" v-if="tab == 0">
                     <div class="flex justify-center  md:hidden">
                         <div class="w-1/5">
-                            <img class="w-auto  h-auto" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+                            <img class="w-auto  h-auto" src="https://upload.wikimedia.org/wikipedia/th/thumb/0/00/University_of_Phayao_Logo.svg/1200px-University_of_Phayao_Logo.svg.png" alt="">
                         </div>
                         <div class="w-4/5 pl-3">
                             <h2 class="text-2xl">UP ITA </h2>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="hidden md:block">
                         <center>
-                            <img class="w-auto  h-32" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+                            <img class="w-auto  h-32" src="https://upload.wikimedia.org/wikipedia/th/thumb/0/00/University_of_Phayao_Logo.svg/1200px-University_of_Phayao_Logo.svg.png" alt="">
                             <h2 class="text-2xl">UP ITA </h2>
                             <p>เปิดประตูสู่ความโปร่งใส</p>
                             <br />

@@ -119,6 +119,7 @@ export default class OitMain extends Vue {
     upAll: any = [];
     public async created() {
       this.response = false
+      let loader = await this.$loading.show()
         this.user = await User.getUser();
         this.years = await Core.getHttp(`/api/ita/v2/year/`);
 
@@ -132,6 +133,7 @@ export default class OitMain extends Vue {
         }
         await this.getUP();
         this.response = true;
+        await loader.hide()
     }
 
     public async getUP() {

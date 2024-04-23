@@ -10,7 +10,7 @@
                             <div class="flex flex-row">
                                 <div class="w-1/2">
                                     <div class="bg-white shadow-xl rounded-full w-32 h-32 p-2 border-8 border-yellow-600 flex justify-center items-center">
-                                        <img class="w-auto  h-24" src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+                                        <img class="w-auto  h-24" src="https://upload.wikimedia.org/wikipedia/th/thumb/0/00/University_of_Phayao_Logo.svg/1200px-University_of_Phayao_Logo.svg.png" alt="">
                                     </div>
                                 </div>
                                 <div class="w-1/2 h-full flex flex-col justify-center ">

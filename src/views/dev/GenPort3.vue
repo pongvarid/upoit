@@ -5,8 +5,10 @@
 
     <div class="flex flex-row">
         {{base}} {{rate}}
-        <div class="w-1/2">
 
+        <pre>{{score}}</pre>
+        <div class="w-1/2">
+        
         </div>
         <div class="w-1/2">
             <v-btn @click="onExport(report,'มหาวิทยาลัยพะเยา.xlsx')">Export</v-btn>
@@ -14,6 +16,7 @@
                 <v-spacer></v-spacer> {{r.score}}
             </v-toolbar>
             <pre>{{raw}}</pre>
+            
         </div>
     </div>
 
@@ -40,7 +43,7 @@ import {
     Vue,
     Watch
 } from "vue-property-decorator";
-import _ from 'lodash'
+import _, { mean } from 'lodash'
 import XLSX from 'xlsx' // import xlsx
 import {
     Result
@@ -62,13 +65,15 @@ export default class TestDevClass extends Vue {
     rawDetail: any = [];
     rawBase: any = [];
     years: any = ['2564', '2565', '2566', '2567', '2568', '2569', '2570', ]
-    year: any = '2564'
+    year: any = '2567'
     raw: any = []
     base: any = 0;
     rate: string = '';
+    score: any = {}
     async created() {
-        await this.loadEnv();
-        //await this.genReport()
+        await this.loadEnv(); 
+        await this.genReport()
+        
     }
 
     async loadEnv() {
@@ -81,6 +86,7 @@ export default class TestDevClass extends Vue {
         this.rawBase = await _.filter(this.rawBase, (a: any) => {
             return a.agency != 98 && a.agency != 99
         })
+   
         await this.groupByDetail()
         await this.groupBase();
         this.response = true;
@@ -89,8 +95,52 @@ export default class TestDevClass extends Vue {
         let base = await _.meanBy(this.rawBase, (r: any) => {
             return r.all
         })
-        this.base = Number(base.toFixed(2))
-        this.rate = this.getRate(base)
+
+
+        let iit = await _.filter(this.raw, (a: any, index:any) => {
+            return index >=2 && index <= 6
+        })
+        console.log("ccc",_.map(iit, r=> r.score));
+        let iit_score = (await _.meanBy(iit, (r: any) => {
+            return r.score
+        })  )  
+        let eit = await _.filter(this.raw, (a: any, index:any) => {
+            return index >=7 && index <= 11
+        })
+        let eit_score = await _.meanBy(eit, (r: any) => {
+            return r.score
+        })
+        let oit = await _.filter(this.raw, (a: any, index:any) => {
+            return index >=0 && index <= 1
+        })
+        let oit_score = await _.meanBy(oit, (r: any) => {
+            return r.score
+        })
+
+        this.score = {
+            iit: iit_score.toFixed(2),
+            iit_30_percent: (iit_score * 0.3) ,
+            eit: eit_score.toFixed(2),
+            eit_30_percent: (eit_score * 0.3) ,
+            oit: oit_score.toFixed(2),
+            oit_40_percent: (oit_score * 0.4) ,
+        
+        }
+
+        let all_percent = Number(this.score.iit_30_percent) + Number(this.score.eit_30_percent) + Number(this.score.oit_40_percent)
+   
+        this.score.all_percent  = all_percent.toFixed(2)
+        this.score.iit_30_percent =  Number(this.score.iit_30_percent).toFixed(2)
+        this.score.eit_30_percent =  Number(this.score.eit_30_percent).toFixed(2)
+        this.score.oit_40_percent =  Number(this.score.oit_40_percent).toFixed(2)
+
+
+        let all_score_c = _.mean([iit_score, oit_score, eit_score])
+        let all_score = this.getRateNew(iit_score, oit_score, eit_score, all_score_c)
+
+
+        this.base = Number(all_score_c).toFixed(2)
+        this.rate = all_score 
 
     }
     async groupByDetail() {
@@ -154,13 +204,32 @@ export default class TestDevClass extends Vue {
             return 'ไม่ทราบค่า'
         }
     }
+
+    getRateNew(i: any,o: any,e: any, rate: any) {
+            if((rate >= 95.00) && (i >= 95.00 && o >= 95.00 && e >= 95.00)  ){
+                return 'ผ่านดีเยี่ยม'
+            }else if((rate >= 85.00 && rate <= 100) && (i >= 85.00 && o >= 85.00 && e >= 85.00) ){
+                return 'ผ่านดี'
+            }else if (this.inRange(rate, 85.00, 100)) {
+                return 'ผ่าน'
+            }
+            else if (this.inRange(rate, 70.00, 84.99)) {
+                return 'ต้องปรับปรุง'
+            }
+            else if (this.inRange(rate, 0, 69.99)) {
+                return 'ต้องปรับปรุงโดยด่วน'
+            }  else {
+                return 'ไม่ทราบค่า'
+            }
+        }
+    
     inRange(x: number, min: number, max: number) {
         return ((x - min) * (x - max) <= 0);
     }
 
     async onExport(dd: any, name: string) {
         // let dataWS = XLSX.utils.json_to_sheet(data)
-
+        console.log(dd, "xxxx");
         let filename = name;
        let data =  dd
         var ws = XLSX.utils.json_to_sheet(data);

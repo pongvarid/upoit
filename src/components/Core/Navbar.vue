@@ -21,7 +21,7 @@
     <v-navigation-drawer v-model="drawer" app fixed class="bg-list" v-if="response"> <br>
         <center>
             <div class="bg-white shadow-xl rounded-full w-4 h-4 md:w-32 md:h-32 p-2 border-8 border-yellow-600 flex justify-center items-center">
-                <img class="w-auto  h-24 " src="https://sv1.picz.in.th/images/2020/12/07/jg1o6u.png" alt="">
+                <img class="w-auto  h-24 " src="https://upload.wikimedia.org/wikipedia/th/thumb/0/00/University_of_Phayao_Logo.svg/1200px-University_of_Phayao_Logo.svg.png" alt="">
             </div>
             <h2 class="text-sm md:text-2xl text-purple-800  cv-font">UP-ITA</h2>
             <p class="bg-yellow-700 ml-4 mr-4 p-1 text-white rounded-full">เปิดประตูสู่ความโปร่งใส</p>

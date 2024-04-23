@@ -90,7 +90,7 @@
                                                                 <v-icon>mdi-plus</v-icon> เพิ่มข้อมูล
                                                             </span>
                                                         </v-btn>
-                                                    </div>
+                                                    </div> 
 
                                                 </form>
                                                 <v-divider></v-divider><br>
@@ -112,6 +112,13 @@
                                                             </v-btn>
                                                         </div>
                                                     </form>
+
+                                                    <div v-if="genResult(rate.id)">
+                                                        <h2><b>คะแนน : </b> {{genResult(rate.id)['score']}}</h2>
+                                                        <h2><b>ข้อคิดเห็น : </b> <span v-if="genResult(rate.id)['comment']">{{genResult(rate.id)['comment']}}</span> <span v-else> - </span></h2>
+                                                    </div>
+
+                                                    <!-- <pre>{{genResult(rate.id)}}</pre> -->
   
                                                         
 
@@ -119,7 +126,7 @@
                                                         <v-icon>mdi-bookmark-check</v-icon><b> ยืนยันการส่ง</b>
                                                     </v-btn>
                                                     <br><br>
-                                                    <v-btn class="w-full" v-if="user.passing &&  passingAllCheckTrue(rate.result)" @click="removePassingAllStore(rate.result)" x-large outlined color="red accent-4" dark>
+                                                    <v-btn class="w-full" v-if=" passingAllCheckTrue(rate.result)" @click="removePassingAllStore(rate.result)" x-large outlined color="red accent-4" dark>
                                                         <v-icon>mdi-remove</v-icon><b> ยกเลิกการส่ง</b>
                                                     </v-btn>
 
@@ -204,6 +211,9 @@ export default class Home extends Vue {
     resultResponse: boolean = false
     group: any = []
     scroll: number = 0
+    
+    resultData: any = []
+
     public async created() {
 
         await this.run()
@@ -225,6 +235,7 @@ export default class Home extends Vue {
         this.rateStatus = await Core.getHttp(`/api/ita/v1/ratestatus/`)
         await this.generateTable();
         await this.genGroup()
+        await this.getResult(this.CURRNT_AGENGY)
         this.response = true;
         await loader.hide()
 
@@ -459,6 +470,19 @@ export default class Home extends Vue {
 
     private openLink(url: string) {
         window.open(url, '_blank');
+    }
+    
+    private async getResult(agency: number) {
+        let data = await Core.getHttp(`/api/oit/v1/evaluateoit/?agency=${agency}`)
+        if(data){
+            this.resultData = data
+        }
+    }
+
+    genResult(id:any){
+        return _.find(this.resultData, {
+            'rate': id
+        })
     }
 
     getPassingTest(result: any) {
