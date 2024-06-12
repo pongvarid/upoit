@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import './plugins/axios'
-
+import './plugins/tool'
+import '@/assets/pure.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import './plugins/varible';
-Vue.config.productionTip = false
+Vue.config.productionTip = false 
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -39,6 +40,10 @@ import {
 } from '@/store/user'  
 Vue.prototype.$core = Core
 Vue.prototype.$user = User
+
+
+
+
 new Vue({
   router,
   store,

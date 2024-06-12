@@ -50,7 +50,7 @@ export default class TestDevClass extends Vue {
 
 
   rawOIT:any = []
-  DEBUG:boolean = true;
+  DEBUG:boolean = false;
   errors:any = []
 
 
@@ -227,6 +227,8 @@ export default class TestDevClass extends Vue {
         return (r.id == 66) 
       })
     }
+
+    console.log('AGENCY',this.agency);
  
     for (let i=0; i< this.agency.length; i++){
       agency = this.agency[i].id;

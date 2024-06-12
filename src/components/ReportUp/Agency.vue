@@ -5,78 +5,154 @@
         <div class="w-full" v-if="response">
             <v-toolbar flat class="mt-8">
                 <img class="w-20" src="@/assets/res_all.svg" alt="">
-                <h2 class="text-2xl font-bold text-yellow-500 "> ผลประเมินของแต่ละหน่วยงาน </h2>
+                <h2 class="text-2xl font-bold text-yellow-500 "> ผลประเมินของแต่ละหน่วยงาน  ปีงบประมาณ  {{ year }} </h2>
                 <v-spacer></v-spacer>
                 <v-btn @click="onExport(exports,'หน่วยงาน.XLSX')">ส่งออกข้อมูล</v-btn>
             </v-toolbar>
+            <div v-if="year < 2567">
+                <v-tabs>
+                    <v-tab>AA</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/AA.svg" alt="">
+    
+                            <h2 class="text-3xl font-bold text-green-600">ระดับ AA</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.AA" :key="i" color="green" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>A</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/A.svg" alt="">
+                            <h2 class="text-3xl font-bold text-yellow-500">ระดับ A</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.A" :key="i" color="green" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>B</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/B.svg" alt="">
+                            <h2 class="text-3xl font-bold text-blue-500">ระดับ B</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.B" :key="i" color="blue" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>C</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/C.svg" alt="">
+                            <h2 class="text-3xl font-bold text-purple-500">ระดับ C</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.C" :key="i" color="purple" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>D</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/D.svg" alt="">
+                            <h2 class="text-3xl font-bold text-red-500">ระดับ D</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.D" :key="i" color="orange" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>E</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/E.svg" alt="">
+                            <h2 class="text-3xl font-bold text-red-500">ระดับ E</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.E" :key="i" color="red" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>F</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/F.svg" alt="">
+                            <h2 class="text-3xl font-bold text-red-500">ระดับ F</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.F" :key="i" color="red" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>ไม่ผ่านเกณฑ์</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <img class="w-48 " src="@/assets/Other.svg" alt="">
+                            <h2 class="text-3xl font-bold text-yellow-500">ไม่ผ่านเกณฑ์</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.Other" :key="i" color="yellow" :name="`${i+1}. `+ data.agency.name" :sub="data.rate" :score="data.all"></Bars>
+                    </v-tab-item>
+                </v-tabs>
+            </div>
+            <div v-else>
+                <v-tabs>
+                    <v-tab>ผ่านดีเยี่ยม</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center class="pyro"> 
+                            <div class="before"></div>
+                            <div class="after"></div>
+                            <img class="w-48 animate__animated animate__heartBeat animate__infinite infinite" src="@/assets/AA.svg" alt="">
+    
+                            <h2 class="text-3xl font-bold text-green-600 mt-4">ผ่านดีเยี่ยม</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.newA" :key="i" color="green" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>ผ่านดี</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center class="pyro">
+                            <div class="before"></div>
+                            <div class="after"></div>
+                            <!-- <img class="w-48 " src="@/assets/A.svg" alt=""> -->
+                            <center><h2 class="animate__animated animate__bounce animate__infinite infinite"  style="font-size:140px">🥰</h2></center>
+                            <h2 class="text-3xl font-bold text-yellow-500">ผ่านดี</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.newB" :key="i" color="green" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>ผ่าน</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <center><h2 class="animate__animated animate__shakeX animate__infinite infinite"  style="font-size:140px">😃</h2></center>
+                            <h2 class="text-3xl font-bold text-blue-500">ผ่าน</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.newC" :key="i" color="blue" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>ต้องปรับปรุง</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                              <center><h2 class="animate__animated animate__tada animate__infinite	infinite" style="font-size:140px">😥</h2></center>
+                            <h2 class="text-3xl font-bold text-purple-500">ต้องปรับปรุง</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.newD" :key="i" color="purple" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item>
+                    <v-tab>ต้องปรับปรุงโดยด่วน</v-tab>
+                    <v-tab-item class="pt-6">
+                        <center>
+                            <center><h2 class="animate__animated animate__tada animate__infinite infinite" style="font-size:140px">😰</h2></center> 
+                            <!-- <img class="w-48 " src="@/assets/D.svg" alt=""> --> 
+                            <h2 class="text-3xl font-bold text-red-500">ระดับ D</h2>
+                        </center>
+                        <Bars v-for="(data,i) in result.newE" :key="i" color="orange" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
+                    </v-tab-item> 
+                    <v-tab>ไม่ผ่านเกณฑ์</v-tab>
+                    <v-tab-item class="pt-6"> 
+                        <div v-if="result.Other">
+                            <div v-if="(result.Other).length > 0">
+                                <center>
+                                    <center><h2 class="animate__animated animate__shakeX animate__infinite	infinite"  style="font-size:140px">😱</h2></center>
+                                    <h2 class="text-3xl font-bold text-yellow-500">ไม่ผ่านเกณฑ์</h2>
+                                </center>
+                                <Bars v-for="(data,i) in result.Other" :key="i" color="yellow" :name="`${i+1}. `+ data.agency.name" :sub="data.rate" :score="data.all"></Bars>
+                            </div>
+                            <div v-else>
+                                <center class="pyro">
+                                    <div class="before"></div>
+                                    <div class="after"></div>
+                                    <center><h2 class="animate__animated animate__rubberBand animate__infinite	infinite" style="font-size:140px ">🌟</h2></center>
+                                    <h2 class="text-3xl font-bold text-orange-500 ">ยินดีด้วย! ทุกหน่วยงานผ่านเกณฑ์การประเมิน</h2>
+                                </center> 
+                            </div>
+                        </div>
+                   
+                    </v-tab-item>
+                </v-tabs>
+            </div>
+         
+            
 
-            <v-tabs>
-                <v-tab>AA</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/AA.svg" alt="">
-
-                        <h2 class="text-3xl font-bold text-green-600">ระดับ AA</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.AA" :key="i" color="green" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>A</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/A.svg" alt="">
-                        <h2 class="text-3xl font-bold text-yellow-500">ระดับ A</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.A" :key="i" color="green" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>B</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/B.svg" alt="">
-                        <h2 class="text-3xl font-bold text-blue-500">ระดับ B</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.B" :key="i" color="blue" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>C</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/C.svg" alt="">
-                        <h2 class="text-3xl font-bold text-purple-500">ระดับ C</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.C" :key="i" color="purple" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>D</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/D.svg" alt="">
-                        <h2 class="text-3xl font-bold text-red-500">ระดับ D</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.D" :key="i" color="orange" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>E</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/E.svg" alt="">
-                        <h2 class="text-3xl font-bold text-red-500">ระดับ E</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.E" :key="i" color="red" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>F</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/F.svg" alt="">
-                        <h2 class="text-3xl font-bold text-red-500">ระดับ F</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.F" :key="i" color="red" :name="`${i+1}. `+ data.agency.name" :score="data.all"></Bars>
-                </v-tab-item>
-                <v-tab>ไม่ผ่านเกณฑ์</v-tab>
-                <v-tab-item class="pt-6">
-                    <center>
-                        <img class="w-48 " src="@/assets/Other.svg" alt="">
-                        <h2 class="text-3xl font-bold text-yellow-500">ไม่ผ่านเกณฑ์</h2>
-                    </center>
-                    <Bars v-for="(data,i) in result.Other" :key="i" color="yellow" :name="`${i+1}. `+ data.agency.name" :sub="data.rate" :score="data.all"></Bars>
-                </v-tab-item>
-            </v-tabs>
         </div>
     </div>
 
@@ -169,7 +245,20 @@ export default class TestDevClass extends Vue {
     }
 
     async loadEnv() {
-
+        let results = [
+            'AA',
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'ผ่านดีเยี่ยม',
+            'ผ่านดี',
+            'ผ่าน',
+            'ต้องปรับปรุง',
+            'ต้องปรับปรุงโดยด่วน', 
+        ]
         this.lists = await Core.getHttp(`/api/report/v1/reportall-all/?year=${this.year}`)
         await this.genAgency();
         this.result.AA = await _.orderBy(_.filter(this.lists, {
@@ -207,11 +296,45 @@ export default class TestDevClass extends Vue {
         }), (r: any) => {
             return -r.all
         })
-        this.result.Other = await _.orderBy(_.filter(this.lists, (r: any) => {
-            return (r.rate != 'AA' && r.rate != 'A' && r.rate != 'B' && r.rate != 'C' && r.rate != 'D' && r.rate != 'E' && r.rate != 'F')
+        this.result.newA = await _.orderBy(_.filter(this.lists, {
+            rate: 'ผ่านดีเยี่ยม'
         }), (r: any) => {
             return -r.all
         })
+        this.result.newB = await _.orderBy(_.filter(this.lists, {
+            rate: 'ผ่านดี'
+        }), (r: any) => {
+            return -r.all
+        })
+        this.result.newC = await _.orderBy(_.filter(this.lists, {
+            rate: 'ผ่าน'
+        }), (r: any) => {
+            return -r.all
+        })
+        this.result.newD = await _.orderBy(_.filter(this.lists, {
+            rate: 'ต้องปรับปรุง'
+        }), (r: any) => {
+            return -r.all
+        })
+        this.result.newE = await _.orderBy(_.filter(this.lists, {
+            rate: 'ต้องปรับปรุงโดยด่วน'
+        }), (r: any) => {
+            return -r.all
+        })
+
+        this.result.Other = await _.orderBy(_.filter(this.lists, (r: any) => {
+             return r.rate && !results.includes(r.rate)
+        }), (r: any) => {
+            return -r.all
+        })
+
+        // this.result.Other = await _.orderBy(_.filter(this.lists, (r: any) => {
+        //     return (r.rate != 'AA' && r.rate != 'A' && r.rate != 'B' && r.rate != 'C' && r.rate != 'D' && r.rate != 'E' && r.rate != 'F')
+        // }), (r: any) => {
+        //     return -r.all
+        // })
+
+
         this.fullData = await _.orderBy(this.lists, (r: any) => {
             return -r.all
         })

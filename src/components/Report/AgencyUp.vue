@@ -80,6 +80,8 @@ export default class Home extends Vue {
   response:boolean = false
   private agency: any = null
   private years:any = []
+  private xyeard =[{"year":"2563","open":true},{"year":"2564","open":true},{"year":"2565","open":true},{"year":"2566","open":true},{"year":"2567","open":true}]
+
   async created() {
 
 

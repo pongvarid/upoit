@@ -116,7 +116,7 @@ base2565:any = 0
   rawBase:any = [];
   raw:any = []
   base:any = 0;
-  rate:string = '';
+  rate:any = '';
   series: any = [{
     name: 'คะแนน',
     data: [],
@@ -167,7 +167,16 @@ base2565:any = 0
     newUP =  ((detA*30)/100) + ((detB*30)/100) + ((detC*40)/100)   
  
     this.base = Number(newUP.toFixed(2))
-    this.rate = this.getRate(base)
+    if(this.year < 2567){
+      this.rate = this.getRate(base)
+    }else{
+      let iit = detA
+      let eit = detB
+      let oit = detC
+      this.rate = this.$calculate(iit,eit,oit,this.base)
+      console.log(this.rate);
+    }
+
 
   }
   async groupByDetail(){
