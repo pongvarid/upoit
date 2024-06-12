@@ -37,8 +37,13 @@
                                 {{ year.year }}
                             </p>
                         </div>
-                    </div>
-
+                    </div> 
+                </div>
+                <div v-if="!isOpen"  class="bg-purple-200 p-4 rounded-xl">
+                    <center style="font-size:80px;">🔒</center>
+                    <center><h2 class="text-xl"> ระบบยังไม่เปิดให้ประเมิน ในขณะนี้</h2>
+                        <h2>กรุณาลองใหม่อีกครั้งในภายหลัง</h2>
+                    </center>
                 </div>
 
             </div>
@@ -67,7 +72,7 @@ import {
 import {
     User
 } from '@/store/user'
-
+import _ from 'lodash'
 @Component({
     components: {
 
@@ -78,10 +83,12 @@ export default class Home extends Vue {
     private user: any = {}
     private years: any = []
     private response: boolean = false
+    private isOpen: boolean = false
     $vs: any
     public async created() { 
         this.years = await Core.getHttp(`/api/eit/v1/year`)
         // await this.autoGoToCheck()
+        this.isOpen = _.find(this.years, ['status', false]) ? true : false
         this.response = true
     }
 
