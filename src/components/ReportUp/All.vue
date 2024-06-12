@@ -1,24 +1,25 @@
 <template>
   <div class="" v-if="response">
-    <div class="flex flex-row">
+    <div class="flex flex-col md:flex-row">
 
-      <div class="w-1/2">
+      <div class="w-full md:w-1/2">
             <v-toolbar flat>
-              <img class="w-16" src="https://www.flaticon.com/svg/vstatic/svg/4118/4118182.svg?token=exp=1618941323~hmac=94814d118f644834f6fc7111d6c7ed71" alt="">
-              <h2 class="text-2xl pl-4 font-bold"> ผลการประเมินภาพรวม </h2>
+              
+              <h2 class="text-2xl pl-4 font-bold">📝 ผลการประเมินภาพรวม </h2>
 
             </v-toolbar>
         <h2 class="pl-24 text-purple-600 font-bold">มหาวิทยาลัยพะเยา</h2>
  
         <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
         <center>
-          <h2 class="text-xl">คะแนน {{base}} </h2>
-          <h2 class="text-5xl font-bold"> {{rate}}</h2>
-          <span class="text-base">ระดับผลประเมิน</span>  <br> <br>
+          <span class="text-base">ระดับผลประเมิน</span> 
+          <h2 class="text-6xl font-bold"> {{rate}}</h2>
+          <h2 class="text-xl p-2 rounded-xl font-semibold underlined underline-clip" style="width:200px">คะแนน {{base}} </h2>
+          <br> <br>
           <v-btn @click="onExport(raw,'มหาวิทยาลัยพะเยา.xlsx')">ส่งออกข้อมูล</v-btn>
         </center>
       </div>
-      <div class="w-1/2">
+      <div class="w-full md:w-1/2 mt-4">
 
         <h2 class="text-xl font-semibold">คะแนนรายตัวชี้วัด</h2>
         
@@ -139,7 +140,8 @@ base2565:any = 0
          style:{fontSize:'14px'}
        },
       categories:[]
-    }
+    },
+   
   }
 
   async created(){

@@ -2,10 +2,10 @@
 <div class="" v-if="response">
     <div class="flex flex-row">
 
-        <div class="w-full" v-if="response">
+        <div class="w-full mt-4" v-if="response">
             <v-toolbar flat class="mt-8">
                 <img class="w-20" src="@/assets/res_all.svg" alt="">
-                <h2 class="text-2xl font-bold text-yellow-500 "> ผลประเมินของแต่ละหน่วยงาน  ปีงบประมาณ  {{ year }} </h2>
+                <h2 class="text-sm md:text-2xl  mr-2 font-bold text-yellow-600 "> ผลประเมินของแต่ละหน่วยงาน  ปีงบประมาณ  {{ year }} </h2>
                 <v-spacer></v-spacer>
                 <v-btn @click="onExport(exports,'หน่วยงาน.XLSX')">ส่งออกข้อมูล</v-btn>
             </v-toolbar>
@@ -79,7 +79,7 @@
                 </v-tabs>
             </div>
             <div v-else>
-                <v-tabs>
+                <v-tabs class="mt-2">
                     <v-tab>ผ่านดีเยี่ยม</v-tab>
                     <v-tab-item class="pt-6">
                         <center class="pyro"> 

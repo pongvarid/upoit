@@ -10,16 +10,16 @@
      <ExportEIT class="ml-2" :data="issues" />
     </v-toolbar>
      
-    <div class="flex mt-4">
-      <bin-card class="m-2"  c="#8A2BE2" i="mdi-account-group" t="บุคลากรที่ประเมิน" :h="`${allUser}`" />
-      <bin-card class="m-2"  c="#ff8040" i="mdi-scoreboard" t="ผลคะแนนรวม (100%)" :h="score" />
-      <bin-card class="m-2"  c="#1088B2" i="30%" t="ผลคะแนนรวม (30%)" :h="score30" />
-      <bin-card class="m-2"  :c="(result == 'ผ่านการประเมิน')?'#16B77D':'#FF5733'" i="mdi-newspaper-variant-multiple-outline" t="ผลการประเมิน" :h="result" />
+    <div class="flex flex-col md:flex-row mt-4">
+      <bin-card class="md:m-2 w-full md:w-1/4"  c="#8A2BE2" i="mdi-account-group" t="บุคลากรที่ประเมิน" :h="`${allUser}`" />
+      <bin-card class="mt-2 md:mt-0 md:m-2 w-full md:w-1/4"  c="#ff8040" i="mdi-scoreboard" t="ผลคะแนนรวม (100%)" :h="score" />
+      <bin-card class="mt-2 md:mt-0 md:m-2 w-full md:w-1/4"  c="#1088B2" i="30%" t="ผลคะแนนรวม (30%)" :h="score30" />
+      <bin-card class="mt-2 md:mt-0 md:m-2 w-full md:w-1/4"  :c="(result == 'ผ่านการประเมิน')?'#16B77D':'#FF5733'" i="mdi-newspaper-variant-multiple-outline" t="ผลการประเมิน" :h="result" />
     </div>
 
     <div class="mt-6"> 
-      <div class="flex justify-center items-center">
-        <v-btn large :color="(chooseAssignId == assign.id)?`info`:`primary`" @click="chooseAssignId = assign.id" class="m-2"
+      <div class="flex flex-col md:flex-row justify-center items-center">
+        <v-btn large :color="(chooseAssignId == assign.id)?`info`:`primary`" @click="chooseAssignId = assign.id" class="m-2 w-full md:w-auto"
                v-for="(assign,i) in assignments" :key="i" v-if="assign.name !='ข้อเสนอแนะ'">{{assign.name}}</v-btn>
       </div>
 
@@ -39,8 +39,8 @@
                 <h2 class="font-bold"><span class="mr-2">({{(data.choice.type == 1)?'+':'-'}})</span>{{data.sub_name}} </h2>
 
               </div>
-              <div class="w-5/6 flex">
-                <div class="w-3/12 p-2" v-for="(score,index_data) in data.data" :key="index_data" v-if="score.choice == data.choice.name">
+              <div class="w-5/6 flex flex-col md:flex-row ">
+                <div class="w-full md:w-3/12 p-2" v-for="(score,index_data) in data.data" :key="index_data" v-if="score.choice == data.choice.name">
                   <v-toolbar dense flat color="transparent">
                     <h2>{{score.value}}</h2>
                     <v-spacer></v-spacer>
@@ -50,7 +50,7 @@
 
                 </div>
 
-                <div class="w-3/12 p-2" >
+                <div class="w-full md:w-3/12 p-2 " >
                   <v-toolbar dense flat color="transparent">
                     <h2>คะแนนรวม</h2>
                     <v-spacer></v-spacer>

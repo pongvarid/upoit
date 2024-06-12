@@ -2,8 +2,7 @@
   <div  >
     <div class="flex flex-wrap flex-col md:flex-row" v-if="response">
       <div class="w-full md:w-1/2">
-        <h2 class="text-2xl">ผลประเมินภาพรวม    </h2>
-
+        <h2 class="text-2xl font-semibold">ผลประเมินภาพรวม </h2> 
         <h2>คะแนนภาพรวมหน่วยงาน {{ (all.all).toFixed(2)}} คะแนน</h2><v-btn small @click="genData([all],lists)">ส่งออกข้อมูล</v-btn> <br> <br>
         <div class="flex flex-wrap">
           <bin-card class="m-2" c="rgb(51, 102, 204)" :h="all.iit" t="คะแนน" i="IIT"></bin-card>
@@ -14,7 +13,7 @@
         <apexchart type="radar" height="450px" :options="chartOptions" :series="series"></apexchart>
         <center>
           <h2>ระดับผลการประเมิน</h2>
-          <h2 class="text-2xl">{{all.rate}}</h2>
+          <h2 class="text-6xl font-semibold ">{{all.rate}}</h2> 
         </center>
       </div>
       
