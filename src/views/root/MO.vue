@@ -259,7 +259,7 @@ export default class Test extends Vue {
         await Auth.reToken();
         let user:any = await Auth.loginMicrosoft365();
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
-        if(iOS){
+        if(true){
             await Web.switchLoad(true)
             console.log(user)
             await this.callbackPopUp(user)
@@ -270,7 +270,7 @@ export default class Test extends Vue {
         await Auth.reToken();
         let user:any = await Auth.loginFacebook();
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
-        if(iOS){
+        if(true){
             await Web.switchLoad(true)
             console.log(user)
             await this.callbackPopUp(user)
@@ -281,7 +281,7 @@ export default class Test extends Vue {
         await Auth.reToken();
         let user:any = await Auth.loginGoogle();
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
-        if(iOS){
+        if(true){
             await Web.switchLoad(true)
             console.log(user)
             await this.callbackPopUp(user)

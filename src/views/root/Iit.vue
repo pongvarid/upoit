@@ -234,7 +234,8 @@ export default class Test extends Vue {
     }
 
     async created() {
-        await Web.switchLoad(true)
+        await Web.switchLoad(true) 
+        
         try {
             await Auth.run();
             await this.callback()
@@ -245,6 +246,9 @@ export default class Test extends Vue {
 
         await Web.offLoad()
     }
+
+   
+    
     async ChangeTo(val: string) {
         this.switchc = val;
         await this.sleep(1000);
@@ -258,18 +262,19 @@ export default class Test extends Vue {
         await Auth.reToken();
         let user:any = await Auth.loginMicrosoft365();
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
-        if(iOS){
+        if(true){
+            // alert("Test")
             await Web.switchLoad(true)
             console.log(user)
             await this.callbackPopUp(user)
             await Web.switchLoad(false)
-        }
+        } 
     }
     async facebook() {
         await Auth.reToken();
         let user:any = await Auth.loginFacebook();
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
-        if(iOS){
+        if(true){
             await Web.switchLoad(true)
             console.log(user)
             await this.callbackPopUp(user)
@@ -280,7 +285,7 @@ export default class Test extends Vue {
         await Auth.reToken();
         let user:any = await Auth.loginGoogle();
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
-        if(iOS){
+        if(true){
             await Web.switchLoad(true)
             console.log(user)
             await this.callbackPopUp(user)
@@ -289,10 +294,10 @@ export default class Test extends Vue {
     }
     async callbackPopUp(user:any) {
         this.page = this.$route.query.web
-
+       
         let logined: any = user
-        let form: any | null = null
-        if (logined.type) {
+        let form: any | null = null 
+        if (logined.type) { 
             console.log(logined.user)
             await Auth.reToken();
             form = await Auth.genForm(logined.type, logined.user)
@@ -311,9 +316,11 @@ export default class Test extends Vue {
 
     async callback() {
         this.page = this.$route.query.web
+        // alert("Callback")
 
         let logined: any = await Auth.callback();
         let form: any | null = null
+        // alert(JSON.stringify(logined))
         if (logined.type) {
             console.log(logined.user)
             await Auth.reToken();

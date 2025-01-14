@@ -30,6 +30,10 @@ class AuthClass extends VuexModule {
         return data;
     }
 
+    private isMobile(): boolean {
+        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    }
+
     public async loginMicrosoft365() {
         var provider = new firebase.auth.OAuthProvider('microsoft.com');
         provider.setCustomParameters({ tenant: this.msTanent, prompt: "consent", });
@@ -39,9 +43,11 @@ class AuthClass extends VuexModule {
         provider.addScope('profile')
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
         console.log(navigator.platform, iOS);
-        if(!iOS){
-            firebase.auth().signInWithRedirect(provider);
-            return true;
+        if(true){
+            // alert('กรุณาใช้เวอร์ชั่นเว็บเพื่อเข้าสู่ระบบ');
+         
+            return await this.loginPopUp(provider);
+           
         }else{ 
             return await this.loginPopUp(provider);
         }
@@ -77,6 +83,7 @@ class AuthClass extends VuexModule {
 
     public async genForm(type: string, user: any) {
         console.log(user);
+        // alert(JSON.stringify(user));
         if (type == 'microsoft.com') {
 
             return {
@@ -114,11 +121,13 @@ class AuthClass extends VuexModule {
 
     public async loginGoogle() {
         var provider = new firebase.auth.GoogleAuthProvider(); 
+        provider.addScope('email');
         var iOS = ['iPad', 'iPhone', 'iPod', 'MacIntel'].indexOf(navigator.platform) >= 0;
         console.log(navigator.platform, iOS);
         if(!iOS){
-            firebase.auth().signInWithRedirect(provider);
-            return true;
+            // firebase.auth().signInWithRedirect(provider);
+            // return true;
+            return await this.loginPopUp(provider);
         }else{ 
             return await this.loginPopUp(provider);
         }
@@ -138,7 +147,8 @@ class AuthClass extends VuexModule {
             .then( (result: any) => {
                 //   console.log(result.credential);
                 // return result.additionalUserInfo.profile;
-                console.log('xxx',result);
+                // console.log('xxx',result);
+                // alert(JSON.stringify(result));
                 if (result.credential) {
                     return {
                         "type": result.credential.signInMethod,

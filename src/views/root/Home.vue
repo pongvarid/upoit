@@ -299,6 +299,7 @@ export default class Test extends Vue {
     async created() {
         await this.checkLogined();
         await Web.switchLoad(true)
+        await this.checkUserAgent() 
         try {
             await Auth.run();
             await this.callback()
@@ -309,6 +310,18 @@ export default class Test extends Vue {
 
         await Web.offLoad()
     }
+
+    async checkUserAgent() {
+        const userAgent = navigator.userAgent.toLowerCase();  
+        let check = userAgent.includes("fbav") || userAgent.includes("line/");  
+        if(check){
+            alert("กรุณาเข้าใช้งานผ่านเบราว์เซอร์ของเครื่องเท่านั้น เช่น safari, chrome")
+            const url = "https://ita.up.ac.th?openExternalBrowser=1"; // Replace with your URL
+            window.location.href = url; // Opens in the default browser (Safari on iOS)
+        }
+      }
+
+
     async ChangeTo(val: string) {
         this.switchc = val;
         await this.sleep(1000);
