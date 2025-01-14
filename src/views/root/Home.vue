@@ -5,10 +5,45 @@
         <div class="con-form">
             <h4 class="not-margin text-xl font-semibold text-blue-600">
                 ระบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสีย
-            </h4>
+            </h4> 
             <h2 class=" text-gray-600">Integrity & Transparency Assessment: ITA</h2>
             <br>
-            <div @click="$router.push('/iit')">
+            <v-alert type="info" outlined>
+                <b>มหาวิทยาลัยพะเยา</b> จัดให้มีกระบวนการเก็บรวบรวมใช้ และเปิดเผยข้อมูลส่วนบุคคล รวมถึงมาตรการรักษาความมั่นคงปลอดภัยของข้อมูลส่วนบุคคลที่เหมาะสม โดยคำนึงถึงสิทธิความเป็นส่วนตัวของบุคคล ความเป็นธรรมในการใช้ข้อมูลและความโปร่งใสต่อเจ้าของข้อมูลส่วนบุคคล เพื่อให้สอดคล้องกับวัตถุประสงค์ของกฎหมายในการคุ้มครองสิทธิความเป็นส่วนตัวภายใต้หลักการของรัฐธรรมนูญ นโยบายคุ้มครองข้อมูลส่วนบุคคล 
+                <a href="https://www.up.ac.th/IntroPDPA.aspx?tab=PDPA66" target="_blank">https://www.up.ac.th/IntroPDPA.aspx?tab=PDPA66</a>
+            </v-alert>
+
+            <div class="flex flex-row flex-wrap">
+                <div class="w-full md:w-1/2 p-1">
+                    <div @click="$router.push('/iit')" class="cursor-pointer">
+                        <bin-card class="m-2" c="rgb(51, 102, 204)" t="Internal Integrity and Transparency Assessment : IIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 p-1">
+                    <div @click="$router.push('/public/eit/year')" class="cursor-pointer">
+                        <bin-card class="m-2" c="rgb(255, 102, 0)" t="External Integrity and Transparency Assessment : EIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายนอก" i="EIT"></bin-card>
+        
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 p-1">
+                    <div @click="$router.push('/oit')" class="cursor-pointer">
+                        <bin-card class="m-2" c="rgb(77, 153, 0)" t="Open Data Integrity and Transparency Assessment : OIT" h="การเปิดเผยข้อมูลสาธารณะ " i="OIT"></bin-card>
+        
+                    </div> 
+                </div>
+                <div class="w-full md:w-1/2 p-1">
+                    <div @click="$router.push('/mo')" class="cursor-pointer">
+                        <bin-card class="m-2" c="purple" t="แบบประเมินตนเองตามกระบวนการส่งเสริมและพัฒนา" h="องค์กรคุณธรรม" i="MO"></bin-card>
+        
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <a href="https://forms.office.com/r/cQfzgTuxbq?origin=lprLink" target="blank"><center><img style="height:auto; width:50%;" src="https://img5.pic.in.th/file/secure-sv1/new33027ea3605a9e53.jpeg" alt=""></center></a>
+             </div>
+
+         
+            <!-- <div @click="$router.push('/iit')">
                 <bin-card class="m-2" c="rgb(51, 102, 204)" t="Internal Integrity and Transparency Assessment : IIT" h="แบบประเมินการรับรู้ของผู้มีส่วนได้ส่วนเสียภายใน" i="IIT"></bin-card>
 
             </div>
@@ -19,18 +54,15 @@
              <div @click="$router.push('/oit')">
                 <bin-card class="m-2" c="rgb(77, 153, 0)" t="Open Data Integrity and Transparency Assessment : OIT" h="การเปิดเผยข้อมูลสาธารณะ " i="OIT"></bin-card>
 
-            </div>
+            </div> 
 
                 <div @click="$router.push('/mo')">
                 <bin-card class="m-2" c="purple" t="แบบประเมินตนเองตามกระบวนการส่งเสริมและพัฒนา" h="องค์กรคุณธรรม" i="MO"></bin-card>
 
             </div>
 
-
-             <div class="mt-4">
-                <a href="https://forms.office.com/r/cQfzgTuxbq?origin=lprLink" target="blank"><center><img style="height:auto; width:50%;" src="https://img5.pic.in.th/file/secure-sv1/new33027ea3605a9e53.jpeg" alt=""></center></a>
-             </div>
-
+-->
+    
         </div>
 
     </vs-dialog>
