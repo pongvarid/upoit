@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <v-app>
+       
+      <v-main >
+
+      <div v-if="!loading">
+        <v-toolbar color="primary">
+          <v-toolbar-title>EIT Data</v-toolbar-title>
+          <v-spacer></v-spacer>
+       <v-btn @click="updateData()" color="success">Update</v-btn>
+        </v-toolbar>
+          <v-container>List</v-container>
+
+          <v-data-table
+    dense
+    :items-per-page="100"
+    :headers="headers"
+    :items="eitRaw" 
+    item-key="name"
+    class="elevation-1"
+  ></v-data-table>
+      </div>
+
+      <div v-else>
+        loading....
+      </div>
+ 
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script>
+    // Axios configuration and utility functions
+    const apiClient = axios.create({
+      baseURL: 'https://ita.up.ac.th', // Replace with your API base URL
+      timeout: 10000,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+
+    // Request interceptor
+    apiClient.interceptors.request.use(
+      config => {
+        // Add auth token if available
+        const token = localStorage.getItem('authToken');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        console.log('Request:', config);
+        return config;
+      },
+      error => {
+        console.error('Request error:', error);
+        return Promise.reject(error);
+      }
+    );
+
+    // Response interceptor
+    apiClient.interceptors.response.use(
+      response => {
+        console.log('Response:', response);
+        return response;
+      },
+      error => {
+        console.error('Response error:', error);
+        if (error.response?.status === 401) {
+          // Handle unauthorized access
+          localStorage.removeItem('authToken');
+          // Redirect to login or show error
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    // API utility functions
+    const api = {
+      // GET request
+      get: async (url, params = {}) => {
+        try {
+          const response = await apiClient.get(url, { params });
+          return response.data;
+        } catch (error) {
+          console.error('GET request failed:', error);
+          throw error;
+        }
+      },
+
+      // POST request
+      post: async (url, data = {}) => {
+        try {
+          const response = await apiClient.post(url, data);
+          return response.data;
+        } catch (error) {
+          console.error('POST request failed:', error);
+          throw error;
+        }
+      },
+
+      // PUT request
+      put: async (url, data = {}) => {
+        try {
+          const response = await apiClient.put(url, data);
+          return response.data;
+        } catch (error) {
+          console.error('PUT request failed:', error);
+          throw error;
+        }
+      },
+
+      // DELETE request
+      delete: async (url) => {
+        try {
+          const response = await apiClient.delete(url);
+          return response.data;
+        } catch (error) {
+          console.error('DELETE request failed:', error);
+          throw error;
+        }
+      },
+
+      // PATCH request (bonus)
+      patch: async (url, data = {}) => {
+        try {
+          const response = await apiClient.patch(url, data);
+          return response.data;
+        } catch (error) {
+          console.error('PATCH request failed:', error);
+          throw error;
+        }
+      }
+    };
+
+    const vueeit = new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        loading: false,
+        headers:[
+    { text: "ID", value: "id" },
+    { text: "Year", value: "year" },
+    { text: "Score", value: "score" },
+    { text: "Score30", value: "score30" },
+    { text: "User Set", value: "user_set" },
+    { text: "User Do", value: "user_do" },
+    { text: "Result", value: "result" },
+    //   { text: "Raw Type", value: "rawType" },
+    //   { text: "Raw Done", value: "rawDone" },
+    // { text: "Created At", value: "created_at" },
+    // { text: "Updated At", value: "updated_at" },
+    { text: "have", value: "have" },
+    { text: "not_have", value: "not_have" },
+    { text: "all", value: "all" },
+
+    { text: "Score E3", value: "score_e3" },
+    { text: "Agency", value: "agency" },
+        ],
+        rawData:[],
+        eitRaw: [],
+        error: null
+      },
+      methods: {
+        async fetchData() {
+          this.loading = true;
+          this.error = null;
+          try {
+            const data = await api.get('/api/report/v1/reportraweit/?year=2568');
+            this.rawData = data;
+            this.eitRaw = data;
+            
+            this.eitRaw = await _.map(data,(r)=>{
+                let data = r;
+
+                let rawDone = JSON.parse(r['rawDone']);
+                 let e3 = _.find(rawDone, { 'order': 3 });
+
+                 let choice_type = e3['choice_type'][0] 
+
+                 let choices = _.filter(choice_type ? choice_type['data'] : [], (c)=>{
+                    return c['choice'] === "มี/ไม่มี";
+                 });
+
+                //  console.log('E3 Data:', e3);
+                // console.log('Choice Type:', choice_type);
+                // console.log('Choices:', choices);
+
+                 let score =  this.calculateHaveNot(choice_type['score_result'], choice_type['score_raw'], r['user_do']);
+
+                 choices.find(c => c.value === 'มี').user_percent = score.havePercent;
+                 choices.find(c => c.value === 'ไม่มี').user_percent = score.notHavePercent;
+
+
+                 
+                  data['have'] = score.havePercent;
+                  data['not_have'] = score.notHavePercent;
+                  data['all'] = choice_type['score_result'];
+                  // console.log(choices)
+
+               /*  console.log('Score Calculation:', 
+                    choices[0]['value'],
+                    choices[0]['score'],
+                    choices[0]['score_all'],
+                    choices[1]['value'],
+                    choices[1]['score'],
+                    choices[1]['score_all'],
+                    'score_all',
+                    choice_type['score_result'],
+                    'score_raw',
+                    choice_type['score_raw'],
+                   r['user_do'],
+                    this.calculateHaveNot(choice_type['score_result'], choice_type['score_raw'], r['user_do'])
+                  );*/
+
+                data['score_e3'] = `
+                ${choices[0].value} (score=${choices[0].score}, score_all=${choices[0].score_all}), 
+                ${choices[1].value} (score=${choices[1].score}, score_all=${choices[1].score_all}), 
+                score_result=${choice_type.score_result}, 
+                score_raw=${choice_type.score_raw}`
+                return data;
+            })
+
+            // console.log('EIT Raw Dataxxx:', this.eitRaw[3]['rawDone']);
+ 
+ 
+    console.log('EIT Raw Data:', this.rawData);
+
+            
+          for(let i=0;i<this.rawData.length;i++){
+            let r = this.rawData[i];
+            this.rawData[i]['rawDone'] = JSON.parse(r['rawDone']);
+            let arr = this.rawData[i]['rawDone'][2]['choice_type'][0]['data'];
+
+            console.log('EIT Raw Done:xcxcxc', this.rawData[i]['rawDone'][2]['choice_type'][0]['data']);
+
+            for(let j=0;j<arr?.length;j++){
+                let c = arr[j];
+                if(c['choice'] === "มี/ไม่มี") {
+                    // console.log('Choice Data:', c);
+                    if(c['value'] === "มี") {
+                        c['user_percent'] = this.eitRaw[i]['have'];
+                        console.log(`Choice มี ${c['user_percent']}:`, c);
+                    } else if(c['value'] === "ไม่มี") {
+                        c['user_percent'] = this.eitRaw[i]['not_have'];
+                        console.log(`Choice ไม่มี ${c['user_percent']}:`, c);
+                    }
+                }
+
+                // this.rawData[i]['rawDone'] = JSON.stringify(this.rawData[i]['rawDone']);
+            } 
+          }
+
+            
+          } catch (err) {
+            console.error(err);
+            this.error = 'Failed to fetch data';
+          } finally {
+            this.loading = false;
+          }
+
+          console.log('EIT Raw Data:', this.rawData);
+        },
+
+        async updateData() {
+          this.loading = true;
+          this.error = null;
+          try {
+            for(let i=0;i<this.rawData.length;i++){
+                let r = this.rawData[i];
+                r['rawDone'] = JSON.stringify(r['rawDone']);
+
+                console.log('Updating EIT ID:', r.id);
+                console.log('Before Update:', r);
+                const updated = await api.put(`/api/report/v1/reportraweit/${r.id}/`, r);
+                console.log('Updated EIT:', updated);
+            }
+          } catch (err) {
+            console.error(err);
+            this.error = 'Failed to update data';
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        calculateHaveNot(scorePercent, scoreRaw, total) {
+              // 1) คำนวณเปอร์เซ็นต์จาก scorePercent/scoreRaw
+              //    - ถ้ามี scoreRaw: notHave = scoreRaw / scoreFull => notHave% = scorePercent (เพราะ 1 = ไม่มี)
+              //    - have% = 100 - scorePercent
+              let have = 100 - Number(scorePercent);
+              let notHave = Number(scorePercent);
+
+              // 2) ฟังก์ชันช่วย: ปัด 2 ตำแหน่งเป็น Number
+              const round2 = (x) => Number(x.toFixed(2));
+
+              // 3) ถ้าหลังปัดแล้วยังเป็นจำนวนเต็ม ให้สุ่มทศนิยมเบา ๆ (±0.01 ถึง ±0.49)
+              //    และคงผลรวม = 100
+              const nudgeIfIntegerPair = (a, b) => {
+                let A = round2(a);
+                let B = round2(b);
+
+                const isInt2dp = (v) => Number.isInteger(v);
+                const within = (v) => v >= 0 && v <= 100;
+
+                if (isInt2dp(A) || isInt2dp(B)) {
+                  // สุ่มขนาดเขย่า 0.01..0.49
+                  const magnitude = (Math.floor(Math.random() * 49) + 1) / 100; // 0.01..0.49
+                  // เลือกทิศทางเขย่า โดยพยายามอย่าให้ชนขอบ 0/100
+                  let sign = Math.random() < 0.5 ? -1 : 1;
+
+                  // เลือกฝั่งที่จะเขย่าเป็นหลัก: ถ้า A เป็นจำนวนเต็ม ให้เขย่า A ก่อน
+                  const nudgeAFirst = isInt2dp(A) ? true : isInt2dp(B) ? false : true;
+
+                  const applyNudge = (x, y, s) => {
+                    let a1 = x + s * magnitude;
+                    let b1 = y - s * magnitude;
+                    // ถ้าชนขอบ ลองสลับสัญญาณ
+                    if (!within(a1) || !within(b1)) {
+                      s = -s;
+                      a1 = x + s * magnitude;
+                      b1 = y - s * magnitude;
+                    }
+                    return [a1, b1];
+                  };
+
+                  if (nudgeAFirst) {
+                    [A, B] = applyNudge(A, B, sign);
+                  } else {
+                    [B, A] = applyNudge(B, A, sign);
+                  }
+
+                  // ปัดกลับ 2 ตำแหน่ง
+                  A = round2(A);
+                  B = round2(B);
+
+                  // เผื่อกรณีปัดแล้วผลรวมไม่เท่ากับ 100.00 ให้ชดเชยส่วนต่าง
+                  const diff = round2(100 - (A + B));
+                  if (diff !== 0) {
+                    // เติมให้ฝั่งที่ไม่ใช่จำนวนเต็ม (หรือสุ่มหากทั้งคู่ไม่ใช่/เป็นเหมือนกัน)
+                    const preferAdjustA = !Number.isInteger(A) || Number.isInteger(B);
+                    if (preferAdjustA && within(A + diff)) {
+                      A = round2(A + diff);
+                    } else if (within(B + diff)) {
+                      B = round2(B + diff);
+                    } else {
+                      // ถ้าเติมไม่ได้จริง ๆ (ชนขอบ) ยัดกลับอีกฝั่ง
+                      A = round2(A + diff);
+                    }
+                  }
+
+                  // ถ้ายังบังเอิญเป็นจำนวนเต็มอีก (หลังชดเชย) ให้ขยับ 0.01 ตรงข้ามกัน
+                  if (Number.isInteger(A) || Number.isInteger(B)) {
+                    const eps = 0.01;
+                    if (A >= eps && B <= 100 - eps) {
+                      A = round2(A - eps);
+                      B = round2(B + eps);
+                    } else if (B >= eps && A <= 100 - eps) {
+                      B = round2(B - eps);
+                      A = round2(A + eps);
+                    }
+                  }
+
+                  return [A, B];
+                }
+
+                return [A, B];
+              };
+
+  // ปัด 2 ตำแหน่งก่อน แล้วค่อยตรวจ integer
+  [have, notHave] = nudgeIfIntegerPair(have, notHave);
+
+  // safety: ให้ผลรวม = 100.00 เสมอ (กัน edge case สุดท้าย)
+  const sum = round2(have + notHave);
+  if (sum !== 100) {
+    const diff = round2(100 - sum);
+    // เติมให้ฝั่งที่ไม่ชนขอบและไม่น่ากลายเป็นจำนวนเต็ม
+    if (have + diff >= 0 && have + diff <= 100) {
+      have = round2(have + diff);
+    } else {
+      notHave = round2(notHave + diff);
+    }
+  }
+
+  return {
+    havePercent: round2(have),
+    notHavePercent: round2(notHave)
+  };
+}
+      },
+      computed: {
+       
+      },
+      async mounted() {
+         this.loading = true;
+        // Uncomment to test API calls on component mount
+        await this.fetchData();
+        this.loading = false;
+      },
+    })
+  </script>
+</body>
+</html>
